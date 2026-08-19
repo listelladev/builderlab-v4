@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --background: #08120e;
+  --foreground: #f4f4f9;
+  --primary: #38b685;
+  --header-bg: #080a0c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70%,
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.animate-ping-slow {
+  animation: ping-slow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes marquee-slow {
+  0% {
+    transform: translate(0);
+  }
+  to {
+    transform: translate(-50%);
+  }
+}
+.animate-marquee-slow {
+  animation: marquee-slow 70s linear infinite;
+}
+.marquee-pause:hover .animate-marquee-slow {
+  animation-play-state: paused;
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0 0%;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+.animate-gradient-flow {
+  /* A single soft band, not a repeating tile: the image is 400% of the
+     container's height with the glow centered in it and transparent
+     everywhere else, so it enters from off-screen above, drifts through
+     once, and exits off-screen below, bookended by transparent, so the
+     loop reset is invisible instead of looking like a jump. */
+  background-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 32%,
+    rgba(56, 182, 133, 0.24) 50%,
+    transparent 68%,
+    transparent 100%
+  );
+  background-size: 100% 400%;
+  animation: gradient-flow 11s ease-in-out infinite;
+}
