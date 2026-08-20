@@ -145,26 +145,68 @@ export function CaseStudies() {
       return secondCopyStart.offsetLeft - first.offsetLeft;
     };
 
+    // Which real card is currently nearest the container's center, measured
+    // straight off live DOM positions rather than comparing raw scrollLeft
+    // against fixed pixel thresholds. The padding-driven initial scroll
+    // offset doesn't land on a clean multiple of one copy's width, so a
+    // fixed-threshold "safe zone" ends up asymmetric around the true
+    // visual center — meaning a wrap-jump could fire mid-scroll, cutting
+    // the native smooth-scroll animation off and leaving it parked at an
+    // awkward halfway point between two cards. Nearest-card detection has
+    // no such asymmetry: it only wraps once you've genuinely scrolled a
+    // full copy away from center.
+    const nearestIndex = () => {
+      const containerCenter = el.scrollLeft + el.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      Array.from(el.children).forEach((child, i) => {
+        const card = child as HTMLElement;
+        const dist = Math.abs(
+          card.offsetLeft + card.offsetWidth / 2 - containerCenter
+        );
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      return best;
+    };
+
+    // Checking (and potentially correcting) on every scroll event, even
+    // rAF-throttled, means it can run WHILE the native smooth-scroll from
+    // an arrow click is still mid-flight. Forcing scrollLeft at that point
+    // cancels the browser's in-progress scroll animation, but the new
+    // position isn't necessarily a fully-snapped one — CSS scroll-snap
+    // then has to pull it the rest of the way on the very next frame,
+    // which is the "half scroll then a second jump" this was producing.
+    // Debouncing to scroll-end instead means the correction only ever
+    // runs once scrolling has genuinely settled at a real snap point, so
+    // there's never a competing animation for it to interrupt.
+    let settleTimeout = 0;
     const onScroll = () => {
-      const width = copyWidth();
-      if (!width) return;
-      let target: number | null = null;
-      if (el.scrollLeft < width * 0.5) {
-        target = el.scrollLeft + width;
-      } else if (el.scrollLeft > width * 1.5) {
-        target = el.scrollLeft - width;
-      }
-      if (target === null) return;
-      el.style.scrollBehavior = "auto";
-      el.style.scrollSnapType = "none";
-      el.scrollLeft = target;
-      void el.offsetHeight;
-      el.style.scrollSnapType = "";
-      el.style.scrollBehavior = "";
+      window.clearTimeout(settleTimeout);
+      settleTimeout = window.setTimeout(() => {
+        const width = copyWidth();
+        if (!width) return;
+        const idx = nearestIndex();
+        let target: number | null = null;
+        if (idx < caseStudies.length) target = el.scrollLeft + width;
+        else if (idx >= caseStudies.length * 2) target = el.scrollLeft - width;
+        if (target === null) return;
+        el.style.scrollBehavior = "auto";
+        el.style.scrollSnapType = "none";
+        el.scrollLeft = target;
+        void el.offsetHeight;
+        el.style.scrollSnapType = "";
+        el.style.scrollBehavior = "";
+      }, 120);
     };
 
     el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
+    return () => {
+      window.clearTimeout(settleTimeout);
+      el.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   return (

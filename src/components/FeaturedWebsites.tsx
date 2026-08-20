@@ -64,7 +64,23 @@ function coverflowStyle(offset: number) {
   };
 }
 
-function SiteCard({ item, offset }: { item: FeaturedWebsite; offset: number }) {
+function SiteCard({
+  item,
+  offset,
+  instant,
+}: {
+  item: FeaturedWebsite;
+  offset: number;
+  // True for the one card that just wrapped from the far/invisible side
+  // to the near/visible side (or vice versa) on this click. Animating
+  // that transition normally would tween its transform smoothly across
+  // every position in between, which is what read as "a card sliding
+  // across the stack" — since it's crossing between the invisible
+  // antipodal slot and a barely-visible near slot, skipping the tween
+  // for just this one update makes it teleport in a single frame
+  // instead, imperceptible rather than a visible sweep.
+  instant?: boolean;
+}) {
   const { zIndex, pointerEvents, ...animate } = coverflowStyle(offset);
 
   return (
@@ -76,7 +92,7 @@ function SiteCard({ item, offset }: { item: FeaturedWebsite; offset: number }) {
       className="group absolute top-0 left-1/2 w-[80vw] ml-[-40vw] sm:w-[560px] sm:ml-[-280px] lg:w-[720px] lg:ml-[-360px] aspect-[16/10] rounded-2xl overflow-hidden"
       style={{ zIndex, pointerEvents }}
       animate={animate}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={instant ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <Image
         src={item.image}
@@ -108,11 +124,40 @@ function SiteCard({ item, offset }: { item: FeaturedWebsite; offset: number }) {
   );
 }
 
-export function FeaturedWebsites() {
-  const [index, setIndex] = useState(START_INDEX);
+type CarouselState = { offsets: number[]; wrapped: number | null };
 
-  const next = () => setIndex((i) => i + 1);
-  const prev = () => setIndex((i) => i - 1);
+export function FeaturedWebsites() {
+  const [{ offsets, wrapped }, setState] = useState<CarouselState>(() => ({
+    offsets: featuredWebsites.map((_, i) => circularOffset(i, START_INDEX)),
+    wrapped: null,
+  }));
+
+  // Shifts every card's offset by one step (all continuous, no jumps) and
+  // only wraps the single card that would fall outside the visible
+  // (-2..3] range back around, since that's exactly the invisible/barely-
+  // visible antipodal card. Marking it `wrapped` tells SiteCard to skip
+  // the tween for that one update — see the comment on SiteCard.
+  const step = (forward: boolean) => {
+    const shift = forward ? -1 : 1;
+    setState(({ offsets }) => {
+      let wrappedIndex: number | null = null;
+      const next = offsets.map((o, i) => {
+        let v = o + shift;
+        if (v > 3) {
+          v -= COUNT;
+          wrappedIndex = i;
+        } else if (v < -2) {
+          v += COUNT;
+          wrappedIndex = i;
+        }
+        return v;
+      });
+      return { offsets: next, wrapped: wrappedIndex };
+    });
+  };
+
+  const next = () => step(true);
+  const prev = () => step(false);
 
   const handleDragEnd = (
     _e: MouseEvent | TouchEvent | PointerEvent,
@@ -157,7 +202,12 @@ export function FeaturedWebsites() {
             onDragEnd={handleDragEnd}
           >
             {featuredWebsites.map((item, i) => (
-              <SiteCard key={item.name} item={item} offset={circularOffset(i, index)} />
+              <SiteCard
+                key={item.name}
+                item={item}
+                offset={offsets[i]}
+                instant={wrapped === i}
+              />
             ))}
           </motion.div>
         </div>
