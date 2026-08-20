@@ -19,7 +19,7 @@ export function CaseStudyStats({ stats }: { stats: CaseStudyStat[] }) {
             The results
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
-            Numbers that speak for themselves.
+            Numbers That Speak for Themselves.
           </h2>
         </Reveal>
 

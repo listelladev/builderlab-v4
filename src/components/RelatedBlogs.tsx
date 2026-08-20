@@ -37,7 +37,7 @@ export function RelatedBlogs({
               More from the blog
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-white text-balance">
-              Related articles.
+              Related Articles.
             </h2>
           </Reveal>
           <div className="hidden sm:flex gap-3 shrink-0">

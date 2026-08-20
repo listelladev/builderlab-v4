@@ -14,7 +14,7 @@ export function CaseStudyWhatWeDid({ items }: { items: CaseStudyWork[] }) {
             What we did
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
-            The system we installed.
+            The System We Installed.
           </h2>
         </Reveal>
 

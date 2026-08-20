@@ -81,57 +81,15 @@ export type CaseStudy = {
   video?: boolean;
   duration?: string;
   vimeoId?: string;
+  /** Plain, silent mp4 hosted elsewhere, used instead of `vimeoId`. */
+  videoSrc?: string;
+  /** Second <source> for `videoSrc`, tried if the primary can't play. */
+  videoFallbackSrc?: string;
 };
 
+// Ordered to alternate video and image cards (5 videos, 3 images) so the
+// scroller never strings several of the same media type back to back.
 export const caseStudies: CaseStudy[] = [
-  {
-    name: "Bianchi Group Developers",
-    stat: "+212%",
-    statLabel: "revenue growth",
-    bullets: [
-      "Six figures a month in ad spend, but growth had stalled.",
-      "Doubled their revenue in just 11 months.",
-      "Went from a 7 figure to an 8 figure builder in 24 months.",
-    ],
-    image: "/images/case-nhfa.png",
-    vimeoId: "1205386331",
-  },
-  {
-    name: "Blackbriar Development",
-    stat: "+$1.2M",
-    statLabel: "new revenue per year",
-    bullets: [
-      "Growing on word of mouth alone, with zero predictability.",
-      "Installed premium positioning and founder-led ads.",
-      "Now adding $1M+ a year in new build work.",
-    ],
-    image: "/images/case-toptier.png",
-  },
-  {
-    name: "Rockstar Homes",
-    stat: "+208%",
-    statLabel: "revenue increase",
-    bullets: [
-      "Running his own ads and hitting a ceiling.",
-      "We took over and rebuilt the entire system.",
-      "Tripled his revenue inside 12 months.",
-    ],
-    image: "/images/case-insight.png",
-    video: true,
-    duration: "1:43",
-  },
-  {
-    name: "Koze Design & Build",
-    stat: "2×",
-    statLabel: "revenue in 8 months",
-    bullets: [
-      "Established for years, but capped by word of mouth.",
-      "Plugged in the full Builderlab Growth System.",
-      "Doubled his revenue in 8 months.",
-    ],
-    video: true,
-    duration: "1:34",
-  },
   {
     name: "Stately Homes",
     stat: "+103%",
@@ -141,6 +99,31 @@ export const caseStudies: CaseStudy[] = [
       "Suburb-targeted ads that attracted premium buyers.",
       "Doubled monthly revenue with zero discount ads.",
     ],
+    videoSrc:
+      "https://buildstately.com/wp-content/uploads/2026/02/stately%20homes.mp4",
+  },
+  {
+    name: "MU Developments",
+    stat: "$1.3M",
+    statLabel: "contract from one ad lead",
+    bullets: [
+      "Relocated to Atlanta with zero local reputation.",
+      "First ad lead closed into a signed $1.3M contract.",
+      "381 leads generated at $12.80 per lead.",
+    ],
+    image: "/images/mu-developments.jpeg",
+  },
+  {
+    name: "Bianchi Group Developers",
+    stat: "+212%",
+    statLabel: "revenue growth",
+    bullets: [
+      "Six figures a month in ad spend, but growth had stalled.",
+      "Doubled their revenue in just 11 months.",
+      "Went from a 7 figure to an 8 figure builder in 24 months.",
+    ],
+    videoSrc:
+      "https://bianchigroupdevelopers.com/wp-content/uploads/2026/04/Bianchi-Group-Website-Hero-Video-1-2.mp4",
   },
   {
     name: "Imagine Development Ltd",
@@ -151,7 +134,18 @@ export const caseStudies: CaseStudy[] = [
       "Added $800K in new revenue inside 12 months.",
       "Launched a new division that added another $1M.",
     ],
-    image: "/images/case-mowman.png",
+    image: "/images/case-imagine.webp",
+  },
+  {
+    name: "Birch Hill Homes",
+    stat: "111+",
+    statLabel: "leads in 2 months",
+    bullets: [
+      "No website, no ads, and no lead system in place.",
+      "Built a full marketing engine in just two months.",
+      "111 leads at $18.86 average cost per lead.",
+    ],
+    videoSrc: "https://birchhillhomes.com/wp-content/uploads/2026/04/banner-video.mp4",
   },
   {
     name: "Alogla Custom Homes",
@@ -162,8 +156,48 @@ export const caseStudies: CaseStudy[] = [
       "Installed a lead system and a structured sales process.",
       "Tripled lead volume for 6.5× revenue.",
     ],
-    image: "/images/case-concrete.png",
+    image: "/images/case-alogla.webp",
   },
+  {
+    name: "Blackbriar Development",
+    stat: "+$1.2M",
+    statLabel: "new revenue per year",
+    bullets: [
+      "Growing on word of mouth alone, with zero predictability.",
+      "Installed premium positioning and founder-led ads.",
+      "Now adding $1M+ a year in new build work.",
+    ],
+    videoSrc: "https://builtblackbriar.com/media/2026/01/0122.mp4",
+    videoFallbackSrc:
+      "https://builtblackbriar.com/media/2021/09/Angelo_Shortened_720_web_2__1_-1.mp4",
+  },
+  {
+    name: "Koze Design & Build",
+    stat: "2×",
+    statLabel: "revenue in 8 months",
+    bullets: [
+      "Established for years, but capped by word of mouth.",
+      "Plugged in the full Builderlab Growth System.",
+      "Doubled his revenue in 8 months.",
+    ],
+    videoSrc:
+      "https://kozedesignbuild.ca/wp-content/uploads/2026/07/Koze-Design-Build-Website-Hero-Video-1.mp4",
+  },
+];
+
+export type FeaturedWebsite = {
+  name: string;
+  url: string;
+  image: string;
+};
+
+export const featuredWebsites: FeaturedWebsite[] = [
+  { name: "Koze Design & Build", url: "https://kozedesignbuild.ca/", image: "/images/site-koze.jpeg" },
+  { name: "Stately Homes", url: "https://buildstately.com/", image: "/images/site-stately.jpeg" },
+  { name: "Bianchi Group Developers", url: "https://bianchigroupdevelopers.com/", image: "/images/site-bianchi.jpeg" },
+  { name: "Birch Hill Homes", url: "https://birchhillhomes.com/", image: "/images/site-birchhill.jpeg" },
+  { name: "Alogla Homes", url: "https://aloglahomes.com/", image: "/images/site-alogla.jpeg" },
+  { name: "Imagine Development Ltd.", url: "https://imaginedevelopment.com/", image: "/images/site-imagine.jpeg" },
 ];
 
 export const capabilities = [

@@ -4,6 +4,7 @@ import { CaseStudies } from "@/components/CaseStudies";
 import { Creative } from "@/components/Creative";
 import { Industries } from "@/components/Industries";
 import { HowItWorks } from "@/components/HowItWorks";
+import { FeaturedWebsites } from "@/components/FeaturedWebsites";
 import { Differentiator } from "@/components/Differentiator";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
@@ -20,6 +21,7 @@ export default function Home() {
         <Creative />
         <Industries />
         <HowItWorks />
+        <FeaturedWebsites />
         <Differentiator />
         <Testimonials />
         <Faq />

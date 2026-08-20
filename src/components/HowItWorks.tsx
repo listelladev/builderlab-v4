@@ -42,7 +42,7 @@ function StepExtra({ visual }: { visual: string }) {
 
 function StepCardBody({ step }: { step: (typeof steps)[number] }) {
   return (
-    <div className="grid lg:grid-cols-2 gap-10 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
       <div>
         <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
           {step.title}

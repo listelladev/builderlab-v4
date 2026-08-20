@@ -6,14 +6,27 @@ import { ArrowLeft, ArrowRight, Play } from "lucide-react";
 import { caseStudies, type CaseStudy } from "@/lib/data";
 import { Reveal } from "./Reveal";
 import { AutoplayVideo } from "./AutoplayVideo";
+import { SilentVideo } from "./SilentVideo";
 
 function CaseCard({ item, withVideo }: { item: CaseStudy; withVideo?: boolean }) {
-  const showVideo = withVideo && item.vimeoId;
+  // AutoplayVideo (Vimeo) stays gated to the middle copy only: its player
+  // construction is staggered through a shared queue to avoid a real
+  // cross-wiring bug when several instances of the same video ID start at
+  // once (see AutoplayVideo's queueStart comment), so only ever mounting
+  // one copy sidesteps that entirely. Plain <video> (SilentVideo) has no
+  // such race, and lazy-loads on its own via IntersectionObserver, so
+  // every tripled copy can render one, they just won't fetch anything
+  // until scrolled near.
+  const showVimeo = withVideo && item.vimeoId;
+  const showSilentVideo = !!item.videoSrc;
   return (
     <article className="case-card shrink-0 w-[340px] sm:w-[380px] h-full flex flex-col bg-[#0D1814] border border-white/5 rounded-2xl overflow-hidden group">
       <div className="case-card__media relative h-52 shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden">
-        {showVideo && <AutoplayVideo vimeoId={item.vimeoId!} />}
-        {!showVideo && item.image && (
+        {showVimeo && <AutoplayVideo vimeoId={item.vimeoId!} />}
+        {showSilentVideo && (
+          <SilentVideo src={item.videoSrc!} fallbackSrc={item.videoFallbackSrc} />
+        )}
+        {!showVimeo && !showSilentVideo && item.image && (
           <Image
             src={item.image}
             alt={item.name}
@@ -35,7 +48,7 @@ function CaseCard({ item, withVideo }: { item: CaseStudy; withVideo?: boolean })
             </span>
           </div>
         )}
-        {!item.image && !item.video && (
+        {!item.image && !item.video && !item.videoSrc && (
           <div className="w-full h-full flex items-center justify-center">
             <span className="text-2xl font-bold text-white/20">{item.name}</span>
           </div>
@@ -113,6 +126,47 @@ export function CaseStudies() {
     };
   }, []);
 
+  // With only three literal copies rendered, scrolling far enough in either
+  // direction eventually hits a real edge and just stops. To make it feel
+  // endless, once the visible copy drifts into the first or third set this
+  // silently snaps the scroll position back by exactly one copy's width,
+  // landing on the same visual card in the middle set, so there's always
+  // another two copies' worth of cards ahead to keep scrolling into.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const copyWidth = () => {
+      const first = el.children[0] as HTMLElement | undefined;
+      const secondCopyStart = el.children[caseStudies.length] as
+        | HTMLElement
+        | undefined;
+      if (!first || !secondCopyStart) return 0;
+      return secondCopyStart.offsetLeft - first.offsetLeft;
+    };
+
+    const onScroll = () => {
+      const width = copyWidth();
+      if (!width) return;
+      let target: number | null = null;
+      if (el.scrollLeft < width * 0.5) {
+        target = el.scrollLeft + width;
+      } else if (el.scrollLeft > width * 1.5) {
+        target = el.scrollLeft - width;
+      }
+      if (target === null) return;
+      el.style.scrollBehavior = "auto";
+      el.style.scrollSnapType = "none";
+      el.scrollLeft = target;
+      void el.offsetHeight;
+      el.style.scrollSnapType = "";
+      el.style.scrollBehavior = "";
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section id="cases" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-[#08120E]" />
@@ -135,7 +189,7 @@ export function CaseStudies() {
             Case studies
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
-            What happens when we plug in.
+            What Happens When We Plug In.
           </h2>
         </Reveal>
       </div>

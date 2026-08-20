@@ -55,7 +55,7 @@ export function Testimonials() {
             What our partners say
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance mb-4">
-            Don&apos;t take our word for it.
+            Don&apos;t Take Our Word for It.
           </h2>
           <p className="text-lg text-white/60 leading-relaxed">
             Real reviews from the custom home builders we&apos;ve helped

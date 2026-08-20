@@ -42,7 +42,7 @@ export function Apply() {
       <div className="relative max-w-[700px] mx-auto px-6 lg:px-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-6xl font-bold text-white mb-4 text-balance">
-            Ready to grow?
+            Ready to Grow?
           </h2>
           <p className="text-lg text-white/50">No sales reps. No middlemen.</p>
         </div>

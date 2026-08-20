@@ -34,7 +34,7 @@ export function CaseStudyResults({
               The impact
             </span>
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-              What changed.
+              What Changed.
             </h2>
             <p className="text-lg text-white/60 leading-relaxed">{results}</p>
           </div>

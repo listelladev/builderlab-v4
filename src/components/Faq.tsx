@@ -69,7 +69,7 @@ export function Faq() {
             FAQs
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
-            Before you apply.
+            Before You Apply.
           </h2>
         </Reveal>
 

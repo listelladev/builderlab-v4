@@ -63,7 +63,7 @@ export function Hero() {
         >
           The growth partner for{" "}
           <em className="not-italic text-[#38B685]">
-            high-value service businesses.
+            Custom Home Builders.
           </em>
         </motion.h1>
 

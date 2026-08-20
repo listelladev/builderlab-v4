@@ -18,7 +18,7 @@ export function Differentiator() {
             Why Builderlab
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
-            Not all growth partners are built the same.
+            Not All Growth Partners Are Built the Same.
           </h2>
         </Reveal>
 

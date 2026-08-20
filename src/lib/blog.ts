@@ -36,7 +36,7 @@ export const blogPosts: BlogPost[] = [
     intro:
       "Referrals feel free, but they're the most expensive growth channel most custom home builders have, because it's the one you can never plan around. Here's why every referral-only builder eventually hits the same ceiling, and what actually breaks it.",
     body: [
-      { type: "h2", text: "The referral trap" },
+      { type: "h2", text: "The Referral Trap" },
       {
         type: "p",
         text: "Every established builder we've worked with started the same way: word of mouth. It's flattering, it's cheap, and for a while it's genuinely enough. The problem shows up later, once you've built a crew and overhead around a growth channel you don't actually control.",
@@ -51,7 +51,7 @@ export const blogPosts: BlogPost[] = [
         alt: "A construction crew working on site",
         caption: "Referral-only growth ties your pipeline to last year's work, not this year's ambition.",
       },
-      { type: "h2", text: "What predictable growth actually requires" },
+      { type: "h2", text: "What Predictable Growth Actually Requires" },
       {
         type: "p",
         text: "Predictability isn't about replacing referrals. It's about adding a second engine that runs independently of them. That means owning your positioning, your creative, and your ad spend well enough that you can turn the dial up or down on demand.",
@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
           "A sales process that doesn't rely on the owner personally following up",
         ],
       },
-      { type: "h2", text: "The businesses that break through" },
+      { type: "h2", text: "The Businesses That Break Through" },
       {
         type: "h3", text: "They stop treating marketing as a cost center" },
       {
@@ -94,7 +94,7 @@ export const blogPosts: BlogPost[] = [
     intro:
       "Most businesses run whichever platform their competitor is running, or whichever an agency happens to specialize in. Here's a better way to decide, based on how your customers actually buy, not what's trending.",
     body: [
-      { type: "h2", text: "Two very different jobs" },
+      { type: "h2", text: "Two Very Different Jobs" },
       {
         type: "p",
         text: "Meta and Google aren't competing for the same budget. They're doing two completely different jobs in your funnel. Google captures demand that already exists. Meta creates demand that doesn't exist yet.",
@@ -103,7 +103,7 @@ export const blogPosts: BlogPost[] = [
         type: "p",
         text: "If someone is searching \"custom home builder near me,\" they've already decided to buy. They're deciding who from. That's Google's job, and it's usually the highest-intent traffic you can buy.",
       },
-      { type: "h2", text: "Where Meta earns its place" },
+      { type: "h2", text: "Where Meta Earns Its Place" },
       {
         type: "p",
         text: "Meta works earlier in the decision. Nobody wakes up scrolling Instagram looking to hire a builder, but a scroll-stopping video that builds trust plants the idea, so when they are ready to search, your name is the one they already recognize.",
@@ -123,7 +123,7 @@ export const blogPosts: BlogPost[] = [
           "Splitting budget evenly instead of weighting toward whichever stage your business is weakest in",
         ],
       },
-      { type: "h2", text: "So which comes first?" },
+      { type: "h2", text: "So Which Comes First?" },
       {
         type: "p",
         text: "If you have zero brand recognition and a limited budget, start with Google. It's the lowest-risk way to prove the offer converts. Once you have a repeatable close rate, layer in Meta to lower your cost per lead and start owning the top of the funnel too.",
@@ -141,13 +141,13 @@ export const blogPosts: BlogPost[] = [
     intro:
       "Most ads fail in the first second, not the last. Here's what separates creative that gets scrolled past instantly from creative that actually earns three seconds of attention, and eventually a lead.",
     body: [
-      { type: "h2", text: "You have less than a second" },
+      { type: "h2", text: "You Have Less Than a Second" },
       {
         type: "p",
         text: "The average person decides whether to keep watching an ad before they've consciously registered what it's for. That decision is almost entirely visual: motion, faces, and pattern interrupts, not your logo or your offer.",
       },
       {
-        type: "h2", text: "The three-second test" },
+        type: "h2", text: "The Three-Second Test" },
       {
         type: "p",
         text: "If someone watched the first three seconds of your ad with the sound off, would they know what's happening and want to keep watching? If the honest answer is no, the hook is the problem, not the offer, not the targeting.",
@@ -172,7 +172,7 @@ export const blogPosts: BlogPost[] = [
         type: "p",
         text: "People trust people, not brands, especially for considered, high-ticket purchases. An ad featuring the actual person doing the actual work builds more trust in fifteen seconds than a beautifully produced brand film built to \"feel premium.\"",
       },
-      { type: "h2", text: "Production doesn't mean polish" },
+      { type: "h2", text: "Production Doesn't Mean Polish" },
       {
         type: "p",
         text: "In-house production isn't about a bigger budget. It's about control and speed. The ability to script, shoot, and test a new hook within days, instead of waiting weeks for an external agency, is what actually compounds over a quarter.",
@@ -190,12 +190,12 @@ export const blogPosts: BlogPost[] = [
     intro:
       "A full inbox of leads means nothing if half of them never get a callback. Most agencies report on clicks and leads because that's where their responsibility ends. Here's why that's the wrong place to stop.",
     body: [
-      { type: "h2", text: "Vanity metrics feel good, revenue pays the bills" },
+      { type: "h2", text: "Vanity Metrics Feel Good, Revenue Pays the Bills" },
       {
         type: "p",
         text: "Clicks, impressions, and even leads are easy to report and easy to inflate. None of them pay a single invoice. The only number that actually matters is revenue attributable back to the campaign, and most agencies simply don't track that far.",
       },
-      { type: "h2", text: "What breaks between lead and sale" },
+      { type: "h2", text: "What Breaks Between Lead and Sale" },
       {
         type: "list",
         items: [
@@ -215,7 +215,7 @@ export const blogPosts: BlogPost[] = [
         type: "p",
         text: "The businesses that scale fastest treat sales process as part of the marketing system, not a separate department. When ad spend and CRM data live in the same view, you can see exactly which campaigns produce leads that actually close, not just leads that look good on a report.",
       },
-      { type: "h2", text: "Stop at the lead, and you'll always guess" },
+      { type: "h2", text: "Stop at the Lead, and You'll Always Guess" },
       {
         type: "p",
         text: "If your growth partner's reporting ends at \"leads generated,\" you're being asked to trust that the rest of the funnel works. Reporting that follows the money all the way to revenue is the only version that actually tells you if it's working.",
@@ -233,12 +233,12 @@ export const blogPosts: BlogPost[] = [
     intro:
       "Underpricing feels safe, but it's usually what's actually costing you the sale. Here's how the highest-margin custom home builders talk about price without flinching, and why the flinch is what loses the room.",
     body: [
-      { type: "h2", text: "The flinch is contagious" },
+      { type: "h2", text: "The Flinch Is Contagious" },
       {
         type: "p",
         text: "If you hesitate before stating your price, the buyer notices, and mirrors it right back at you. Confidence around price isn't arrogance, it's a signal that you already know the work is worth it, which is exactly what a considered buyer is looking for.",
       },
-      { type: "h2", text: "Justify the value before the number" },
+      { type: "h2", text: "Justify the Value Before the Number" },
       {
         type: "p",
         text: "By the time price comes up, the buyer should already understand exactly what makes you different from the cheaper option. If price is the first thing they hear about, of course it feels high. There's nothing yet to compare it against.",
@@ -274,7 +274,7 @@ export const blogPosts: BlogPost[] = [
     intro:
       "\"We'll get to it eventually\" is how most growth initiatives die. Here's exactly what happens in the first 21 days of working with us, and why the order of operations matters more than the individual tactics.",
     body: [
-      { type: "h2", text: "Why sequence matters more than speed" },
+      { type: "h2", text: "Why Sequence Matters More Than Speed" },
       {
         type: "p",
         text: "Running ads before positioning is locked in is the single most common mistake we see. It doesn't matter how good the creative is if the offer underneath it isn't dialled in yet. You'll just be paying to find out the offer needs work.",

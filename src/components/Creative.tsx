@@ -179,7 +179,7 @@ export function Creative() {
           Our creative
         </span>
         <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-          Creative that stops the scroll.
+          Creative That Stops the Scroll.
         </h2>
         <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
           Disruptive, scroll-stopping ads that build trust. Scripted, edited,

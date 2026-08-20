@@ -61,11 +61,11 @@ export function AdsSystemVisual() {
   return (
     <div className="space-y-4">
       <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-5">
           <span className="text-sm font-semibold text-white/80">
             Meta Ads · Performance creative
           </span>
-          <span className="text-xs text-white/30">
+          <span className="text-[11px] sm:text-xs text-white/30">
             iterate frequently · creative testing
           </span>
         </div>
@@ -97,27 +97,27 @@ export function AdsSystemVisual() {
       </div>
 
       <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-5">
           <span className="text-sm font-semibold text-white/80">
             Google Ads · Intent capture
           </span>
-          <span className="text-xs text-white/30">high-intent search</span>
+          <span className="text-[11px] sm:text-xs text-white/30">high-intent search</span>
         </div>
         <div className="bg-white rounded-xl overflow-hidden">
-          <div className="p-4">
-            <p className="text-sm text-black/50 mb-1">
+          <div className="p-3 sm:p-4">
+            <p className="text-xs sm:text-sm text-black/50 mb-1">
               custom home builder near me
             </p>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs text-black/40">Sponsored</span>
-              <span className="text-sm text-blue-600">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-2 min-w-0">
+              <span className="text-[11px] sm:text-xs text-black/40">Sponsored</span>
+              <span className="text-xs sm:text-sm text-blue-600 break-words min-w-0">
                 blackbriardevelopment.com
               </span>
             </div>
-            <p className="text-base font-semibold text-black mb-1">
+            <p className="text-sm sm:text-base font-semibold text-black mb-1">
               Custom Homes Built Around Your Vision, Blackbriar Development
             </p>
-            <p className="text-xs text-black/60 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-black/60 leading-relaxed">
               From first sketch to final walkthrough. A dedicated design-build
               team with you from groundbreaking to handover.
             </p>
@@ -141,19 +141,21 @@ export function AdsSystemLandingPages() {
       <p className="text-sm text-[#38B685] font-medium mb-3">
         Landing pages we ship
       </p>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {landingPages.map((t) => (
           <div
             key={t}
-            className="aspect-[3/4] bg-[#161616] rounded-xl border border-white/5 overflow-hidden flex flex-col"
+            className="min-w-0 aspect-[3/4] bg-[#161616] rounded-xl border border-white/5 overflow-hidden flex flex-col"
           >
-            <div className="h-6 bg-white/5 flex items-center gap-1 px-2">
+            <div className="h-5 sm:h-6 bg-white/5 flex items-center gap-1 px-2">
               <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
               <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
               <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
             </div>
-            <div className="flex-1 p-3 flex flex-col justify-end">
-              <span className="text-xs text-white/50">{t}</span>
+            <div className="flex-1 p-2 sm:p-3 flex flex-col justify-end">
+              <span className="text-[10px] sm:text-xs text-white/50 leading-tight break-words">
+                {t}
+              </span>
             </div>
           </div>
         ))}

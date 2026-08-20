@@ -24,8 +24,8 @@ export function Industries() {
             Built for builders
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance leading-tight">
-            One growth partner for every piece of a custom home
-            builder&apos;s marketing.
+            One Growth Partner for Every Piece of a Custom Home
+            Builder&apos;s Marketing.
           </h2>
           <p className="text-lg text-white/60 leading-relaxed">
             From the first ad to the signed contract, everything runs
