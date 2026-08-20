@@ -19,6 +19,9 @@ export type CaseStudy = {
   name: string;
   industry: string;
   tagline: string;
+  // Short enough to stay on one line on the collection page's card, unlike
+  // `tagline`/`results` which are written to wrap.
+  highlights: [string, string, string];
   heroImage: string;
   supportingImages: [string, string];
   stats: [CaseStudyStat, CaseStudyStat, CaseStudyStat, CaseStudyStat];
@@ -40,6 +43,11 @@ export const caseStudies: CaseStudy[] = [
     industry: "Custom Home Building",
     tagline:
       "A California builder who relocated to Atlanta with zero local reputation went from pure word of mouth to a signed $1.3M contract and 381 inbound leads on just $4,600 in ad spend.",
+    highlights: [
+      "$1.3M contract from one ad lead",
+      "381 leads at $12.80 per lead",
+      "3 active sets of plans in progress",
+    ],
     heroImage: "/images/mu-developments.jpeg",
     supportingImages: ["/images/case-concrete.png", "/images/case-mowman.png"],
     stats: [
@@ -88,6 +96,11 @@ export const caseStudies: CaseStudy[] = [
     industry: "Residential Construction",
     tagline:
       "A Houston custom home builder with no active marketing went from zero online leads to 108 inquiries and a three-quarter-million-dollar signed contract in under 60 days.",
+    highlights: [
+      "$750K contract, zero manual follow-up",
+      "108 leads in under 60 days",
+      "11 automated follow-ups before close",
+    ],
     heroImage: "/images/ava-custom-homes.webp",
     supportingImages: ["/images/case-nhfa.png", "/images/case-toptier.png"],
     stats: [
@@ -136,6 +149,11 @@ export const caseStudies: CaseStudy[] = [
     industry: "Luxury Home Building",
     tagline:
       "Calgary custom home builder Chris Coleman now has a complete marketing ecosystem working for him around the clock: 111 leads generated and a brand that stands apart from every other builder in the city.",
+    highlights: [
+      "111 leads from Meta in 2 months",
+      "$18.90 average cost per lead",
+      "Zero to full system in 2 months",
+    ],
     heroImage: "/images/birch-hill-homes.webp",
     supportingImages: ["/images/case-insight.png", "/images/case-concrete.png"],
     stats: [

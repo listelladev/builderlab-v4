@@ -68,11 +68,11 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
-              className="group hidden sm:inline-flex items-center gap-2 bg-white hover:bg-[#38B685] text-black px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-500 ease-out"
+              className="group hidden sm:inline-flex items-center gap-2 bg-white hover:bg-[#38B685] text-black hover:text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-500 ease-out"
             >
               Book a call
-              <span className="w-5 h-5 rounded-full bg-black flex items-center justify-center group-hover:translate-x-1 transition-transform duration-500 ease-out">
-                <ArrowRight className="w-3 h-3 text-white" />
+              <span className="w-5 h-5 rounded-full bg-black group-hover:bg-white flex items-center justify-center group-hover:translate-x-1 transition-all duration-500 ease-out">
+                <ArrowRight className="w-3 h-3 text-white group-hover:text-[#38B685] transition-colors duration-500 ease-out" />
               </span>
             </Link>
             <button

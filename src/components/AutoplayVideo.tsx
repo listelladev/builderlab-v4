@@ -44,15 +44,15 @@ function applyCover(container: HTMLDivElement, videoAspect: number) {
 // already holds it, that instance is forced back to muted first, so the
 // most recently unmuted video always wins instead of overlapping sound
 // with whichever was unmuted before it.
-type AudioOwner = { mute: () => void };
+export type AudioOwner = { mute: () => void };
 let currentAudioOwner: AudioOwner | null = null;
-function claimAudio(owner: AudioOwner) {
+export function claimAudio(owner: AudioOwner) {
   if (currentAudioOwner && currentAudioOwner !== owner) {
     currentAudioOwner.mute();
   }
   currentAudioOwner = owner;
 }
-function releaseAudio(owner: AudioOwner) {
+export function releaseAudio(owner: AudioOwner) {
   if (currentAudioOwner === owner) currentAudioOwner = null;
 }
 

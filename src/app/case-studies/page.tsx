@@ -40,7 +40,7 @@ export default function CaseStudiesPage() {
           </div>
         </section>
 
-        <section className="relative pb-24 lg:pb-32 overflow-hidden">
+        <section className="relative pt-8 pb-24 lg:pt-10 lg:pb-32 overflow-hidden">
           <div className="absolute inset-0 bg-[#08120E]" />
           <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
             <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

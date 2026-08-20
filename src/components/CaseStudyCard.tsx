@@ -9,12 +9,12 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
       href={`/case-studies/${study.slug}`}
       className="group relative block aspect-[4/5] bg-[#161616] border border-white/5 hover:border-[#38B685]/40 rounded-2xl overflow-hidden transition-colors duration-700 ease-out"
     >
-      {/* Image: sized to fill the whole card at all times so it never
-          re-crops mid-hover, only the visible portion is masked with
-          clip-path, which animates as a single compositor-driven property.
-          That's what keeps the reveal to one continuous motion instead of
-          the two-stage stutter a layout-based height transition produced. */}
-      <div className="absolute inset-0 overflow-hidden [clip-path:inset(0_0_32%_0)] group-hover:[clip-path:inset(0_0_0%_0)] transition-[clip-path] duration-700 ease-out">
+      {/* Image: height-animated (not clip-path) so object-cover recomputes
+          its crop for the frame's actual current size, at rest that's the
+          56% visible frame, composed properly for that shape, rather than
+          the crop for a full-height image with the bottom portion just
+          masked off, which reads as over-zoomed. */}
+      <div className="absolute inset-x-0 top-0 h-[56%] group-hover:h-full overflow-hidden transition-[height] duration-700 ease-out">
         <Image
           src={study.heroImage}
           alt={study.name}
@@ -36,6 +36,17 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         <h3 className="text-xl lg:text-2xl font-bold text-white group-hover:text-[#38B685] transition-colors duration-700 ease-out mb-3">
           {study.name}
         </h3>
+        <ul className="mb-4 space-y-1.5">
+          {study.highlights.map((h) => (
+            <li
+              key={h}
+              className="flex items-center gap-2 text-sm text-white/70 whitespace-nowrap overflow-hidden text-ellipsis"
+            >
+              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#38B685]" />
+              <span className="overflow-hidden text-ellipsis">{h}</span>
+            </li>
+          ))}
+        </ul>
         <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#38B685] group-hover:text-white transition-colors duration-700 ease-out">
           View case study
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500 ease-out" />

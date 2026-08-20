@@ -19,11 +19,24 @@ export const marqueeLogos: { src: string; height: number; filter?: "silhouette" 
   { src: "/images/marquee/tmpxuozryrn.webp", height: 64, filter: "detail" },
 ];
 
+// width/height are each file's real pixel dimensions (needed so next/image's
+// aspect-ratio hint matches the source instead of distorting it), height is
+// the rendered display height in px. Their aspect ratios vary wildly (1.4:1
+// up to 4.4:1 for GoHighLevel's wide wordmark), so a single shared height
+// class made some read as tiny and others as oversized, height is tuned per
+// logo so they carry roughly the same visual weight side by side.
 export const partnerLogos = [
-  { src: "/images/partners/nahb.webp", alt: "NAHB", href: "https://www.nahb.org/" },
-  { src: "/images/partners/meta-partner.png", alt: "Meta Business Partner", href: "https://www.facebook.com/business" },
-  { src: "/images/partners/gohighlevel.png", alt: "GoHighLevel", href: "https://www.gohighlevel.com/" },
-  { src: "/images/partners/wpvip.png", alt: "WordPress VIP Gold Agency Partner", href: "https://wpvip.com/partners/" },
+  { src: "/images/partners/nahb.webp", alt: "NAHB", href: "https://www.nahb.org/", width: 1630, height: 1135, displayHeight: 50 },
+  { src: "/images/partners/meta-partner.png", alt: "Meta Business Partner", href: "https://www.facebook.com/business", width: 1138, height: 485, displayHeight: 38 },
+  { src: "/images/partners/gohighlevel.png", alt: "GoHighLevel", href: "https://www.gohighlevel.com/", width: 500, height: 113, displayHeight: 26 },
+  { src: "/images/partners/wpvip.png", alt: "WordPress VIP Gold Agency Partner", href: "https://wpvip.com/partners/", width: 268, height: 103, displayHeight: 42 },
+];
+
+export const socialLinks = [
+  { label: "Facebook", href: "https://www.facebook.com/builderlabmarketing" },
+  { label: "Instagram", href: "https://www.instagram.com/builderlabmarketing" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/builderlabmarketing/" },
+  { label: "YouTube", href: "https://www.youtube.com/@thebuilderlab" },
 ];
 
 export const comparisonRows = {

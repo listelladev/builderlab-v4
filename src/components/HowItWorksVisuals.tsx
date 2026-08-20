@@ -47,7 +47,7 @@ export function PositioningVisual() {
             style={pos}
           />
         ))}
-        <div className="absolute top-[72%] left-[72%] -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute top-[8%] left-[88%] -translate-x-1/2 -translate-y-1/2">
           <div className="w-20 h-20 rounded-full bg-[#38B685] flex items-center justify-center text-[#08120E] font-bold text-sm shadow-[0_0_40px_rgba(56,182,133,0.6)]">
             You
           </div>

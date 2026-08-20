@@ -98,12 +98,14 @@ function Step({
   step,
   index,
   active,
+  isLast,
   mobileNodeRef,
   desktopNodeRef,
 }: {
   step: (typeof steps)[number];
   index: number;
   active: boolean;
+  isLast: boolean;
   mobileNodeRef: (el: HTMLDivElement | null) => void;
   desktopNodeRef: (el: HTMLDivElement | null) => void;
 }) {
@@ -112,8 +114,12 @@ function Step({
       {/* Mobile: number centered above the card, line runs centered behind.
           No scroll-triggered fade-in here, on a fast scroll the timeline
           fill outpaces a delayed entrance animation, leaving a visible gap
-          before the number/card appears. Rendered immediately instead. */}
-      <div className="lg:hidden flex flex-col items-center pb-10 last:pb-0">
+          before the number/card appears. Rendered immediately instead.
+          Spacing is index-driven rather than `last:pb-0`, since this div is
+          always the second (i.e. locally "last") child of its own .group
+          wrapper regardless of which Step it belongs to, so `:last-child`
+          would zero out every step's padding, not just the final one. */}
+      <div className={`lg:hidden flex flex-col items-center ${isLast ? "pb-0" : "pb-10"}`}>
         <div className="relative z-20 mb-6">
           <NumberNode
             n={step.n}
@@ -134,7 +140,7 @@ function Step({
 
       {/* Desktop: number on the left rail, card indented beside it. */}
       <motion.div
-        className="hidden lg:block relative pl-24 pb-14 last:pb-0"
+        className={`hidden lg:block relative pl-24 ${isLast ? "pb-0" : "pb-14"}`}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.25 }}
@@ -262,6 +268,7 @@ export function HowItWorks() {
               step={step}
               index={i}
               active={i < activeCount}
+              isLast={i === steps.length - 1}
               mobileNodeRef={(el) => {
                 nodeRefs.current[i] = { ...nodeRefs.current[i], mobile: el };
               }}

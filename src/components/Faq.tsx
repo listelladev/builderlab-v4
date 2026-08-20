@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Minus, Plus } from "lucide-react";
-import { faqs } from "@/lib/data";
+import { faqs, partnerLogos } from "@/lib/data";
 import { Reveal } from "./Reveal";
 
 function FaqItem({
@@ -81,6 +82,37 @@ export function Faq() {
               onToggle={() => setOpen(open === i ? -1 : i)}
             />
           ))}
+        </div>
+
+        {/* Lives here, under the last FAQ item, rather than as its own
+            section between the Apply CTA and the footer, that spot made its
+            spacing depend on two unrelated sections' own padding stacking
+            together unevenly. Here it's just one more block inside a
+            section with fixed, self-contained spacing. */}
+        <div className="mt-20 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40 mb-8">
+            Official partners
+          </p>
+          <div className="group/partners grid grid-cols-2 justify-items-center items-center gap-x-12 gap-y-10 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-6">
+            {partnerLogos.map((p) => (
+              <a
+                key={p.alt}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-100 transition-opacity duration-300 group-hover/partners:opacity-40 hover:!opacity-100"
+              >
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  width={p.width}
+                  height={p.height}
+                  style={{ height: p.displayHeight }}
+                  className="w-auto object-contain"
+                />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
