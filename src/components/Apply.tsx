@@ -1,28 +1,26 @@
-"use client";
+import { ArrowRight, Compass, PhoneCall, Search, Star } from "lucide-react";
+import { GoogleLogo } from "./GoogleLogo";
+import { Reveal } from "./Reveal";
 
-import { useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
-import { phoneCodes } from "@/lib/data";
-
-const inputClass =
-  "w-full bg-transparent border-b border-white/20 focus:border-[#38B685] text-white text-lg py-3 px-1 outline-none transition-colors placeholder:text-white/30";
+const points = [
+  {
+    icon: PhoneCall,
+    title: "Speak with a Growth Strategist",
+    body: "No sales reps. No middlemen. Just a real conversation with a Growth Strategist who knows the builder space.",
+  },
+  {
+    icon: Search,
+    title: "Get a Free Strategy & Audit",
+    body: "A full audit of your marketing, positioning, and growth opportunities — normally worth thousands, delivered personally and free.",
+  },
+  {
+    icon: Compass,
+    title: "Walk Away with a Clear Plan",
+    body: "Leave with an actionable growth plan for your business, whether you decide to work with us or not.",
+  },
+];
 
 export function Apply() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    website: "",
-  });
-  const [countryCode, setCountryCode] = useState("+1");
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
   return (
     <section id="apply" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-[#08120E]" />
@@ -39,115 +37,60 @@ export function Apply() {
         style={{ background: "radial-gradient(ellipse, #38B685, transparent 70%)" }}
       />
 
-      <div className="relative max-w-[700px] mx-auto px-6 lg:px-10">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-6xl font-bold text-white mb-4 text-balance">
-            Ready to Grow?
-          </h2>
-          <p className="text-lg text-white/50">No sales reps. No middlemen.</p>
-        </div>
-
-        {submitted ? (
-          <div className="text-center py-16">
-            <div className="w-16 h-16 rounded-full bg-[#38B685] mx-auto mb-6 flex items-center justify-center">
-              <Check className="w-7 h-7 text-black" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-3">
-              Application received.
-            </h3>
-            <p className="text-white/60 max-w-md mx-auto">
-              We&apos;ll be in touch within 24 hours to schedule your free
-              strategy call.
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="text-sm text-white/40 mb-1 block">
-                Full name *
-              </label>
-              <input
-                required
-                type="text"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className={inputClass}
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-white/40 mb-1 block">Email *</label>
-              <input
-                required
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className={inputClass}
-                placeholder="you@company.com"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-white/40 mb-1 block">Phone</label>
-              <div className="flex gap-3">
-                <select
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
-                  className="bg-transparent border-b border-white/20 focus:border-[#38B685] text-white py-3 px-1 outline-none transition-colors"
-                >
-                  {phoneCodes.map((c) => (
-                    <option
-                      key={c.code + c.flag}
-                      value={c.code}
-                      className="bg-[#0D1814]"
-                    >
-                      {c.flag} {c.code}
-                    </option>
+      {/* Outer card matches the FAQ section's width above it, but the
+          card's actual content (reviews line, headline, point cards,
+          button) stays pinned to its original ~522px measure via the
+          inner max-w wrapper below, centered with extra breathing room on
+          either side rather than stretching to fill the wider card. */}
+      <div className="relative z-10 max-w-[900px] mx-auto px-6 lg:px-10">
+        <Reveal className="bg-[#0D1814] border border-white/10 rounded-3xl px-8 py-12 sm:px-12 sm:py-16 text-center">
+          <div className="max-w-[522px] mx-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2.5 mb-6">
+              <div className="flex items-center gap-2.5">
+                <GoogleLogo />
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-[#FFC107] text-[#FFC107]" />
                   ))}
-                </select>
-                <input
-                  type="tel"
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className={inputClass + " flex-1"}
-                  placeholder="Your phone number"
-                />
+                </div>
               </div>
+              <span className="text-sm text-white/70">
+                <b className="text-white">53+</b> 5-Star Google Reviews
+              </span>
             </div>
-            <div>
-              <label className="text-sm text-white/40 mb-1 block">
-                Company name *
-              </label>
-              <input
-                required
-                type="text"
-                value={form.company}
-                onChange={(e) => setForm({ ...form, company: e.target.value })}
-                className={inputClass}
-                placeholder="Company name"
-              />
+
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-10 text-balance">
+              Ready to Get More Builds?
+            </h2>
+
+            <div className="space-y-4 mb-10">
+              {points.map((p) => (
+                <div
+                  key={p.title}
+                  className="flex flex-col items-center text-center gap-3 sm:flex-row sm:items-start sm:text-left sm:gap-4 bg-white/[0.03] border border-white/5 rounded-2xl p-5"
+                >
+                  <span className="shrink-0 w-10 h-10 rounded-full bg-[#38B685]/15 flex items-center justify-center">
+                    <p.icon className="w-5 h-5 text-[#38B685]" />
+                  </span>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">{p.title}</h3>
+                    <p className="text-sm text-white/50 leading-relaxed">{p.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div>
-              <label className="text-sm text-white/40 mb-1 block">
-                Website *
-              </label>
-              <input
-                required
-                type="text"
-                value={form.website}
-                onChange={(e) => setForm({ ...form, website: e.target.value })}
-                className={inputClass}
-                placeholder="yourcompany.com.au"
-              />
-            </div>
-            <button
-              type="submit"
-              className="group w-full mt-8 bg-[#38B685] text-black py-5 rounded-full text-lg font-bold hover:scale-[1.02] transition-transform duration-500 ease-out flex items-center justify-center gap-2 cursor-pointer"
+
+            <a
+              href="https://go.builderlab.com/application"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group w-full inline-flex items-center justify-center gap-2 bg-[#38B685] text-black py-5 rounded-full text-lg font-bold hover:scale-[1.02] transition-transform duration-500 ease-out"
             >
-              Book My Free Strategy Call
+              Start My Application
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
-            </button>
-          </form>
-        )}
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

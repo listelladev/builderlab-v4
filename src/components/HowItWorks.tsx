@@ -13,6 +13,7 @@ import {
   PositioningVisual,
   AdsSystemVisual,
   AdsSystemLandingPages,
+  OmnipresenceVisual,
   DashboardVisual,
   DashboardIntegrations,
 } from "./HowItWorksVisuals";
@@ -31,6 +32,7 @@ function Tag({ label }: { label: string }) {
 function StepVisual({ visual }: { visual: string }) {
   if (visual === "positioning") return <PositioningVisual />;
   if (visual === "ads") return <AdsSystemVisual />;
+  if (visual === "omnipresence") return <OmnipresenceVisual />;
   return <DashboardVisual />;
 }
 

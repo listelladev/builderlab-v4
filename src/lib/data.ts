@@ -1,8 +1,23 @@
-export const navLinks = [
+export type NavLink = {
+  label: string;
+  href?: string;
+  children?: { label: string; href: string }[];
+};
+
+export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Case Studies", href: "/case-studies" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { label: "Client Wins", href: "/client-wins" },
+  {
+    label: "Resources",
+    children: [
+      // TODO: swap in the real Podcast / Ads Handbook URLs once provided.
+      { label: "Builder Backstage Podcast", href: "#" },
+      { label: "Builder Ads Handbook", href: "#" },
+      { label: "YouTube Channel", href: "https://www.youtube.com/@thebuilderlab" },
+    ],
+  },
+  { label: "FAQs", href: "/#faqs" },
 ];
 
 // filter: "silhouette" flattens the logo to a solid white mark (default).
@@ -64,124 +79,87 @@ export const comparisonRows = {
 
 export const footerServices = [
   "Meta Ads",
-  "Google Ads",
   "Creative Production",
-  "Landing Pages",
-  "CRO & UX",
-  "Sales Optimisation",
-  "CRM Integration",
+  "High-Converting Websites",
+  "AI Search Optimization",
+  "CRM & Automation",
 ];
 
-export type CaseStudy = {
+export type VideoTestimonial = {
+  wistiaId: string;
   name: string;
-  stat: string;
-  statLabel: string;
-  bullets: string[];
-  image?: string;
-  video?: boolean;
-  duration?: string;
-  vimeoId?: string;
-  /** Plain, silent mp4 hosted elsewhere, used instead of `vimeoId`. */
-  videoSrc?: string;
-  /** Second <source> for `videoSrc`, tried if the primary can't play. */
-  videoFallbackSrc?: string;
+  blurb: string;
+  /** Custom poster image (a real project/client photo) — passed straight
+   * to wistia-player's `poster` attribute, which overrides Wistia's own
+   * auto-generated video-frame swatch entirely. */
+  poster: string;
 };
 
-// Ordered to alternate video and image cards (5 videos, 3 images) so the
-// scroller never strings several of the same media type back to back.
-export const caseStudies: CaseStudy[] = [
+// Names are pulled straight from each video's Wistia title (verified via
+// Wistia's oEmbed metadata, not guessed from the transcript), and turn out
+// to be the same clients as the old YouTube set. Summaries are short pulls
+// from each video's own transcript, not marketing copy written from
+// scratch, kept to 1-2 sentences so they stay well inside the card's
+// flexible-height content area regardless of which video is longest. Jeff
+// Martin appears twice (a full testimonial plus a quick-stats recap clip)
+// so they're kept apart in list order, not at the two ends, since the
+// carousel triples this array and the ends wrap next to each other.
+export const videoTestimonials: VideoTestimonial[] = [
   {
-    name: "Stately Homes",
-    stat: "+103%",
-    statLabel: "monthly revenue",
-    bullets: [
-      "Wanted to grow without racing to the bottom on price.",
-      "Suburb-targeted ads that attracted premium buyers.",
-      "Doubled monthly revenue with zero discount ads.",
-    ],
-    videoSrc:
-      "https://buildstately.com/wp-content/uploads/2026/02/stately%20homes.mp4",
+    wistiaId: "deqa5gu0np",
+    name: "Jeff Martin",
+    blurb:
+      "After relocating to Georgia with no local network, Jeff booked 10-15 client meetings in his very first week, turning $4,600 in ad spend into three sets of plans and a pipeline of serious land buyers.",
+    poster: "/images/testimonials/jeff-martin-a.webp",
   },
   {
-    name: "MU Developments",
-    stat: "$1.3M",
-    statLabel: "contract from one ad lead",
-    bullets: [
-      "Relocated to Atlanta with zero local reputation.",
-      "First ad lead closed into a signed $1.3M contract.",
-      "381 leads generated at $12.80 per lead.",
-    ],
-    image: "/images/mu-developments.jpeg",
+    wistiaId: "nksu2vle0e",
+    name: "Josh Sanders",
+    blurb:
+      "Josh says the CRM makes it easy to stay organized: following up with longer-term leads every few weeks while booking in-office meetings with the ones ready to move now.",
+    poster: "/images/testimonials/josh-sanders.webp",
   },
   {
-    name: "Bianchi Group Developers",
-    stat: "+212%",
-    statLabel: "revenue growth",
-    bullets: [
-      "Six figures a month in ad spend, but growth had stalled.",
-      "Doubled their revenue in just 11 months.",
-      "Went from a 7 figure to an 8 figure builder in 24 months.",
-    ],
-    videoSrc:
-      "https://bianchigroupdevelopers.com/wp-content/uploads/2026/04/Bianchi-Group-Website-Hero-Video-1-2.mp4",
+    wistiaId: "4o9usavu0v",
+    name: "Chris Coleman",
+    blurb:
+      "BuilderLab rebuilt Birch Hill Homes' website and marketing from the ground up, driving a big lift in leads, and delivered it ahead of schedule with a better product than expected.",
+    poster: "/images/testimonials/chris-coleman.webp",
   },
   {
-    name: "Imagine Development Ltd",
-    stat: "+$1.8M",
-    statLabel: "added revenue",
-    bullets: [
-      "Scaling on referrals alone, with no ad system in place.",
-      "Added $800K in new revenue inside 12 months.",
-      "Launched a new division that added another $1M.",
-    ],
-    image: "/images/case-imagine.webp",
+    wistiaId: "gxbl3cxdos",
+    name: "Daniel Green",
+    blurb:
+      "From a custom growth blueprint to high-performing ad creative, BuilderLab helped Blackbriar Development attract high-end clientele and build a consistent pipeline of new projects.",
+    poster: "/images/testimonials/daniel-green.webp",
   },
   {
-    name: "Birch Hill Homes",
-    stat: "111+",
-    statLabel: "leads in 2 months",
-    bullets: [
-      "No website, no ads, and no lead system in place.",
-      "Built a full marketing engine in just two months.",
-      "111 leads at $18.86 average cost per lead.",
-    ],
-    videoSrc: "https://birchhillhomes.com/wp-content/uploads/2026/04/banner-video.mp4",
+    wistiaId: "p8mzlcw182",
+    name: "Jeff Martin",
+    blurb:
+      "The quick numbers: 10-15 booked meetings in week one, three sets of plans, four serious land buyers, and another 10-15 warm prospects in the pipeline.",
+    poster: "/images/testimonials/jeff-martin-b.webp",
   },
   {
-    name: "Alogla Custom Homes",
-    stat: "+550%",
-    statLabel: "increase in revenue",
-    bullets: [
-      "Relying on referral work alone, with no lead engine.",
-      "Installed a lead system and a structured sales process.",
-      "Tripled lead volume for 6.5× revenue.",
-    ],
-    image: "/images/case-alogla.webp",
+    wistiaId: "v9u3d0sk9r",
+    name: "John Lendvai",
+    blurb:
+      "Tracking leads inside the CRM turned into real business, including a design services agreement in the works and a contract pipeline worth hundreds of thousands of dollars.",
+    poster: "/images/testimonials/john-lendvai.webp",
   },
   {
-    name: "Blackbriar Development",
-    stat: "+$1.2M",
-    statLabel: "new revenue per year",
-    bullets: [
-      "Growing on word of mouth alone, with zero predictability.",
-      "Installed premium positioning and founder-led ads.",
-      "Now adding $1M+ a year in new build work.",
-    ],
-    videoSrc: "https://builtblackbriar.com/media/2026/01/0122.mp4",
-    videoFallbackSrc:
-      "https://builtblackbriar.com/media/2021/09/Angelo_Shortened_720_web_2__1_-1.mp4",
+    wistiaId: "erl547aqay",
+    name: "Anthony Natale",
+    blurb:
+      "BuilderLab took the time to actually learn how Rockstone Homes builds. The result: a new site ranking on Google, ads running, and so many quality leads Anthony can pick and choose his projects.",
+    poster: "/images/testimonials/anthony-natale.webp",
   },
   {
-    name: "Koze Design & Build",
-    stat: "2×",
-    statLabel: "revenue in 8 months",
-    bullets: [
-      "Established for years, but capped by word of mouth.",
-      "Plugged in the full Builderlab Growth System.",
-      "Doubled his revenue in 8 months.",
-    ],
-    videoSrc:
-      "https://kozedesignbuild.ca/wp-content/uploads/2026/07/Koze-Design-Build-Website-Hero-Video-1.mp4",
+    wistiaId: "fe0l0e47nx",
+    name: "Mike Wolf",
+    blurb:
+      "A 30-year real estate investor and educator, Mike says Eric doesn't just deliver: he over-delivers, hitting every deadline ahead of schedule.",
+    poster: "/images/testimonials/mike-wolf.webp",
   },
 ];
 
@@ -200,13 +178,11 @@ export const featuredWebsites: FeaturedWebsite[] = [
   { name: "Imagine Development Ltd.", url: "https://imaginedevelopment.com/", image: "/images/site-imagine.jpeg" },
 ];
 
-export const capabilities = [
-  { num: "01", name: "Positioning & Offer" },
-  { num: "02", name: "Website & Landing Pages" },
-  { num: "03", name: "Meta & Google Ads" },
-  { num: "04", name: "SEO & Organic Growth" },
-  { num: "05", name: "CRM & Lead Automation" },
-  { num: "06", name: "Sales Process & Follow-Up" },
+export const builderTypes = [
+  { num: "01", name: "Custom Home Builders" },
+  { num: "02", name: "Modular Home Builders" },
+  { num: "03", name: "Design-Build Firms" },
+  { num: "04", name: "Large-Scale Remodelers" },
 ];
 
 export const steps = [
@@ -226,6 +202,13 @@ export const steps = [
   },
   {
     n: "03",
+    title: "Omnipresence (Website & SEO)",
+    body: "We build a website that converts and ranks. Local SEO, on-page optimisation, and content that keeps you top of search so buyers find you before they find your competitors.",
+    tags: ["Website design", "Local SEO", "On-page optimisation", "Content strategy"],
+    visual: "omnipresence",
+  },
+  {
+    n: "04",
     title: "Scale What Works",
     body: "We find what works. Then we pour fuel on it. Real-time tracking, data-driven decisions, and continuous optimisation to scale your business profitably.",
     tags: ["Revenue tracking"],

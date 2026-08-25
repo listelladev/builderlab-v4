@@ -3,15 +3,85 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/data";
 import { Logo } from "./Logo";
 
 const MENU_EASE = [0.21, 0.5, 0.28, 1] as const;
 
+// Underline starts collapsed at the label's centre and grows outward from
+// there (rather than sliding in from one edge) via a scaleX transform on a
+// full-width span, which transforms from its own center by default.
+function NavUnderline() {
+  return (
+    <span className="pointer-events-none absolute left-0 right-0 -bottom-1 h-px bg-current scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+  );
+}
+
+function DesktopNavItem({ link }: { link: (typeof navLinks)[number] }) {
+  const [open, setOpen] = useState(false);
+
+  if (link.children) {
+    return (
+      <div
+        className="relative"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        <button
+          type="button"
+          className="group relative flex items-center gap-1 text-sm font-medium text-white/70 hover:text-white transition-colors py-2"
+        >
+          {link.label}
+          <ChevronDown
+            className={`w-3.5 h-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          />
+          <NavUnderline />
+        </button>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-64"
+            >
+              <div className="rounded-2xl border border-white/10 bg-[#0B0F0D]/95 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(0,0,0,0.6)] p-2">
+                {link.children.map((c) => (
+                  <a
+                    key={c.label}
+                    href={c.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    {c.label}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={link.href!}
+      className="group relative text-sm font-medium text-white/70 hover:text-white transition-colors py-2"
+    >
+      {link.label}
+      <NavUnderline />
+    </Link>
+  );
+}
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
   const elevated = scrolled || menuOpen;
 
   useEffect(() => {
@@ -56,13 +126,7 @@ export function Header() {
           </Link>
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((l) => (
-              <Link
-                key={l.label}
-                href={l.href}
-                className="text-sm text-white/70 hover:text-white transition-colors"
-              >
-                {l.label}
-              </Link>
+              <DesktopNavItem key={l.label} link={l} />
             ))}
           </div>
           <div className="flex items-center gap-3">
@@ -121,20 +185,68 @@ export function Header() {
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.5, ease: MENU_EASE }}
           >
-            <div className="flex-1 flex flex-col justify-center px-8 gap-2">
-              {navLinks.map((l, i) => (
-                <Link
-                  key={l.label}
-                  href={l.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-4xl font-semibold text-white/90 hover:text-[#38B685] transition-colors py-3 border-b border-white/5"
-                >
-                  <span className="text-[#38B685] text-sm mr-4">
-                    0{i + 1}
-                  </span>
-                  {l.label}
-                </Link>
-              ))}
+            <div className="flex-1 flex flex-col justify-center px-8 gap-2 overflow-y-auto">
+              {navLinks.map((l, i) =>
+                l.children ? (
+                  <div key={l.label} className="py-3 border-b border-white/5">
+                    <button
+                      type="button"
+                      onClick={() => setMobileResourcesOpen((v) => !v)}
+                      className="w-full flex items-center justify-between text-4xl font-semibold text-white/90"
+                    >
+                      <span>
+                        <span className="text-[#38B685] text-sm mr-4">
+                          0{i + 1}
+                        </span>
+                        {l.label}
+                      </span>
+                      <ChevronDown
+                        className={`w-6 h-6 shrink-0 transition-transform duration-300 ${
+                          mobileResourcesOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {mobileResourcesOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: MENU_EASE }}
+                          className="overflow-hidden"
+                        >
+                          <div className="flex flex-col gap-1 pt-4 pl-[3.25rem]">
+                            {l.children.map((c) => (
+                              <a
+                                key={c.label}
+                                href={c.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setMenuOpen(false)}
+                                className="text-lg font-medium text-white/60 hover:text-[#38B685] transition-colors py-2"
+                              >
+                                {c.label}
+                              </a>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    key={l.label}
+                    href={l.href!}
+                    onClick={() => setMenuOpen(false)}
+                    className="text-4xl font-semibold text-white/90 hover:text-[#38B685] transition-colors py-3 border-b border-white/5"
+                  >
+                    <span className="text-[#38B685] text-sm mr-4">
+                      0{i + 1}
+                    </span>
+                    {l.label}
+                  </Link>
+                )
+              )}
             </div>
             <div className="p-8">
               <Link

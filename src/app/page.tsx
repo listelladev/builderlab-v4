@@ -3,7 +3,10 @@ import { Hero } from "@/components/Hero";
 import { CaseStudies } from "@/components/CaseStudies";
 import { Creative } from "@/components/Creative";
 import { Industries } from "@/components/Industries";
-import { HowItWorks } from "@/components/HowItWorks";
+// Old timeline-style "how it works" section — kept as a backup, not
+// rendered. Replaced below by GrowthSystem per the client's new brief.
+// import { HowItWorks } from "@/components/HowItWorks";
+import { GrowthSystem } from "@/components/GrowthSystem";
 import { FeaturedWebsites } from "@/components/FeaturedWebsites";
 import { Differentiator } from "@/components/Differentiator";
 import { Testimonials } from "@/components/Testimonials";
@@ -20,7 +23,7 @@ export default function Home() {
         <CaseStudies />
         <Creative />
         <Industries />
-        <HowItWorks />
+        <GrowthSystem />
         <FeaturedWebsites />
         <Differentiator />
         <Testimonials />

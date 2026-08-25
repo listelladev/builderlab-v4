@@ -1,4 +1,4 @@
-import { capabilities } from "@/lib/data";
+import { builderTypes } from "@/lib/data";
 import { Reveal, StaggerGroup, StaggerItem } from "./Reveal";
 
 export function Industries() {
@@ -19,31 +19,29 @@ export function Industries() {
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
-        <Reveal className="max-w-3xl mb-16">
+        <Reveal className="max-w-3xl mx-auto mb-16 text-center">
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
-            Built for builders
+            Who this is for
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance leading-tight">
-            One Growth Partner for Every Piece of a Custom Home
-            Builder&apos;s Marketing.
+            Built for Builders at Every Scale.
           </h2>
           <p className="text-lg text-white/60 leading-relaxed">
-            From the first ad to the signed contract, everything runs
-            through one team. No juggling five vendors, no gaps where leads
-            go cold. Just one partner handling the entire pipeline for your
-            custom home building business.
+            Whether you&apos;re closing custom builds one at a time or running
+            crews across large-scale developments, our system adapts to the
+            way you build and sell.
           </p>
         </Reveal>
 
-        <StaggerGroup className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden">
+        <StaggerGroup className="relative grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5 rounded-2xl overflow-hidden">
           {/* One shared animated layer spanning every cell, on mobile the
               cells themselves are transparent, so this reads as a single
               continuous gradient flowing behind the whole stack rather than
               six separate animations resetting independently. */}
           <div className="sm:hidden absolute inset-0 z-0 animate-gradient-flow pointer-events-none" />
-          {capabilities.map((ind) => (
+          {builderTypes.map((ind) => (
             <StaggerItem key={ind.num}>
-              <div className="relative z-10 bg-transparent sm:bg-[#0D1814] p-8 lg:p-10 hover:bg-[#15241E] transition-colors duration-700 ease-out group cursor-default h-full border-b border-white/10 last:border-b-0 sm:border-b-0">
+              <div className="relative z-10 bg-transparent sm:bg-[#0D1814] p-8 lg:p-10 hover:bg-[#15241E] transition-colors duration-700 ease-out group cursor-default h-full border-b border-white/10 last:border-b-0 sm:border-b-0 text-center">
                 <span className="text-[#38B685] text-sm font-mono mb-4 block">
                   {ind.num}
                 </span>

@@ -1,75 +1,24 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
-import { ArrowLeft, ArrowRight, Play } from "lucide-react";
-import { caseStudies, type CaseStudy } from "@/lib/data";
+import Script from "next/script";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { videoTestimonials, type VideoTestimonial } from "@/lib/data";
 import { Reveal } from "./Reveal";
-import { AutoplayVideo } from "./AutoplayVideo";
-import { SilentVideo } from "./SilentVideo";
+import { WistiaEmbed } from "./WistiaEmbed";
 
-function CaseCard({ item, withVideo }: { item: CaseStudy; withVideo?: boolean }) {
-  // AutoplayVideo (Vimeo) stays gated to the middle copy only: its player
-  // construction is staggered through a shared queue to avoid a real
-  // cross-wiring bug when several instances of the same video ID start at
-  // once (see AutoplayVideo's queueStart comment), so only ever mounting
-  // one copy sidesteps that entirely. Plain <video> (SilentVideo) has no
-  // such race, and lazy-loads on its own via IntersectionObserver, so
-  // every tripled copy can render one, they just won't fetch anything
-  // until scrolled near.
-  const showVimeo = withVideo && item.vimeoId;
-  const showSilentVideo = !!item.videoSrc;
+function CaseCard({ item }: { item: VideoTestimonial }) {
   return (
-    <article className="case-card shrink-0 w-[340px] sm:w-[380px] h-full flex flex-col bg-[#0D1814] border border-white/5 rounded-2xl overflow-hidden group">
-      <div className="case-card__media relative h-52 shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden">
-        {showVimeo && <AutoplayVideo vimeoId={item.vimeoId!} />}
-        {showSilentVideo && (
-          <SilentVideo src={item.videoSrc!} fallbackSrc={item.videoFallbackSrc} />
-        )}
-        {!showVimeo && !showSilentVideo && item.image && (
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-          />
-        )}
-        {item.video && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur flex items-center justify-center group-hover:bg-[#38B685] transition-colors">
-              <Play className="w-6 h-6 text-white fill-white ml-1" />
-            </div>
-            <span className="absolute top-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded">
-              {item.duration}
-            </span>
-            <span className="absolute bottom-3 left-3 text-white/70 text-xs flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#38B685] animate-pulse" />
-              Click for sound
-            </span>
-          </div>
-        )}
-        {!item.image && !item.video && !item.videoSrc && (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-2xl font-bold text-white/20">{item.name}</span>
-          </div>
-        )}
+    <article className="case-card shrink-0 w-[340px] sm:w-[380px] h-full flex flex-col bg-[#0D1814] border border-white/5 rounded-2xl overflow-hidden transition-[translate,box-shadow] duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)]">
+      {/* aspect-video (not a fixed h-52) so the box's own aspect always
+          matches the player's native 16:9 — nothing needs to crop/cover to
+          fill it, it just already fits. */}
+      <div className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden">
+        <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} />
       </div>
       <div className="p-6 flex-1 flex flex-col">
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-3xl font-bold text-[#38B685] tabular-nums">
-            {item.stat}
-          </span>
-          <span className="text-sm text-white/50">{item.statLabel}</span>
-        </div>
-        <h3 className="text-xl font-bold text-white mb-4">{item.name}</h3>
-        <ul className="space-y-2">
-          {item.bullets.map((b, i) => (
-            <li key={i} className="text-sm text-white/60 leading-5 flex items-start gap-2">
-              <span className="text-[#38B685] shrink-0 h-5 flex items-center">•</span>
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
+        <h3 className="text-lg font-bold text-white mb-3">{item.name}</h3>
+        <p className="text-sm text-white/60 leading-relaxed">{item.blurb}</p>
       </div>
     </article>
   );
@@ -80,7 +29,7 @@ function CaseCard({ item, withVideo }: { item: CaseStudy; withVideo?: boolean })
 // scrolled into the middle copy. This keeps every card scroll-snapped to
 // the viewport's center, aligned with the heading and arrows, while
 // still showing neighboring cards peeking on both edges, edge-to-edge.
-const tripledCaseStudies = [...caseStudies, ...caseStudies, ...caseStudies];
+const tripledTestimonials = [...videoTestimonials, ...videoTestimonials, ...videoTestimonials];
 
 export function CaseStudies() {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +49,7 @@ export function CaseStudies() {
     if (!el) return;
 
     const center = () => {
-      const middleCard = el.children[caseStudies.length] as
+      const middleCard = el.children[videoTestimonials.length] as
         | HTMLElement
         | undefined;
       if (!middleCard) return;
@@ -138,7 +87,7 @@ export function CaseStudies() {
 
     const copyWidth = () => {
       const first = el.children[0] as HTMLElement | undefined;
-      const secondCopyStart = el.children[caseStudies.length] as
+      const secondCopyStart = el.children[videoTestimonials.length] as
         | HTMLElement
         | undefined;
       if (!first || !secondCopyStart) return 0;
@@ -190,8 +139,8 @@ export function CaseStudies() {
         if (!width) return;
         const idx = nearestIndex();
         let target: number | null = null;
-        if (idx < caseStudies.length) target = el.scrollLeft + width;
-        else if (idx >= caseStudies.length * 2) target = el.scrollLeft - width;
+        if (idx < videoTestimonials.length) target = el.scrollLeft + width;
+        else if (idx >= videoTestimonials.length * 2) target = el.scrollLeft - width;
         if (target === null) return;
         el.style.scrollBehavior = "auto";
         el.style.scrollSnapType = "none";
@@ -210,7 +159,11 @@ export function CaseStudies() {
   }, []);
 
   return (
-    <section id="cases" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="cases" className="relative pt-8 pb-24 lg:pt-32 lg:pb-32 overflow-hidden">
+      {/* Registers the <wistia-player> custom element globally — loaded
+          once here rather than per-embed, even though every card is
+          tripled for the carousel's infinite-scroll illusion. */}
+      <Script src="https://fast.wistia.com/player.js" strategy="afterInteractive" />
       <div className="absolute inset-0 bg-[#08120E]" />
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[160px] opacity-30"
@@ -228,7 +181,7 @@ export function CaseStudies() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
         <Reveal className="text-center mb-12">
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
-            Case studies
+            What our clients say
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
             What Happens When We Plug In.
@@ -239,16 +192,11 @@ export function CaseStudies() {
       <div className="relative">
         <div
           ref={scrollerRef}
-          className="flex items-stretch gap-[100vw] sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 scrollbar-hide"
+          className="flex items-stretch gap-[100vw] sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pt-4 pb-20 -mb-16 scrollbar-hide"
         >
-          {tripledCaseStudies.map((c, i) => (
-            <div key={i} data-card className="flex snap-center">
-              <CaseCard
-                item={c}
-                withVideo={
-                  i >= caseStudies.length && i < caseStudies.length * 2
-                }
-              />
+          {tripledTestimonials.map((c, i) => (
+            <div key={i} data-card className="group flex snap-center">
+              <CaseCard item={c} />
             </div>
           ))}
         </div>

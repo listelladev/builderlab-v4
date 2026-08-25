@@ -164,6 +164,66 @@ export function AdsSystemLandingPages() {
   );
 }
 
+export function OmnipresenceVisual() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-[#161616] border border-white/5 rounded-2xl overflow-hidden">
+        <div className="h-6 bg-white/5 flex items-center gap-1 px-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+        </div>
+        <div className="p-6">
+          <p className="text-sm font-semibold text-white/80 mb-1">
+            Blackbriar Development
+          </p>
+          <p className="text-xs text-white/40 mb-5">
+            Built to convert · optimised for search
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {[70, 90, 55].map((h, i) => (
+              <div
+                key={i}
+                className="bg-white/5 rounded-lg"
+                style={{ height: `${h * 0.6}px` }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-5">
+          <span className="text-sm font-semibold text-white/80">
+            Local SEO · Rankings
+          </span>
+          <span className="text-xs text-white/30 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#38B685] animate-pulse" />
+            Tracking
+          </span>
+        </div>
+        <div className="space-y-3">
+          {[
+            { term: "custom home builder [city]", rank: "#1" },
+            { term: "luxury home builder near me", rank: "#2" },
+            { term: "custom home design build", rank: "#3" },
+          ].map((e) => (
+            <div
+              key={e.term}
+              className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-2.5"
+            >
+              <span className="text-sm text-white/70">{e.term}</span>
+              <span className="text-sm font-semibold text-[#38B685]">
+                {e.rank}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function DashboardVisual() {
   return (
     <div className="bg-[#161616] border border-white/5 rounded-2xl p-6 h-full">

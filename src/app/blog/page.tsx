@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BlogCollection } from "@/components/BlogCollection";
-import { blogPosts } from "@/lib/blog";
+import { getBlogPosts } from "@/lib/blog";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Blog | Builderlab",
@@ -10,12 +12,13 @@ export const metadata: Metadata = {
     "Growth strategy, paid ads, creative, and sales insights for custom home builders.",
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
   return (
     <>
       <Header />
       <main>
-        <BlogCollection posts={blogPosts} />
+        <BlogCollection posts={posts} />
       </main>
       <Footer />
     </>

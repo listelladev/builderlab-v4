@@ -3,7 +3,7 @@ import { marqueeLogos } from "@/lib/data";
 
 export function MarqueeLogos() {
   return (
-    <div className="relative z-10 w-full mt-16 overflow-x-hidden group">
+    <div className="relative z-10 w-full mt-6 sm:mt-16 overflow-x-hidden group">
       <div className="flex items-center animate-marquee gap-16 w-max py-4 group-hover:[animation-play-state:paused]">
         {[...marqueeLogos, ...marqueeLogos].map((logo, i) => (
           <div

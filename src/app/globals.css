@@ -14,6 +14,10 @@
   --font-sans: var(--font-inter);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -76,6 +80,11 @@ button:not(:disabled) {
 }
 .marquee-pause:hover .animate-marquee-slow {
   animation-play-state: paused;
+}
+/* Mobile only shows ~1 card at a time (vs. several on desktop), so the same
+   70s pace would read as sluggish — noticeably faster here to compensate. */
+.animate-marquee-mobile {
+  animation: marquee-slow 34s linear infinite;
 }
 
 @keyframes gradient-flow {

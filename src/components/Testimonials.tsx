@@ -1,6 +1,12 @@
-import { BadgeCheck, Star } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { BadgeCheck, ChevronDown, Star } from "lucide-react";
 import { testimonials } from "@/lib/data";
 import { Reveal, StaggerGroup, StaggerItem } from "./Reveal";
+
+const VISIBLE_COUNT = 6;
 
 type Testimonial = (typeof testimonials)[number];
 
@@ -33,6 +39,10 @@ function ReviewCard({ r }: { r: Testimonial }) {
 }
 
 export function Testimonials() {
+  const [expanded, setExpanded] = useState(false);
+  const visible = testimonials.slice(0, VISIBLE_COUNT);
+  const rest = testimonials.slice(VISIBLE_COUNT);
+
   return (
     <section id="reviews" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-[#08120E]" />
@@ -64,12 +74,47 @@ export function Testimonials() {
         </Reveal>
 
         <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {testimonials.map((t, i) => (
+          {visible.map((t, i) => (
             <StaggerItem key={i}>
               <ReviewCard r={t} />
             </StaggerItem>
           ))}
         </StaggerGroup>
+
+        {rest.length > 0 && (
+          <>
+            <AnimatePresence initial={false}>
+              {expanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-5">
+                    {rest.map((t, i) => (
+                      <ReviewCard key={i} r={t} />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="text-center mt-10">
+              <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/10 bg-white/5 text-white/70 hover:text-white hover:border-white/25 transition-colors text-sm font-semibold"
+              >
+                {expanded ? "See less" : "Show more"}
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+                />
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

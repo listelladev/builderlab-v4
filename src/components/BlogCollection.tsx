@@ -10,12 +10,12 @@ import type { BlogPost } from "@/lib/blog";
 
 export function BlogCollection({ posts }: { posts: BlogPost[] }) {
   const categories = useMemo(
-    () => ["All", ...Array.from(new Set(posts.map((p) => p.category)))],
+    () => ["All", ...Array.from(new Set(posts.map((p) => p.categoryName).filter(Boolean)))],
     [posts]
   );
   const [category, setCategory] = useState("All");
   const filtered =
-    category === "All" ? posts : posts.filter((p) => p.category === category);
+    category === "All" ? posts : posts.filter((p) => p.categoryName === category);
 
   return (
     <>

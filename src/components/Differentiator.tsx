@@ -6,10 +6,17 @@ import { Logo } from "./Logo";
 export function Differentiator() {
   return (
     <section className="relative py-24 lg:py-32 overflow-hidden border-y border-white/5">
-      <div className="absolute inset-0 bg-[#08120E]" />
+      {/* A hint of green in the base itself (not neutral near-black) plus a
+          second, off-center glow — the single centered blob left most of
+          the section reading as flat color outside its immediate radius. */}
+      <div className="absolute inset-0 bg-[#060A08]" />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] rounded-full blur-[150px] opacity-30"
-        style={{ background: "radial-gradient(ellipse, #38B685, transparent 70%)" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] rounded-full blur-[150px] opacity-15"
+        style={{ background: "radial-gradient(ellipse, #2E7D64, transparent 70%)" }}
+      />
+      <div
+        className="absolute bottom-[8%] right-[8%] w-[450px] h-[450px] blur-[140px] opacity-[0.08]"
+        style={{ background: "radial-gradient(ellipse, #38B685, transparent 60%)" }}
       />
 
       <div className="relative max-w-[1100px] mx-auto px-6 lg:px-10">
@@ -24,7 +31,9 @@ export function Differentiator() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <Reveal className="bg-gradient-to-br from-[#153F3A] to-[#0F1712] border border-[#38B685]/30 rounded-2xl p-8 lg:p-10 transition-transform duration-300 hover:-translate-y-1">
-            <Logo className="h-8" />
+            <div className="flex justify-center">
+              <Logo className="h-8" />
+            </div>
             <div className="h-px bg-[#38B685]/20 my-6" />
             <ul className="space-y-4">
               {comparisonRows.builderlab.map((row) => (
@@ -38,15 +47,15 @@ export function Differentiator() {
             </ul>
           </Reveal>
 
-          <Reveal delay={0.1} className="bg-[#161616] border border-white/5 rounded-2xl p-8 lg:p-10 transition-transform duration-300 hover:-translate-y-1">
-            <span className="text-2xl font-bold tracking-tight text-white/40">
+          <Reveal delay={0.1} className="bg-gradient-to-br from-[#3A1616] to-[#170F0F] border border-red-500/20 rounded-2xl p-8 lg:p-10 transition-transform duration-300 hover:-translate-y-1">
+            <span className="block text-center text-2xl font-bold tracking-tight text-white/40">
               Other agencies
             </span>
-            <div className="h-px bg-white/10 my-6" />
+            <div className="h-px bg-red-500/15 my-6" />
             <ul className="space-y-4">
               {comparisonRows.others.map((row) => (
                 <li key={row} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full border border-red-500/25 flex items-center justify-center shrink-0 mt-0.5">
                     <X className="w-3 h-3 text-white/40" strokeWidth={3} />
                   </span>
                   <span className="text-sm text-white/40">{row}</span>
