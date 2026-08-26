@@ -55,7 +55,7 @@ export function Apply() {
                 </div>
               </div>
               <span className="text-sm text-white/70">
-                <b className="text-white">53+</b> 5-Star Google Reviews
+                <b className="text-white">20+</b> 5-Star Google Reviews
               </span>
             </div>
 

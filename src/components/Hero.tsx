@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center pt-24 sm:pt-36 lg:pt-44 pb-16 overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
@@ -57,7 +57,7 @@ export function Hero() {
             ))}
           </div>
           <span className="text-sm text-white/80">
-            <b className="text-white">53+</b> 5-Star Google Reviews
+            <b className="text-white">20+</b> 5-Star Google Reviews
           </span>
         </motion.div>
 

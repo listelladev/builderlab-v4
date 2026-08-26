@@ -1,78 +1,116 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Clapperboard, PenLine, Scissors, Smartphone } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SilentVideo } from "./SilentVideo";
 
-const BUNNY_BASE = "https://BuilderLab.b-cdn.net/";
+// Bunny Stream library 736885 ("BuilderLab"). These used to be raw,
+// un-transcoded masters served straight off a storage zone
+// (BuilderLab.b-cdn.net/1.mp4 .. 12.mp4) — 1.1GB total, fetched in full by
+// every visitor. They're now Stream-encoded HLS assets instead, ~180MB
+// combined across every generated rendition, delivered adaptively.
+//
+// GUIDs are the video IDs Stream assigned on upload; order here just keeps
+// the numbering matching each video's "Ad N" title in the library, not
+// anything the player depends on. Posters are still frames pulled locally
+// from each original clip (ffmpeg, ~2-5s in), kept separate from Stream's
+// own auto-generated thumbnails — see SilentVideo's `poster` prop.
+const STREAM_CDN = "https://vz-8f67defd-6ab.b-cdn.net";
+const REEL_GUIDS = [
+  "fbe44624-8f14-4f20-9646-1d540e5110b6", // Ad 1
+  "aa82e2b5-6b94-4ddc-befb-09b8735439df", // Ad 2
+  "51dd2b32-40a9-4319-95ce-2ebc77c3810c", // Ad 3
+  "842f2212-5ee5-4798-9794-d480d88ed916", // Ad 4
+  "c7daaec1-7f8f-4271-a159-434e315db420", // Ad 5
+  "20712420-15e0-4d1d-97a1-1729372ec9fd", // Ad 6
+  "381cb534-83fc-405f-9eff-cac17eb1e7ff", // Ad 7
+  "62b53079-fdc1-47eb-b49c-14218ce8b2ed", // Ad 8
+  "f80ac889-5094-4e8d-b60e-efe831d834e5", // Ad 9
+  "e335e09b-49ac-4335-bcf9-b0c4d1cfdbac", // Ad 10
+  "ffd52111-f848-42a1-91cb-105d9a559758", // Ad 11
+  "32adff00-140a-4b81-945a-31cab60eda2d", // Ad 12
+];
 
-// Order matters here — these are 1.mp4 through 12.mp4 on the CDN, and need
-// to stay in that exact numeric order (not alphabetical, which would sort
-// "10.mp4" before "2.mp4"). Posters are frames pulled locally from each
-// clip (ffmpeg, ~2-5s in) since these are raw, un-transcoded masters with
-// no server-side thumbnail of their own — see SilentVideo's `poster` prop.
-const reels: { src: string; label: string; poster: string }[] = Array.from(
-  { length: 12 },
-  (_, i) => ({
-    src: `${BUNNY_BASE}${i + 1}.mp4`,
+const reels: { src: string; label: string; poster: string }[] = REEL_GUIDS.map(
+  (guid, i) => ({
+    src: `${STREAM_CDN}/${guid}/playlist.m3u8`,
     label: `Ad ${i + 1}`,
     poster: `/images/creative-posters/${i + 1}.jpg`,
   }),
 );
 
-function ReelCard({
-  c,
-  widthClassName = "w-[230px] sm:w-[260px]",
-  eager,
-}: {
-  c: (typeof reels)[number];
-  widthClassName?: string;
-  eager?: boolean;
-}) {
+function ReelCard({ c }: { c: (typeof reels)[number] }) {
   return (
-    <div className={`relative shrink-0 ${widthClassName}`}>
+    <div className="relative shrink-0 w-[62vw] max-w-[280px] sm:w-[230px] md:w-[260px]">
       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-[#0D1814]">
         <SilentVideo
           src={c.src}
           label={c.label}
           poster={c.poster}
           randomizeStart
-          eager={eager}
         />
       </div>
     </div>
   );
 }
 
-// Auto-scrolls just like the desktop marquee, just faster: on a narrow
-// viewport only one card is visible at a time (vs. several on desktop), so
-// the same duration would read as sluggish. Desktop pauses on :hover, which
-// doesn't exist on touch, so here a tap toggles a paused state instead —
-// tap once to freeze on the card you want to look at, tap again to resume.
-function MobileReels() {
+// One marquee, sized and paced by CSS at each breakpoint, rather than two
+// separate mobile/desktop trees.
+//
+// Rendering both meant every card existed twice in the DOM, and a
+// breakpoint-hidden card is not a free card: `display: none` stops it
+// painting, but it does not stop the component mounting, and it does not
+// exempt a <video> from either preload or playback. So the hidden layout
+// was quietly fetching and decoding its own full set of clips alongside
+// the visible one — double the network, double the video decode, for a set
+// of frames that could never appear on screen.
+//
+// Pause behaviour is keyed to input type, not viewport width: pointers get
+// :hover (pure CSS, in globals.css, behind `@media (hover: hover)`), touch
+// gets tap-to-toggle. The `(hover: hover)` guard matters — on iOS a tap
+// leaves a sticky :hover on whatever it landed on, which would otherwise
+// freeze the marquee with no obvious way to start it again.
+const HOVERLESS = "(hover: none)";
+
+// matchMedia is an external store, so it's read through
+// useSyncExternalStore rather than copied into state from an effect: that
+// version re-renders once after mount for no reason and trips
+// react-hooks/set-state-in-effect. getServerSnapshot returns false so the
+// server render and the hydrating client render agree, and the value only
+// decides whether an onClick handler is attached — there is nothing to
+// flash or reflow if it resolves differently a tick later.
+function useTapToPause() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(HOVERLESS);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(HOVERLESS).matches,
+    () => false,
+  );
+}
+
+function Reels() {
   const [paused, setPaused] = useState(false);
+  const tapToPause = useTapToPause();
 
   return (
-    <div className="sm:hidden relative" onClick={() => setPaused((p) => !p)}>
-      <div className="absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-[#08120E] to-transparent pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-[#08120E] to-transparent pointer-events-none" />
+    <div
+      className="relative z-10 mb-12 sm:mb-0 marquee-pause"
+      onClick={tapToPause ? () => setPaused((p) => !p) : undefined}
+    >
+      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 z-10 bg-gradient-to-r from-[#08120E] to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 z-10 bg-gradient-to-l from-[#08120E] to-transparent pointer-events-none" />
       <div
-        className="flex animate-marquee-mobile gap-4 w-max"
-        style={{ animationPlayState: paused ? "paused" : "running" }}
+        className="flex animate-marquee-slow gap-4 sm:gap-5 w-max"
+        // Set only when actually paused: an inline `running` would outrank
+        // the :hover rule in globals.css and kill hover-to-pause outright.
+        style={paused ? { animationPlayState: "paused" } : undefined}
       >
-        {/* Only the first (leftmost, on-screen-at-load) copy is eager — the
-            other two exist purely so the marquee has content to scroll into
-            once it's been running a while, and share the same src, so by
-            the time a visitor scrolls that far the browser's cache already
-            has the eager copy's bytes. */}
         {[...reels, ...reels, ...reels].map((r, i) => (
-          <ReelCard
-            key={i}
-            c={r}
-            widthClassName="w-[62vw] max-w-[280px]"
-            eager={i < reels.length}
-          />
+          <ReelCard key={i} c={r} />
         ))}
       </div>
     </div>
@@ -116,19 +154,7 @@ export function Creative() {
         </p>
       </Reveal>
 
-      <div className="relative z-10 mb-12 sm:mb-0">
-        <MobileReels />
-      </div>
-
-      <div className="hidden sm:block relative z-10 marquee-pause">
-        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-[#08120E] to-transparent pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-[#08120E] to-transparent pointer-events-none" />
-        <div className="flex animate-marquee-slow gap-5 w-max">
-          {[...reels, ...reels, ...reels].map((r, i) => (
-            <ReelCard key={i} c={r} eager={i < reels.length} />
-          ))}
-        </div>
-      </div>
+      <Reels />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-white/50 mt-12 px-6">

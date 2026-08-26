@@ -1,20 +1,92 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { videoTestimonials, type VideoTestimonial } from "@/lib/data";
 import { Reveal } from "./Reveal";
 import { WistiaEmbed } from "./WistiaEmbed";
 
+// How far outside the viewport a card's real player is mounted. Roughly one
+// card's width either side of the visible run, so a player is ready before
+// it is scrolled to rather than appearing under the cursor.
+const PLAYER_MARGIN_PX = 400;
+
 function CaseCard({ item }: { item: VideoTestimonial }) {
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // The carousel renders three copies of every testimonial so it can scroll
+  // endlessly, which came to two dozen <wistia-player> elements on the
+  // homepage — each one a custom-element upgrade plus its own media
+  // metadata request, for cards that are mostly parked far off the side of
+  // a horizontal scroller and may never be looked at.
+  //
+  // Mounting the real player only near the viewport keeps that down to the
+  // handful actually in play. Until then the card shows the same poster the
+  // player itself would show, so the swap is invisible, and crucially there
+  // is no facade in front of the player once it exists: playback still
+  // starts on a single click of Wistia's own play button. An earlier
+  // wrapper with its own play button broke exactly this — clicking it only
+  // unmounted and remounted the player, putting Wistia's button right back
+  // where it started instead of starting playback.
+  useEffect(() => {
+    const el = mediaRef.current;
+    if (!el) return;
+
+    // Same synchronous first look as SilentVideo: the observer's initial
+    // callback is not a reliable "are you visible right now?" answer, and
+    // this scroller additionally jumps its own scrollLeft on mount to
+    // centre the middle copy.
+    const r = el.getBoundingClientRect();
+    if (
+      r.width > 0 &&
+      r.top < window.innerHeight + PLAYER_MARGIN_PX &&
+      r.bottom > -PLAYER_MARGIN_PX &&
+      r.left < window.innerWidth + PLAYER_MARGIN_PX &&
+      r.right > -PLAYER_MARGIN_PX
+    ) {
+      setMounted(true);
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMounted(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: `${PLAYER_MARGIN_PX}px` },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <article className="case-card shrink-0 w-[340px] sm:w-[380px] h-full flex flex-col bg-[#0D1814] border border-white/5 rounded-2xl overflow-hidden transition-[translate,box-shadow] duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)]">
       {/* aspect-video (not a fixed h-52) so the box's own aspect always
           matches the player's native 16:9 — nothing needs to crop/cover to
           fill it, it just already fits. */}
-      <div className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden">
-        <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} />
+      <div
+        ref={mediaRef}
+        className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden"
+      >
+        {mounted ? (
+          <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} />
+        ) : (
+          // Decorative — the card's own <h3> already names the client. Sized
+          // through next/image rather than handed to the player at full
+          // resolution, which is what the poster attribute does today.
+          <Image
+            src={item.poster}
+            alt=""
+            fill
+            sizes="380px"
+            className="object-cover"
+          />
+        )}
       </div>
       <div className="p-6 flex-1 flex flex-col">
         <h3 className="text-lg font-bold text-white mb-3">{item.name}</h3>

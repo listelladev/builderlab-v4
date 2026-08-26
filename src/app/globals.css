@@ -75,16 +75,27 @@ button:not(:disabled) {
     transform: translate(-50%);
   }
 }
+/* Mobile only shows ~1 card at a time (vs. several on desktop), so the 70s
+   desktop pace would read as sluggish — noticeably faster below sm. This is
+   a media query rather than a second class because the reel marquee is now
+   a single DOM tree that restyles across breakpoints, instead of separate
+   mobile and desktop trees that each mounted their own set of videos. */
 .animate-marquee-slow {
-  animation: marquee-slow 70s linear infinite;
-}
-.marquee-pause:hover .animate-marquee-slow {
-  animation-play-state: paused;
-}
-/* Mobile only shows ~1 card at a time (vs. several on desktop), so the same
-   70s pace would read as sluggish — noticeably faster here to compensate. */
-.animate-marquee-mobile {
   animation: marquee-slow 34s linear infinite;
+}
+@media (min-width: 640px) {
+  .animate-marquee-slow {
+    animation-duration: 70s;
+  }
+}
+/* `(hover: hover)` rather than a width breakpoint: on iOS a tap leaves a
+   sticky :hover on whatever element it landed on, which would freeze the
+   marquee with no obvious way to start it moving again. Touch input gets
+   the explicit tap-to-toggle in Creative.tsx instead. */
+@media (hover: hover) {
+  .marquee-pause:hover .animate-marquee-slow {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes gradient-flow {
