@@ -7,7 +7,8 @@ import { Industries } from "@/components/Industries";
 // rendered. Replaced below by GrowthSystem per the client's new brief.
 // import { HowItWorks } from "@/components/HowItWorks";
 import { GrowthSystem } from "@/components/GrowthSystem";
-import { FeaturedWebsites } from "@/components/FeaturedWebsites";
+// "Websites That Convert" slider — hidden per client request, not deleted.
+// import { FeaturedWebsites } from "@/components/FeaturedWebsites";
 import { Differentiator } from "@/components/Differentiator";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
@@ -24,7 +25,7 @@ export default function Home() {
         <Creative />
         <Industries />
         <GrowthSystem />
-        <FeaturedWebsites />
+        {/* <FeaturedWebsites /> */}
         <Differentiator />
         <Testimonials />
         <Faq />

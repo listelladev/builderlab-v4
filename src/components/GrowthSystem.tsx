@@ -8,6 +8,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { GridOverlay } from "./GridOverlay";
 import {
   PositioningVisual,
   AdsChannelsVisual,
@@ -24,32 +25,26 @@ const GREEN = "#38B685";
 const YELLOW = "#F2C94C";
 const ORANGE = "#F2994A";
 const PINK = "#F472B6";
-// Mirrors each stage's accent, weighted so green (step 1) holds more of the
-// gradient's top before handing off to yellow (step 2), orange (step 3),
-// and pink (step 4) — matching the left-edge hover highlight per card.
-const RAIL_GRADIENT = `linear-gradient(to bottom, ${GREEN} 0%, ${GREEN} 20%, ${YELLOW} 40%, ${ORANGE} 70%, ${PINK} 100%)`;
-// Mobile's stops are tuned separately from desktop's: the mobile rail runs
-// through 4 stacked cards of very different heights (measured node centers
-// at ~0%, 14%, 54%, 72% of the rail), nothing like desktop's evenly-spread
-// nodes — reusing the desktop gradient put the pink/orange handoff mid-way
-// through node 2's card and the pink/green handoff mid-way through node
-// 3's, instead of each node arriving in its own color.
-const RAIL_GRADIENT_MOBILE = `linear-gradient(to bottom, ${GREEN} 0%, ${GREEN} 8%, ${YELLOW} 14%, ${YELLOW} 44%, ${ORANGE} 54%, ${ORANGE} 64%, ${PINK} 72%, ${PINK} 100%)`;
+// The rail fill and number nodes are solid brand green now regardless of
+// stage — only each card's own background/tag accent still varies by
+// stage color (GREEN/YELLOW/ORANGE/PINK below).
+const RAIL_GRADIENT = GREEN;
+const RAIL_GRADIENT_MOBILE = GREEN;
 
 const stages = [
   {
     n: "01",
     title: "Strategy & Positioning",
     accent: GREEN,
-    body: "Every builder says they do quality work. Before we turn on traffic, we get clear on who you're for, what makes you different, and how you talk about it.",
-    tags: ["Ideal client", "Offer", "Positioning", "Messaging", "Market strategy"],
+    body: "Every builder says they deliver “quality craftsmanship”. We uncover what actually makes you different, your story, then sharpen your positioning, offer, and messaging so clients have a reason to choose you.",
+    tags: ["Your Story", "Differentiators", "Your Process", "Market Notability"],
     visual: "positioning",
   },
   {
     n: "02",
     title: "Install Our Ads System",
     accent: YELLOW,
-    body: "We generate leads on Meta Ads through scroll-stopping creative that builds trust, and capture intent on Google Ads from people already searching for a builder. Retargeting keeps you top of mind until they're ready.",
+    body: "We generate demand on Meta with scroll-stopping creatives that put you (the builder) front and center. By getting the owner on camera, sharing expertise, and showcasing what makes you different, we turn you into a local authority clients recognize and trust.",
     tags: ["Creative strategy", "Ad scripting", "In-person video shoot", "Optimization & iteration"],
     visual: "ads",
   },
@@ -57,24 +52,38 @@ const stages = [
     n: "03",
     title: "Optimize & Scale",
     accent: ORANGE,
-    body: "Once the machine is producing leads, we track what's actually creating revenue, not just clicks, and push harder on what works.",
-    tags: ["Lead tracking", "Call tracking", "Attribution", "Budget scaling"],
+    body: "We find what lands projects. Then we scale it. We track every lead from first click to signed contract, uncover which ads and messages are driving real opportunities, then double down on what works and cut what doesn't. A demand engine that gets smarter, sharper, and more profitable over time.",
+    tags: [
+      "CRM Integration",
+      "Automated Follow-Ups",
+      "Revenue Attribution",
+      "Live Dashboard",
+      "Bi-Weekly Review Calls",
+    ],
     visual: "scale",
   },
   {
     n: "04",
     title: "Own Your Market",
     accent: PINK,
-    body: "Once your paid acquisition engine is working, we expand your presence everywhere homeowners research and evaluate builders.",
+    body: "Once your paid acquisition engine is working, we expand your presence everywhere your clients research, compare, and vet builders, so your company becomes impossible to overlook.",
     tags: ["High-converting websites", "SEO & organic search", "AI search visibility"],
     visual: "market",
   },
 ];
 
-function Tag({ label, accent }: { label: string; accent: string }) {
+function Tag({
+  label,
+  accent,
+  className = "",
+}: {
+  label: string;
+  accent: string;
+  className?: string;
+}) {
   return (
     <motion.span
-      className="inline-flex items-center gap-1.5 text-sm text-white/70 bg-white/5 border border-white/10 px-3.5 py-2 rounded-full cursor-default"
+      className={`inline-flex items-center gap-1.5 text-xs sm:text-sm text-white/70 bg-white/5 border border-white/10 px-3.5 py-2 rounded-full cursor-default ${className}`}
       whileHover={{
         borderColor: accent,
         color: "#fff",
@@ -125,14 +134,12 @@ function StepExtra({ visual }: { visual: string }) {
 }
 
 function StepCardBody({ step }: { step: (typeof stages)[number] }) {
-  // Steps 1, 2, and 3 already show these exact labels in their visual (the
-  // floating chips, the creative-engine cards, the loop's own label row),
-  // so repeating them as a tag row underneath the body copy would just be
-  // the same words twice in the same card.
-  const showTags =
-    step.visual !== "positioning" &&
-    step.visual !== "ads" &&
-    step.visual !== "scale";
+  // Step 2's creative-engine visual already shows these exact labels on its
+  // own cards, so repeating them as a tag row underneath the body copy
+  // would just be the same words twice in the same card. Steps 1 and 3
+  // have their own separate tag labels (not duplicated in their visual),
+  // so they still show.
+  const showTags = step.visual !== "ads";
   // Steps 1-3's text runs shorter than their visual (the diagram, the
   // creative-engine grid, the loop), so it's vertically centered against
   // it, with the visual living beside the text in a second column. Step 4's
@@ -159,23 +166,47 @@ function StepCardBody({ step }: { step: (typeof stages)[number] }) {
           <MarketModulesRow />
         </div>
       ) : (
-        // Steps 1-3 never show tags (showTags is always false here — this
-        // branch only ever renders for positioning/ads/scale), so the body
-        // paragraph has nothing after it but the grid gap. A trailing mb-6
-        // on top of that gap made the space below the text roughly double
-        // the card's own top padding, which is what read as "top-aligned"
-        // rather than centered against the visual below. gap-6 on mobile
-        // (vs the wider gap-10 desktop needs to separate the two columns)
-        // matches the card's p-6 top padding so the text block sits with
-        // even space above and below it.
+        // Step 2 (ads) never shows tags (showTags is false there — this
+        // branch renders for positioning/ads/scale), so its body paragraph
+        // has nothing after it but the grid gap. A trailing mb-6 on top of
+        // that gap made the space below the text roughly double the card's
+        // own top padding, which is what read as "top-aligned" rather than
+        // centered against the visual below. gap-6 on mobile (vs the wider
+        // gap-10 desktop needs to separate the two columns) matches the
+        // card's p-6 top padding so the text block sits with even space
+        // above and below it. Steps 1 and 3 do show tags, so their text
+        // block gets its own trailing margin instead of relying on that
+        // gap.
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
           <div>
             <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
               {step.title}
             </h3>
-            <p className="text-sm sm:text-base text-white/60 leading-relaxed">
+            <p
+              className={`text-sm sm:text-base text-white/60 leading-relaxed ${
+                showTags ? "mb-6" : ""
+              }`}
+            >
               {step.body}
             </p>
+            {showTags && (
+              <div
+                className={`flex flex-wrap gap-2 ${
+                  // Step 1 (positioning) forces its 4 tags into a 2x2 grid
+                  // on desktop — its text column is narrow enough that
+                  // flex-wrap alone would let 3 fit on the first row
+                  // instead. Step 3's 5 tags don't need that: flex-wrap
+                  // already only fits 2 per row there, so each pill can
+                  // just hug its own text/icon instead of being stretched
+                  // to match its grid column's widest sibling.
+                  step.n === "01" ? "lg:grid lg:grid-cols-[repeat(2,max-content)]" : ""
+                }`}
+              >
+                {step.tags.map((t) => (
+                  <Tag key={t} label={t} accent={step.accent} />
+                ))}
+              </div>
+            )}
           </div>
           <StepVisual visual={step.visual} />
         </div>
@@ -249,7 +280,7 @@ function Step({
         <div className="relative z-20 mb-6">
           <NumberNode
             n={step.n}
-            accent={step.accent}
+            accent={GREEN}
             active={active}
             size="sm"
             nodeRef={mobileNodeRef}
@@ -296,7 +327,7 @@ function Step({
         <div className="relative z-20 pt-8 flex justify-center">
           <NumberNode
             n={step.n}
-            accent={step.accent}
+            accent={GREEN}
             active={active}
             size="lg"
             nodeRef={desktopNodeRef}
@@ -404,6 +435,7 @@ export function GrowthSystem() {
         className="absolute top-1/2 left-[8%] -translate-y-1/2 w-[450px] h-[450px] blur-[140px] opacity-[0.08]"
         style={{ background: "radial-gradient(ellipse, #38B685, transparent 60%)" }}
       />
+      <GridOverlay />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-10">
         <motion.div
@@ -417,12 +449,11 @@ export function GrowthSystem() {
             How it works
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
-            The Builderlab Growth System&trade;
+            The Builder Growth Engine&trade;
           </h2>
           <p className="text-lg text-white/60 max-w-2xl mx-auto">
-            One connected system, not four isolated tactics. Strategy feeds
-            creative. Creative feeds leads. Leads feed revenue. Revenue funds
-            omnipresence.
+            Installed in 21 days. Built to fill your pipeline, attract better
+            clients, and become the builder everyone knows.
           </p>
         </motion.div>
 

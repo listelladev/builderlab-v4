@@ -24,12 +24,13 @@ export function Industries() {
             Who this is for
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance leading-tight">
-            Built for Builders at Every Scale.
+            We Partner With Established Builders Ready To Grow.
           </h2>
           <p className="text-lg text-white/60 leading-relaxed">
-            Whether you&apos;re closing custom builds one at a time or running
-            crews across large-scale developments, our system adapts to the
-            way you build and sell.
+            Your clients don&apos;t decide to build a home overnight. They
+            don&apos;t impulse buy. They research. They compare. They ask
+            around. And they choose the builder they trust most. We make
+            sure that builder is you.
           </p>
         </Reveal>
 

@@ -2,6 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { Clapperboard, PenLine, Scissors, Smartphone } from "lucide-react";
+import { GridOverlay } from "./GridOverlay";
 import { Reveal } from "./Reveal";
 import { SilentVideo } from "./SilentVideo";
 
@@ -140,16 +141,17 @@ export function Creative() {
         className="absolute top-1/2 right-[8%] -translate-y-1/2 w-[450px] h-[450px] blur-[140px] opacity-[0.08]"
         style={{ background: "radial-gradient(ellipse, #38B685, transparent 60%)" }}
       />
+      <GridOverlay />
 
       <Reveal className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center mb-14">
         <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
           Our creative
         </span>
         <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-          Creative That Stops the Scroll.
+          Creative That Stops The Scroll.
         </h2>
         <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-          Disruptive, scroll-stopping ads that build trust. Scripted, edited,
+          Disruptive ads engineered to earn attention and trust. Scripted, edited,
           and produced in-house.
         </p>
       </Reveal>

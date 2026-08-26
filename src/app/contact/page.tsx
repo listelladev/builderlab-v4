@@ -86,10 +86,10 @@ export default function ContactPage() {
                     Prefer email?
                   </p>
                   <a
-                    href="mailto:hello@builderlab.com"
+                    href="mailto:info@builderlab.com"
                     className="text-lg text-white hover:text-[#38B685] transition-colors font-semibold"
                   >
-                    hello@builderlab.com
+                    info@builderlab.com
                   </a>
                 </Reveal>
               </div>

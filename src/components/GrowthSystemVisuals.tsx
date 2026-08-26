@@ -317,9 +317,9 @@ function RetargetingMockup() {
 }
 
 const adChannels = [
-  { label: "Meta Ads", accent: GREEN, Mockup: MetaAdMockup },
-  { label: "Google Ads", accent: BLUE, Mockup: GoogleAdMockup },
-  { label: "Retargeting", accent: YELLOW, Mockup: RetargetingMockup },
+  { label: "High-Performance Creative", accent: GREEN, Mockup: MetaAdMockup },
+  { label: "Lead Capture Form", accent: BLUE, Mockup: GoogleAdMockup },
+  { label: "Automated CRM Follow-Up", accent: YELLOW, Mockup: RetargetingMockup },
 ];
 
 export function AdsChannelsVisual() {
@@ -383,8 +383,8 @@ const creativeEngine = [
     icon: Sparkles,
   },
   {
-    title: "In-Person Video Shoot",
-    body: "We fly out and film you on-site. Real trust beats stock footage.",
+    title: "On Site Video Shoot",
+    body: "We send a local videographer to capture you and your projects in action. Real content built to earn trust.",
     icon: Video,
   },
   {
@@ -436,15 +436,6 @@ const revenueFlow = [
   { label: "CRM", icon: Database },
   { label: "Sales", icon: Handshake },
   { label: "Revenue", icon: DollarSign },
-];
-
-const optimizationLabels = [
-  "Lead Tracking",
-  "Call Tracking",
-  "Attribution",
-  "Follow-Up",
-  "Campaign Optimization",
-  "Budget Scaling",
 ];
 
 const LOOP_DURATION = 6; // seconds for one full trip around the ring
@@ -567,23 +558,6 @@ export function RevenueLoopVisual() {
         })}
       </div>
 
-      <div className="flex flex-wrap gap-2 justify-center pt-6 mt-6 border-t border-white/5">
-        {optimizationLabels.map((l) => (
-          <motion.span
-            key={l}
-            className="text-xs text-white/60 border border-white/10 px-3 py-1.5 rounded-full cursor-default"
-            whileHover={{
-              borderColor: ORANGE,
-              color: "#fff",
-              y: -2,
-              boxShadow: `0 8px 20px -8px ${ORANGE}77`,
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            {l}
-          </motion.span>
-        ))}
-      </div>
     </motion.div>
   );
 }
@@ -597,10 +571,12 @@ export function RevenueLoopVisual() {
 // "landing pages, portfolio pages, location pages" without needing four
 // different clients.
 const birchHillPages = [
-  { label: "Birch Hill Homes — Home", image: "/images/site-birchhill.jpeg" },
-  { label: "Birch Hill Homes — Portfolio", image: "/images/site-birchhill-portfolio.jpeg" },
-  { label: "Birch Hill Homes — Project Detail", image: "/images/site-birchhill-project.jpeg" },
-  { label: "Birch Hill Homes — Custom Homes", image: "/images/site-birchhill-services.jpeg" },
+  { label: "Website — 1", image: "/images/website-slider/1.jpeg" },
+  { label: "Website — 2", image: "/images/website-slider/2.jpeg" },
+  { label: "Website — 3", image: "/images/website-slider/3.jpeg" },
+  { label: "Website — 4", image: "/images/website-slider/4.jpeg" },
+  { label: "Website — 5", image: "/images/website-slider/5.jpeg" },
+  { label: "Website — 6", image: "/images/website-slider/6.jpeg" },
 ];
 
 // Shared hover treatment for the three Own Your Market cards: stroke color
@@ -684,19 +660,20 @@ export function SearchModule() {
         <div className="flex items-center gap-2 mb-3 text-black/40">
           <Search className="w-3.5 h-3.5" />
           <span className="text-xs sm:text-sm">
-            custom home builder in Scottsdale
+            custom home builder in Roseville, CA
           </span>
         </div>
         <div className="border-t border-black/10 pt-3">
           <p className="text-[11px] text-green-700 mb-0.5">
-            birchhillhomes.com
+            bianchigroupdevelopers.com
           </p>
           <p className="text-sm font-semibold text-blue-700 mb-1">
-            Birch Hill Homes | Custom Homes, Scottsdale
+            Bianchi Group Developers | Custom Homes, Roseville, CA
           </p>
           <p className="text-[11px] text-black/60 leading-relaxed">
-            Award-winning custom home builder serving Scottsdale and
-            surrounding areas since 2011.
+            Bianchi Group Developers is a full-service design and build firm
+            specializing in luxury custom homes and development in
+            Roseville, CA, and across Northern ...
           </p>
         </div>
       </div>
@@ -718,13 +695,13 @@ export function AiSearchModule() {
       </p>
       <div className="bg-[#0D0D0F] border border-white/10 rounded-xl p-4 flex-1">
         <p className="text-xs sm:text-sm text-white/60 leading-relaxed mb-3">
-          &quot;Some of the top custom home builders in Scottsdale
+          &quot;Some of the top custom home builders in Roseville, CA
           include&hellip;&quot;
         </p>
         <div className="flex items-center gap-2 bg-[#F472B6]/10 border border-[#F472B6]/30 rounded-lg px-3 py-2">
           <Target className="w-3.5 h-3.5 text-[#F472B6] shrink-0" />
           <span className="text-xs sm:text-sm text-white font-medium">
-            Birch Hill Homes
+            Bianchi Group Developers
           </span>
         </div>
       </div>
@@ -746,7 +723,7 @@ export function LandingPagesFloat() {
   return (
     <div className="text-center">
       <p className="text-xs font-semibold text-[#F472B6] uppercase tracking-[0.2em] mb-4 sm:mb-6">
-        Landing pages we ship
+        High-Converting Websites
       </p>
       {/* Box height and top offsets are sized in px, not %, to hug the
           cluster tightly against the label above — the tallest card's own

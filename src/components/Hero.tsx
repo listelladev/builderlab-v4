@@ -57,7 +57,7 @@ export function Hero() {
             ))}
           </div>
           <span className="text-sm text-white/80">
-            <b className="text-white">20+</b> 5-Star Google Reviews
+            <b className="text-white">30+</b> 5-Star Google Reviews
           </span>
         </motion.div>
 
@@ -69,7 +69,7 @@ export function Hero() {
         >
           The growth partner for{" "}
           <em className="not-italic text-[#38B685]">
-            Custom Home Builders.
+            custom home builders.
           </em>
         </motion.h1>
 
@@ -79,10 +79,9 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
         >
-          We craft <b className="text-white font-semibold">scroll-stopping ads</b>.
-          Drive demand on <b className="text-white font-semibold">Meta Ads</b>.
-          Capture intent on <b className="text-white font-semibold">Google Ads</b>.
-          Build pages that convert. And deliver leads your sales team will love.
+          We craft <b className="text-white font-semibold">scroll-stopping ads</b> proven
+          to land projects. Positioning you as the builder everyone recognizes.
+          Delivering leads your team will love.
         </motion.p>
 
         <motion.a
@@ -102,7 +101,7 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          Trusted by <b className="text-white/60">100+</b> custom home builders
+          Trusted By <b className="text-white/60">70+</b> Home Builders
         </motion.p>
       </div>
 

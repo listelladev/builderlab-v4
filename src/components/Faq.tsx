@@ -10,10 +10,11 @@ function FaqItem({
   isOpen,
   onToggle,
 }: {
-  faq: { q: string; a: string };
+  faq: { q: string; a: string | string[] };
   isOpen: boolean;
   onToggle: () => void;
 }) {
+  const paragraphs = Array.isArray(faq.a) ? faq.a : [faq.a];
   return (
     <div className="border-b border-white/10">
       <button
@@ -39,10 +40,16 @@ function FaqItem({
       </button>
       <div
         className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 pb-5" : "max-h-0"
+          isOpen ? "max-h-[1000px] pb-5" : "max-h-0"
         }`}
       >
-        <p className="text-white/60 leading-relaxed pr-12">{faq.a}</p>
+        <div className="space-y-3 pr-12">
+          {paragraphs.map((p) => (
+            <p key={p} className="text-white/60 leading-relaxed">
+              {p}
+            </p>
+          ))}
+        </div>
       </div>
     </div>
   );

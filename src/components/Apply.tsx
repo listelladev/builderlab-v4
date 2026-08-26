@@ -5,18 +5,18 @@ import { Reveal } from "./Reveal";
 const points = [
   {
     icon: PhoneCall,
-    title: "Speak with a Growth Strategist",
-    body: "No sales reps. No middlemen. Just a real conversation with a Growth Strategist who knows the builder space.",
+    title: "Speak With A Growth Strategist",
+    body: "No fluff. No BS. Just a real conversation with someone who understands builders and what it takes to generate a consistently full pipeline.",
   },
   {
     icon: Search,
-    title: "Get a Free Strategy & Audit",
-    body: "A full audit of your marketing, positioning, and growth opportunities — normally worth thousands, delivered personally and free.",
+    title: "Get A Free Strategy & Audit",
+    body: "We'll look at your current marketing, bottlenecks, and biggest growth opportunities, then show you where we believe BuilderLab can make the biggest impact.",
   },
   {
     icon: Compass,
-    title: "Walk Away with a Clear Plan",
-    body: "Leave with an actionable growth plan for your business, whether you decide to work with us or not.",
+    title: "Walk Away With a Clear Plan",
+    body: "Whether we work together or not, you'll leave knowing what's holding back your growth, where the opportunities are, and what to do next.",
   },
 ];
 
@@ -55,12 +55,12 @@ export function Apply() {
                 </div>
               </div>
               <span className="text-sm text-white/70">
-                <b className="text-white">20+</b> 5-Star Google Reviews
+                <b className="text-white">30+</b> 5-Star Google Reviews
               </span>
             </div>
 
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-10 text-balance">
-              Ready to Get More Builds?
+              Ready To Get More Builds?
             </h2>
 
             <div className="space-y-4 mb-10">

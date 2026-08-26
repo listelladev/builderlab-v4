@@ -5,6 +5,7 @@ import Script from "next/script";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { videoTestimonials, type VideoTestimonial } from "@/lib/data";
+import { CountUp } from "./CountUp";
 import { Reveal } from "./Reveal";
 import { WistiaEmbed } from "./WistiaEmbed";
 
@@ -89,8 +90,18 @@ function CaseCard({ item }: { item: VideoTestimonial }) {
         )}
       </div>
       <div className="p-6 flex-1 flex flex-col">
+        <div className="mb-3">
+          <div className="text-2xl font-bold text-[#38B685] tabular-nums">
+            {item.statPrefix}
+            <CountUp value={item.statValue} />
+            {item.statSuffix}
+          </div>
+          <div className="text-sm text-white/60">{item.statLabel}</div>
+        </div>
         <h3 className="text-lg font-bold text-white mb-3">{item.name}</h3>
-        <p className="text-sm text-white/60 leading-relaxed">{item.blurb}</p>
+        <p className="text-sm text-white/60 leading-relaxed">
+          &ldquo;{item.blurb}&rdquo;
+        </p>
       </div>
     </article>
   );

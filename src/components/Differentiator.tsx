@@ -1,5 +1,6 @@
 import { ArrowRight, Check, X } from "lucide-react";
 import { comparisonRows } from "@/lib/data";
+import { GridOverlay } from "./GridOverlay";
 import { Reveal } from "./Reveal";
 import { Logo } from "./Logo";
 
@@ -18,6 +19,7 @@ export function Differentiator() {
         className="absolute bottom-[8%] right-[8%] w-[450px] h-[450px] blur-[140px] opacity-[0.08]"
         style={{ background: "radial-gradient(ellipse, #38B685, transparent 60%)" }}
       />
+      <GridOverlay />
 
       <div className="relative max-w-[1100px] mx-auto px-6 lg:px-10">
         <Reveal className="text-center mb-16">
@@ -25,7 +27,7 @@ export function Differentiator() {
             Why Builderlab
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
-            Not All Growth Partners Are Built the Same.
+            Built Different. Because Builders Need Different.
           </h2>
         </Reveal>
 
@@ -37,8 +39,8 @@ export function Differentiator() {
             <div className="h-px bg-[#38B685]/20 my-6" />
             <ul className="space-y-4">
               {comparisonRows.builderlab.map((row) => (
-                <li key={row} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-[#38B685] flex items-center justify-center shrink-0 mt-0.5">
+                <li key={row} className="flex items-start sm:items-center gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#38B685] flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
                     <Check className="w-3 h-3 text-[#08120E]" strokeWidth={3} />
                   </span>
                   <span className="text-sm text-white/80">{row}</span>
@@ -54,8 +56,8 @@ export function Differentiator() {
             <div className="h-px bg-red-500/15 my-6" />
             <ul className="space-y-4">
               {comparisonRows.others.map((row) => (
-                <li key={row} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full border border-red-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                <li key={row} className="flex items-start sm:items-center gap-3">
+                  <span className="w-5 h-5 rounded-full border border-red-500/25 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
                     <X className="w-3 h-3 text-white/40" strokeWidth={3} />
                   </span>
                   <span className="text-sm text-white/40">{row}</span>

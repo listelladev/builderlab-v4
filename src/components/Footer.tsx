@@ -172,6 +172,18 @@ export function Footer() {
               Where home builders thrive.
             </p>
 
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 text-center text-sm text-white/50">
+              <a href="tel:+18882440728" className="no-underline hover:text-white/70 transition-colors">
+                +1 888-244-0728
+              </a>
+              <span className="hidden sm:inline">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+              <a href="mailto:info@builderlab.com" className="no-underline hover:text-white/70 transition-colors">
+                info@builderlab.com
+              </a>
+              <span className="hidden sm:inline">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+              <span>9AM-5PM Mon-Fri</span>
+            </div>
+
             <div className="border-t border-white/10 mt-8" />
 
             {/* Three-column grid rather than flex justify-between: with two
