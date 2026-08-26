@@ -13,15 +13,17 @@ const EASE = [0.21, 0.5, 0.28, 1] as const;
 // More" inline as part of that same last line. Clicking it smoothly
 // animates the box open to fit the full review, capped at EXPANDED_CAP so
 // one very long review doesn't blow the card out — past that cap it
-// scrolls internally instead. A hidden clone of the exact expanded markup
-// (quote marks and Show Less button included, not just the bare
-// paragraphs) is measured once on mount so the open animation's target
-// height matches the real rendered content pixel-for-pixel — an earlier
-// version measured only the bare paragraph text, which ran slightly
-// shorter than the real content and clipped the Show Less button off.
+// scrolls internally instead. Both the collapsed and expanded target
+// heights come from hidden clones of the exact real markup (quote marks
+// and button included), measured live at the card's actual rendered
+// width — not a hardcoded pixel guess. A fixed COLLAPSED_H constant used
+// to clip the Read More button on mobile: the same 280-character preview
+// wraps to more lines in mobile's single narrower column than in
+// desktop's wider 3-column grid, so a height tuned against desktop ran
+// short on mobile.
 const TRUNCATE_AT = 280;
-const COLLAPSED_H = 168;
 const EXPANDED_CAP = 320;
+const FALLBACK_COLLAPSED_H = 168;
 
 type Testimonial = (typeof testimonials)[number];
 
@@ -31,14 +33,20 @@ function ReviewCard({ r }: { r: Testimonial }) {
   const overflows = flatText.length > TRUNCATE_AT;
   const [expanded, setExpanded] = useState(false);
   const [naturalHeight, setNaturalHeight] = useState<number | null>(null);
+  const [collapsedHeight, setCollapsedHeight] = useState<number | null>(null);
   const measureRef = useRef<HTMLDivElement>(null);
+  const collapsedMeasureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (measureRef.current) setNaturalHeight(measureRef.current.scrollHeight);
+    if (collapsedMeasureRef.current) {
+      setCollapsedHeight(collapsedMeasureRef.current.scrollHeight);
+    }
   }, []);
 
   const expandedTarget = Math.min(naturalHeight ?? EXPANDED_CAP, EXPANDED_CAP);
   const needsScroll = (naturalHeight ?? Infinity) > EXPANDED_CAP;
+  const collapsedTarget = collapsedHeight ?? FALLBACK_COLLAPSED_H;
 
   return (
     <div className="group h-full bg-[#0D1814] border border-white/5 rounded-2xl p-6 flex flex-col transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(56,182,133,0.25)]">
@@ -80,9 +88,25 @@ function ReviewCard({ r }: { r: Testimonial }) {
             </p>
           ))}
         </div>
+        {/* Same idea, but for the collapsed preview — measured separately
+            since it's a different (shorter, truncated) block of markup
+            than the expanded clone above, and wraps differently at every
+            card width. */}
+        {overflows && (
+          <p
+            ref={collapsedMeasureRef}
+            className="absolute inset-x-0 top-0 -z-10 invisible text-sm leading-relaxed pr-1"
+            aria-hidden
+          >
+            &ldquo;
+            {flatText.slice(0, TRUNCATE_AT).trimEnd()}
+            {"… "}
+            <span className="font-semibold">Read More</span>
+          </p>
+        )}
 
         <motion.div
-          animate={{ height: expanded ? expandedTarget : COLLAPSED_H }}
+          animate={{ height: expanded ? expandedTarget : collapsedTarget }}
           transition={{ duration: 0.35, ease: EASE }}
           className={`pr-1 ${expanded && needsScroll ? "overflow-y-auto" : "overflow-hidden"}`}
         >

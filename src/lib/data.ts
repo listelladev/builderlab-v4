@@ -337,7 +337,7 @@ export const testimonials = [
   },
   {
     text: "Thrivv Consulting has been collaborating with my business and has delivered quality leads that are helping me grow my business. In the business of construction, getting people to trust your brand and trusting you to build their homes takes a lot of persuasion and hardwork. With Thrivv Consulting, we are bringing quality leads to the table and steadily building that trust that translates to generating more business.",
-    name: "olusegun Akinrolabu",
+    name: "Olusegun Akinrolabu",
     company: "",
     date: "October 2025",
     initials: "OA",
