@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { SilentVideo } from "./SilentVideo";
 import {
   Handshake,
   Database,
@@ -230,28 +231,23 @@ export function PositioningVisual() {
 // back out on a loop (reverses rather than snapping back).
 // ---------------------------------------------------------------------
 
-// 1. High-Performance Creative — the real ad creative, muted + looped so
-// it plays inline like an in-feed video with nothing to click.
+// 1. High-Performance Creative — the same ad reel used in the "stop the
+// scroll" Creative section (Ad 7), served as adaptive Bunny Stream HLS
+// through SilentVideo: muted, looped, viewport-gated, and paused when
+// off-screen. The raw master (builderlab.b-cdn.net/7.mp4) is 335MB and
+// crashed iOS Safari when loaded directly.
+const CREATIVE_REEL_SRC =
+  "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/playlist.m3u8";
+
 function VideoCreativeMockup() {
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.muted = true;
-    el.play().catch(() => {});
-  }, []);
   return (
-    <video
-      ref={ref}
-      src="https://builderlab.b-cdn.net/7.mp4"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      aria-hidden
-      className="h-full w-full object-cover bg-black pointer-events-none"
-    />
+    <div className="relative h-full w-full bg-black">
+      <SilentVideo
+        src={CREATIVE_REEL_SRC}
+        poster="/images/creative-posters/7.jpg"
+        label="BuilderLab ad creative"
+      />
+    </div>
   );
 }
 

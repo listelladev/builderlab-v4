@@ -91,7 +91,7 @@ function CaseCard({ item }: { item: VideoTestimonial }) {
       </div>
       <div className="p-6 flex-1 flex flex-col">
         <div className="mb-3">
-          <div className="text-[29px] leading-8 font-bold text-[#38B685] tabular-nums">
+          <div className="text-[33px] leading-9 font-bold text-[#38B685] tabular-nums">
             {item.statPrefix}
             <CountUp value={item.statValue} />
             {item.statSuffix}
