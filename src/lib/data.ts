@@ -11,8 +11,11 @@ export const navLinks: NavLink[] = [
   {
     label: "Resources",
     children: [
-      // TODO: swap in the real Podcast / Ads Handbook URLs once provided.
-      { label: "Builder Backstage Podcast", href: "#" },
+      // TODO: swap in the real Ads Handbook URL once provided.
+      {
+        label: "Builder Backstage Podcast",
+        href: "https://podcasts.apple.com/ca/podcast/the-builder-backstage/id6802168059",
+      },
       { label: "Builder Ads Handbook", href: "#" },
       { label: "YouTube Channel", href: "https://www.youtube.com/@thebuilderlab" },
     ],
@@ -115,17 +118,14 @@ export const videoTestimonials: VideoTestimonial[] = [
     poster: "/images/testimonials/daniel-green.webp",
   },
   {
-    // TODO: needs a real Wistia media ID — Jez's video hasn't been supplied
-    // yet. Poster is a placeholder (Alogla Homes case-study image) until a
-    // real client photo/video is provided.
-    wistiaId: "PLACEHOLDER",
+    wistiaId: "bafh6pjevo",
     name: "Jez Alogla",
     statValue: 309,
     statSuffix: "%",
     statLabel: "lead volume increase",
     blurb:
       "BuilderLab has been exactly the long-term marketing partner we were looking for. They completely revamped our website, and advertising, and our phone has been ringing consistently. Their communication is top-notch, and they've delivered exactly what was promised from day one. I highly recommend them to builders looking to grow and scale.",
-    poster: "/images/case-alogla.webp",
+    poster: "/images/testimonials/jez-alogla.webp",
   },
   {
     wistiaId: "nksu2vle0e",

@@ -1,19 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Handshake,
   Database,
   DollarSign,
-  Heart,
   Lightbulb,
   Megaphone,
   MessageCircle,
   RefreshCw,
   Search,
-  Send,
   Sparkles,
   Target,
   Users,
@@ -224,116 +223,258 @@ export function PositioningVisual() {
 }
 
 // ---------------------------------------------------------------------
-// Step 2 — Install Our Ads System: the richest, most active visual since
-// this is the core offer. Three channel cards up top, creative engine
-// items below with an animated upward flow into them.
+// Step 2 — Install Our Ads System: three phone-tall panels that share one
+// height — the ad creative as a muted autoplaying video, the lead-capture
+// form as a 3-slide mock that swipes on its own, and the CRM follow-up as
+// an iPhone lock-screen notification that slides in, holds, then eases
+// back out on a loop (reverses rather than snapping back).
 // ---------------------------------------------------------------------
-// Each channel gets a small mockup of what the ad actually looks like on
-// that platform, not just a label — a feed post, a search result, a
-// retargeting banner — so "Meta Ads / Google Ads / Retargeting" reads as
-// three distinct things rather than three interchangeable boxes.
-function MetaAdMockup() {
+
+// 1. High-Performance Creative — the real ad creative, muted + looped so
+// it plays inline like an in-feed video with nothing to click.
+function VideoCreativeMockup() {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.muted = true;
+    el.play().catch(() => {});
+  }, []);
   return (
-    <div className="h-full flex flex-col bg-[#0D1814] p-3 sm:p-4">
-      <div className="flex items-center gap-2 mb-2.5 shrink-0">
-        <div className="w-7 h-7 rounded-full bg-[#38B685]/20 flex items-center justify-center shrink-0">
-          <Target className="w-3.5 h-3.5 text-[#38B685]" />
-        </div>
-        <div className="min-w-0">
-          <p className="text-xs sm:text-sm font-semibold text-white truncate">
-            Birch Hill Homes
-          </p>
-          <p className="text-[10px] sm:text-xs text-white/40">Sponsored</p>
-        </div>
-      </div>
-      {/* An actual photo (not a flat gradient block) with a headline
-          overlay, like a real ad creative would carry — that emptiness
-          was what read as "missing something". flex-1 lets it fill
-          whatever's left of the shared card height. */}
-      <div className="relative flex-1 min-h-0 rounded-md overflow-hidden">
-        <Image
-          src="/images/meta-ad-mockup.webp"
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 260px, 33vw"
-          className="object-cover"
+    <video
+      ref={ref}
+      src="https://builderlab.b-cdn.net/7.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden
+      className="h-full w-full object-cover bg-black pointer-events-none"
+    />
+  );
+}
+
+// 2. Lead Capture Form — three non-interactive slides rebuilt from a real
+// Meta lead form (question cards, radio rows, Continue button). They swipe
+// automatically every few seconds, same slide treatment as Own Your
+// Market's website mock.
+function FormCard({ children }: { children: ReactNode }) {
+  return (
+    <div className="rounded-xl bg-white p-3 space-y-2 shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
+      {children}
+    </div>
+  );
+}
+
+function FormQuestion({ children }: { children: ReactNode }) {
+  return (
+    <p className="text-[12px] sm:text-[13px] font-bold text-[#1c2b33] leading-snug">
+      {children}
+    </p>
+  );
+}
+
+function FormOption({ label }: { label: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-black/15 bg-white px-3 py-2">
+      <span className="text-[11.5px] sm:text-[12.5px] text-black/75 leading-snug">
+        {label}
+      </span>
+      <span className="w-4 h-4 rounded-full border border-black/30 shrink-0" />
+    </div>
+  );
+}
+
+function FormContinue() {
+  return (
+    <div className="rounded-md bg-[#1877F2] py-2.5 text-center text-[12.5px] font-semibold text-white">
+      Continue
+    </div>
+  );
+}
+
+const leadFormSlides = [
+  <div key="s1" className="flex flex-col gap-2.5">
+    <p className="px-2 text-center text-[14px] sm:text-[15px] font-medium leading-snug text-[#1c2b33]/70">
+      Fill out a few quick details to schedule your complimentary Design &amp;
+      Build Consultation.
+    </p>
+    <FormCard>
+      <FormQuestion>What are you interested in?</FormQuestion>
+      <FormOption label="Custom Home" />
+      <FormOption label="Full Home Remodel" />
+      <FormOption label="Other" />
+    </FormCard>
+    <FormContinue />
+  </div>,
+  <div key="s2" className="flex flex-col gap-2.5">
+    <FormCard>
+      <FormQuestion>What is your estimated timeline to start?</FormQuestion>
+      <FormOption label="ASAP" />
+      <FormOption label="1-6 months" />
+      <FormOption label="6-12 months" />
+      <FormOption label="12+ months" />
+    </FormCard>
+    <FormContinue />
+  </div>,
+  <div key="s3" className="flex flex-col gap-2.5">
+    <FormCard>
+      <FormQuestion>Do you currently own land or a lot?</FormQuestion>
+      <FormOption label="Yes, I have land" />
+      <FormOption label="I'm in the process of purchasing" />
+      <FormOption label="No, I do not have land" />
+    </FormCard>
+    <FormContinue />
+  </div>,
+];
+
+function LeadFormMockup() {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const id = setInterval(
+      () => setIndex((i) => (i + 1) % leadFormSlides.length),
+      3200,
+    );
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-[#EBEDF0]">
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={index}
+          className="absolute inset-0 flex flex-col justify-center overflow-hidden p-3.5"
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 0.6, ease: [0.21, 0.5, 0.28, 1] }}
+        >
+          {leadFormSlides[index]}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// 3. Automated CRM Follow-Up — an iPhone lock screen that sits dimmed,
+// then a text slides up and the screen lights up as it "arrives", holds,
+// and eases back down before coming up again a couple of seconds later.
+// The phone is zoomed in and pushed down so the panel clips off roughly
+// its bottom half, and a faded site photo sits behind it under a black wash.
+const FOLLOWUP_LOOP = 5.5;
+// Both tracks start and end on the same state — screen dark, banner gone —
+// so the loop point is invisible: the dim overlay returns all the way to
+// its initial 0.6 as the banner fades, then holds there through the
+// repeatDelay before the next arrival, rather than ending bright and
+// snapping dark.
+const FOLLOWUP_BASE = {
+  duration: FOLLOWUP_LOOP,
+  repeat: Infinity,
+  repeatDelay: 1.6,
+} as const;
+
+function PhoneFollowUpMockup() {
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      {/* Faded site photo behind the phone, under a black wash. */}
+      <Image
+        src="/images/meta-ad-mockup.webp"
+        alt=""
+        fill
+        sizes="(min-width: 1024px) 380px, 100vw"
+        className="object-cover opacity-45"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-black/65" />
+
+      {/* Titanium frame: a dark rounded shell with the screen inset a few
+          px inside it, plus a hairline highlight so the edge catches light
+          against the bright photo behind it. */}
+      <div className="absolute left-1/2 top-20 h-[175%] w-[280px] -translate-x-1/2 rounded-[3rem] bg-gradient-to-b from-[#141416] via-[#050506] to-black p-[5px] shadow-[0_24px_70px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/10">
+        <div className="relative h-full w-full overflow-hidden rounded-[2.65rem] bg-black ring-1 ring-black/80">
+        {/* Layered so the wallpaper reads as depth rather than a flat
+            gradient: a green base, a bright top-left bloom, and a deeper
+            green glow low-right. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1c3b33] via-[#0f231d] to-[#060b09]" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 55% at 25% 8%, rgba(96,208,166,0.38), transparent 60%)",
+          }}
         />
-        <div className="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/80 via-black/25 to-transparent">
-          <p className="text-xs sm:text-sm font-semibold text-white leading-snug">
-            Your Dream Home Starts Here
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(90% 50% at 80% 55%, rgba(56,182,133,0.24), transparent 65%)",
+          }}
+        />
+        {/* Screen sits dim, then lifts toward full brightness as the
+            message lands, then dims again — in step with the banner. */}
+        <motion.div
+          className="absolute inset-0 bg-black"
+          animate={{ opacity: [0.6, 0.6, 0.12, 0.12, 0.6] }}
+          transition={{
+            ...FOLLOWUP_BASE,
+            times: [0, 0.12, 0.32, 0.74, 0.98],
+            ease: "easeInOut",
+          }}
+        />
+        <div className="absolute left-1/2 top-3 h-4 w-16 -translate-x-1/2 rounded-full bg-black/85" />
+        <div className="absolute inset-x-0 top-12 text-center text-white">
+          <p className="text-[10px] font-medium text-white/70">
+            Thursday, August 27
+          </p>
+          <p className="text-[44px] font-semibold leading-none tracking-tight">
+            9:41
           </p>
         </div>
-      </div>
-      <div className="flex items-center gap-3 text-white/30 mt-2.5 shrink-0">
-        <Heart className="w-4 h-4" />
-        <MessageCircle className="w-4 h-4" />
-        <Send className="w-4 h-4" />
-      </div>
-    </div>
-  );
-}
-
-function GoogleAdMockup() {
-  return (
-    <div className="h-full flex flex-col justify-center bg-white p-4 sm:p-5">
-      <div className="flex items-center gap-1.5 mb-1.5">
-        <span className="text-[10px] sm:text-xs font-bold text-black/50 border border-black/20 rounded px-1.5 leading-tight">
-          Ad
-        </span>
-        <span className="text-xs sm:text-sm text-green-700 truncate">
-          birchhillhomes.com
-        </span>
-      </div>
-      <p className="text-sm sm:text-base font-semibold text-blue-700 mb-1.5 leading-snug">
-        Custom Homes, Built Around You
-      </p>
-      <p className="text-xs sm:text-sm text-black/50 leading-snug">
-        Calgary&apos;s trusted custom home builder. Get a free quote and
-        see what&apos;s possible for your lot.
-      </p>
-    </div>
-  );
-}
-
-function RetargetingMockup() {
-  return (
-    <div className="h-full flex flex-col justify-center bg-[#0D1814] p-4 sm:p-5">
-      <p className="text-xs sm:text-sm text-white/40 mb-3 truncate">
-        You visited birchhillhomes.com
-      </p>
-      {/* Stacked rather than side-by-side: this card is only ~1/3 of the
-          row's width, and a side-by-side message + pill button ran out of
-          room and got clipped by the card's own overflow-hidden edge. */}
-      <div className="rounded-md bg-[#F2C94C]/10 border border-[#F2C94C]/30 p-3 sm:p-4">
-        <p className="text-sm sm:text-base text-white font-medium leading-snug mb-3">
-          Still thinking it over? Take another look before you decide.
-        </p>
-        <span className="inline-block text-xs sm:text-sm bg-[#F2C94C] text-black rounded-full px-3 py-1 font-semibold">
-          See Homes
-        </span>
+        <motion.div
+          className="absolute inset-x-4 top-[17%]"
+          animate={{ y: [44, 0, 0, 44], opacity: [0, 1, 1, 0] }}
+          transition={{
+            ...FOLLOWUP_BASE,
+            times: [0, 0.16, 0.66, 0.86],
+            ease: [0.21, 0.5, 0.28, 1],
+          }}
+        >
+          <div className="rounded-2xl bg-white/90 p-3 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] backdrop-blur-md">
+            <div className="mb-1.5 flex items-center gap-1.5">
+              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#38B685]">
+                <MessageCircle className="h-3 w-3 text-white" />
+              </span>
+              <span className="text-[9.5px] font-semibold uppercase tracking-wide text-black/55">
+                Messages
+              </span>
+              <span className="ml-auto text-[9.5px] text-black/40">now</span>
+            </div>
+            <p className="text-[12px] font-semibold text-black/90">BuilderLab</p>
+            <p className="text-[12px] leading-snug text-black/70">
+              Still thinking it over? Take another look before you decide.
+            </p>
+          </div>
+        </motion.div>
+        </div>
       </div>
     </div>
   );
 }
 
 const adChannels = [
-  { label: "High-Performance Creative", accent: GREEN, Mockup: MetaAdMockup },
-  { label: "Lead Capture Form", accent: BLUE, Mockup: GoogleAdMockup },
-  { label: "Automated CRM Follow-Up", accent: YELLOW, Mockup: RetargetingMockup },
+  { label: "High-Performance Creative", accent: GREEN, Mockup: VideoCreativeMockup },
+  { label: "Lead Capture Form", accent: BLUE, Mockup: LeadFormMockup },
+  { label: "Automated CRM Follow-Up", accent: YELLOW, Mockup: PhoneFollowUpMockup },
 ];
 
 export function AdsChannelsVisual() {
   return (
-    // Stacked on mobile: at three-across on a narrow phone, the bigger
-    // text these mockups now carry would overflow the fixed card height
-    // and get clipped. Full-width single-column rows have room for it.
+    // Stacked on mobile: three phone-tall panels side by side don't fit a
+    // narrow screen, full-width single-column rows do.
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-3">
       {adChannels.map((c, i) => (
         <div key={c.label} className="flex flex-col items-center">
-          {/* Name sits above the connector now, not below the card, so the
-              traveling pulse visibly lands ON the label before continuing
-              into the card — the line reads as "feeding into Meta Ads"
-              rather than pointing at empty space. */}
+          {/* Name sits above the connector so the traveling pulse visibly
+              lands ON the label before continuing into the card. */}
           <p className="text-xs sm:text-sm font-semibold text-white/70 mb-2">
             {c.label}
           </p>
@@ -354,11 +495,10 @@ export function AdsChannelsVisual() {
               }}
             />
           </div>
-          {/* All three mockups share this exact height so Meta/Google/
-              Retargeting read as one consistent row of cards regardless of
-              how much content each platform's ad format actually has. */}
+          {/* All three share this height so the video, the form slides, and
+              the phone read as one row of equal-height panels. */}
           <motion.div
-            className="relative w-full h-[230px] sm:h-[250px] rounded-xl border overflow-hidden cursor-default"
+            className="relative w-full h-[440px] sm:h-[520px] rounded-xl border overflow-hidden cursor-default"
             style={{ borderColor: `${c.accent}40` }}
             whileHover={{ y: -3, boxShadow: `0 12px 32px -12px ${c.accent}66` }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
@@ -401,11 +541,11 @@ export function CreativeEngineGrid() {
         <motion.div
           key={e.title}
           className="rounded-xl p-4 sm:p-5 border cursor-default"
-          style={tintedCard(YELLOW)}
+          style={tintedCard(GREEN)}
           whileHover={{
             y: -4,
-            borderColor: YELLOW,
-            boxShadow: `0 16px 36px -16px ${YELLOW}66`,
+            borderColor: GREEN,
+            boxShadow: `0 16px 36px -16px ${GREEN}66`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
         >
@@ -458,11 +598,11 @@ export function RevenueLoopVisual() {
   return (
     <motion.div
       className="rounded-2xl p-6 lg:p-8 border cursor-default"
-      style={tintedCard(ORANGE)}
+      style={tintedCard(GREEN)}
       whileHover={{
         y: -4,
-        borderColor: ORANGE,
-        boxShadow: `0 20px 50px -20px ${ORANGE}55`,
+        borderColor: GREEN,
+        boxShadow: `0 20px 50px -20px ${GREEN}55`,
       }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
     >
@@ -579,13 +719,14 @@ const birchHillPages = [
   { label: "Website — 6", image: "/images/website-slider/6.jpeg" },
 ];
 
-// Shared hover treatment for the three Own Your Market cards: stroke color
-// shifts to the section's pink accent and the card lifts slightly, matching
-// the interaction every other "mini container" in this system already has.
+// Shared hover treatment for the three Own Your Market cards: green stroke
+// + lift, matching every other "mini container" in this system. The pink
+// stays only on the inner accents (AI Search highlight, the section
+// heading), not the card chrome.
 const marketCardHover = {
   y: -4,
-  borderColor: PINK,
-  boxShadow: `0 20px 50px -20px ${PINK}55`,
+  borderColor: GREEN,
+  boxShadow: `0 20px 50px -20px ${GREEN}55`,
 };
 const marketCardTransition = { type: "spring", stiffness: 300, damping: 22 } as const;
 
@@ -607,7 +748,7 @@ export function WebsiteModule() {
   return (
     <motion.div
       className="rounded-2xl p-4 h-full flex flex-col border cursor-default"
-      style={tintedCard(PINK)}
+      style={tintedCard(GREEN)}
       whileHover={marketCardHover}
       transition={marketCardTransition}
     >
@@ -649,7 +790,7 @@ export function SearchModule() {
   return (
     <motion.div
       className="rounded-2xl p-4 h-full flex flex-col border cursor-default"
-      style={tintedCard(PINK)}
+      style={tintedCard(GREEN)}
       whileHover={marketCardHover}
       transition={marketCardTransition}
     >
@@ -685,7 +826,7 @@ export function AiSearchModule() {
   return (
     <motion.div
       className="rounded-2xl p-4 h-full flex flex-col border cursor-default"
-      style={tintedCard(PINK)}
+      style={tintedCard(GREEN)}
       whileHover={marketCardHover}
       transition={marketCardTransition}
     >
