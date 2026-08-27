@@ -444,7 +444,7 @@ function PhoneFollowUpMockup() {
               </span>
               <span className="ml-auto text-[9.5px] text-black/40">now</span>
             </div>
-            <p className="text-[12px] font-semibold text-black/90">BuilderLab</p>
+            <p className="text-[12px] font-semibold text-black/90">Blackbriar Development</p>
             <p className="text-[12px] leading-snug text-black/70">
               Still thinking it over? Take another look before you decide.
             </p>
