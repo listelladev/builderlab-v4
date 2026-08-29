@@ -2,7 +2,7 @@
 
 import type HlsJs from "hls.js";
 import { useEffect, useRef, useState } from "react";
-import { useFirstInteraction, usePerf } from "./PerfMode";
+import { useFirstInteraction } from "./PerfMode";
 
 // How far outside the viewport a card starts fetching and playing. Small
 // enough that a wall of these isn't decoding a screenful of frames nobody
@@ -61,14 +61,12 @@ export function SilentVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<HlsJs | null>(null);
-  // Perf mode holds every clip (and the hls.js chunk the non-iOS path pulls)
-  // until the visitor has actually touched the page — same reasoning as the
-  // Wistia hold in CaseStudies: a human scrolling here has always gestured
-  // first, so they see identical behavior; a gesture-less programmatic
-  // scroll stays on the posters. Off /perf-lab, `ready` is always true.
-  const perf = usePerf();
-  const interacted = useFirstInteraction();
-  const ready = !perf || interacted;
+  // Every clip (and the hls.js chunk the non-iOS path pulls) holds until the
+  // visitor has actually touched the page — same reasoning as the Wistia
+  // hold in CaseStudies: a human scrolling here has always gestured first,
+  // so they see identical behavior; a gesture-less programmatic scroll
+  // stays on the posters.
+  const ready = useFirstInteraction();
   const [active, setActive] = useState(false);
   // Live in-view state, kept in a ref rather than state because the load
   // effect below has to read it at the moment it runs, not at the moment it

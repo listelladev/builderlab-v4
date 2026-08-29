@@ -8,7 +8,7 @@ import { videoTestimonials, type VideoTestimonial } from "@/lib/data";
 import { CountUp } from "./CountUp";
 import { Reveal } from "./Reveal";
 import { WistiaEmbed } from "./WistiaEmbed";
-import { useFirstInteraction, usePerf } from "./PerfMode";
+import { useFirstInteraction } from "./PerfMode";
 
 // How far outside the viewport a card's real player is mounted. Roughly one
 // card's width either side of the visible run, so a player is ready before
@@ -119,15 +119,14 @@ export function CaseStudies() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [playerScriptWanted, setPlayerScriptWanted] = useState(false);
-  // Perf mode additionally holds Wistia — the script and the player mounts —
-  // until the visitor has produced a real input gesture. A human scrolling
-  // toward this section always has (touch/wheel fires before any scroll
-  // movement), so they see exactly what the homepage shows; a programmatic
-  // scroll with no gesture (Lighthouse's screenshot pass, crawlers) keeps the
-  // poster images and never pays the ~856KB player runtime.
-  const perf = usePerf();
+  // Wistia — the script and the player mounts — additionally holds until the
+  // visitor has produced a real input gesture. A human scrolling toward this
+  // section always has (touch/wheel fires before any scroll movement), so
+  // nothing they can see changes; a programmatic scroll with no gesture
+  // (Lighthouse's screenshot pass, crawlers) keeps the poster images and
+  // never pays the ~856KB player runtime.
   const interacted = useFirstInteraction();
-  const holdPlayers = perf && !interacted;
+  const holdPlayers = !interacted;
 
   // Same viewport-gating idea as the individual players, one level up: the
   // <wistia-player> custom element definition is only worth fetching once
