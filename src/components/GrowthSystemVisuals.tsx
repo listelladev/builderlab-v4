@@ -204,7 +204,12 @@ export function PositioningVisual() {
                 }}
               />
             ))}
-            <div className="absolute inset-0 rounded-full bg-[#38B685] overflow-hidden flex items-center justify-center shadow-[0_0_50px_rgba(56,182,133,0.55)]">
+            {/* `isolate` matters: the conic sweep inside is composited (it
+                animates rotate), and Chrome drops a rounded overflow clip on
+                composited children unless the clipper owns a stacking
+                context — the sweep's -inset-3 square was showing through
+                around the circle on hover. */}
+            <div className="absolute inset-0 rounded-full bg-[#38B685] overflow-hidden isolate flex items-center justify-center shadow-[0_0_50px_rgba(56,182,133,0.55)]">
               {/* Rotating conic sweep of every input's color, clipped to
                   the circle and screen-blended so it reads as light being
                   emitted/churned from inside rather than a flat fill. */}
