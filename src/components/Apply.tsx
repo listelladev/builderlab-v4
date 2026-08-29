@@ -59,7 +59,7 @@ export function Apply() {
               </span>
             </div>
 
-            <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-10 text-balance">
+            <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-10 text-balance">
               Ready To Get More Builds?
             </h2>
 

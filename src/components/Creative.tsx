@@ -18,6 +18,18 @@ import { SilentVideo } from "./SilentVideo";
 // from each original clip (ffmpeg, ~2-5s in), kept separate from Stream's
 // own auto-generated thumbnails — see SilentVideo's `poster` prop.
 const STREAM_CDN = "https://vz-8f67defd-6ab.b-cdn.net";
+// Point at one rendition rather than the master playlist. These cards
+// render 166x296 CSS px on a phone and ~260px wide on desktop, but both
+// native HLS (every iPhone — Safari plays .m3u8 itself and never reaches
+// hls.js) and hls.js's own bandwidth-first ABR were picking the 1080p
+// rendition off the master, at 4623kbps average. A full scroll of the
+// homepage pulled ~43MB of video on mobile because of it.
+//
+// 480p (480x854) still covers the card at 3x DPR and averages 1285kbps —
+// the same picture in the space it actually occupies. The trade-off is
+// that a fixed rendition can't adapt downward on a weak connection, which
+// is an acceptable deal for muted, decorative, autoplaying loops.
+const REEL_RENDITION = "480p";
 const REEL_GUIDS = [
   "fbe44624-8f14-4f20-9646-1d540e5110b6", // Ad 1
   "aa82e2b5-6b94-4ddc-befb-09b8735439df", // Ad 2
@@ -35,7 +47,7 @@ const REEL_GUIDS = [
 
 const reels: { src: string; label: string; poster: string }[] = REEL_GUIDS.map(
   (guid, i) => ({
-    src: `${STREAM_CDN}/${guid}/playlist.m3u8`,
+    src: `${STREAM_CDN}/${guid}/${REEL_RENDITION}/video.m3u8`,
     label: `Ad ${i + 1}`,
     poster: `/images/creative-posters/${i + 1}.jpg`,
   }),
@@ -147,7 +159,7 @@ export function Creative() {
         <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
           Our creative
         </span>
-        <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
+        <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-6 text-balance">
           Creative That Stops The Scroll.
         </h2>
         <p className="text-base sm:text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">

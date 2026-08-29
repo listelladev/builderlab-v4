@@ -95,9 +95,15 @@ export function PositioningVisual() {
       : c,
   );
   return (
-    <div
-      className="relative border rounded-2xl p-4 sm:p-8 lg:p-10 h-full min-h-[360px] overflow-hidden flex flex-col justify-center"
+    <motion.div
+      className="relative border rounded-2xl p-4 sm:p-8 lg:p-10 h-full min-h-[360px] overflow-hidden flex flex-col justify-center cursor-default"
       style={tintedCard(GREEN)}
+      whileHover={{
+        y: -4,
+        borderColor: GREEN,
+        boxShadow: `0 20px 50px -20px ${GREEN}55`,
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
     >
       <p className="text-sm font-semibold text-white/80 mb-6 sm:mb-8 text-center">
         Five Inputs, One Clear Position
@@ -219,7 +225,7 @@ export function PositioningVisual() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -236,8 +242,14 @@ export function PositioningVisual() {
 // through SilentVideo: muted, looped, viewport-gated, and paused when
 // off-screen. The raw master (builderlab.b-cdn.net/7.mp4) is 335MB and
 // crashed iOS Safari when loaded directly.
+// 720p rather than the master playlist: this panel is full-width on a
+// phone (~390 CSS px) and ~380px on desktop, so 720x1280 covers it at 3x
+// DPR, while the master's top rendition (1080x1920, 4623kbps) is roughly
+// double the bytes for pixels this box cannot show. See the note in
+// Creative.tsx — iOS plays HLS natively and never reaches hls.js, so the
+// rendition has to be chosen in the URL, not in player config.
 const CREATIVE_REEL_SRC =
-  "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/playlist.m3u8";
+  "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/720p/video.m3u8";
 
 function VideoCreativeMockup() {
   return (

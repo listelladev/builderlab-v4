@@ -8,6 +8,15 @@ import { testimonials } from "@/lib/data";
 import { Reveal, StaggerGroup, StaggerItem } from "./Reveal";
 
 const VISIBLE_COUNT = 6;
+// Mobile stacks the grid to one column, so six cards is a long scroll
+// before the visitor reaches anything else. Three is the collapsed count
+// there; from md up (two and three columns) the full six still show.
+//
+// Done by hiding the extras in CSS rather than slicing the array against a
+// media query, so the server and the hydrating client always render the
+// same markup — a JS-measured breakpoint would render six on the server
+// and then drop to three on the client, which shows up as a visible jump.
+const MOBILE_VISIBLE_COUNT = 3;
 const EASE = [0.21, 0.5, 0.28, 1] as const;
 // Collapsed shows a character-sliced preview ending in "…" with "Read
 // More" inline as part of that same last line. Clicking it smoothly
@@ -220,7 +229,7 @@ export function Testimonials() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What our partners say
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white text-balance mb-4">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white text-balance mb-4">
             Don&apos;t Take Our Word For It.
           </h2>
           <p className="text-base sm:text-lg text-white/60 leading-relaxed">
@@ -231,7 +240,12 @@ export function Testimonials() {
 
         <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {visible.map((t, i) => (
-            <StaggerItem key={i}>
+            <StaggerItem
+              key={i}
+              className={
+                !expanded && i >= MOBILE_VISIBLE_COUNT ? "hidden md:block" : ""
+              }
+            >
               <ReviewCard r={t} index={i} />
             </StaggerItem>
           ))}

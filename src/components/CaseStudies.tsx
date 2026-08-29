@@ -266,7 +266,7 @@ export function CaseStudies() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What our clients say
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white text-balance">
             What Happens When We Plug In.
           </h2>
         </Reveal>

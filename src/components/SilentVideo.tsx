@@ -1,6 +1,6 @@
 "use client";
 
-import Hls from "hls.js";
+import type HlsJs from "hls.js";
 import { useEffect, useRef, useState } from "react";
 
 // How far outside the viewport a card starts fetching and playing. Small
@@ -59,7 +59,7 @@ export function SilentVideo({
   poster?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hlsRef = useRef<Hls | null>(null);
+  const hlsRef = useRef<HlsJs | null>(null);
   const [active, setActive] = useState(false);
   // Live in-view state, kept in a ref rather than state because the load
   // effect below has to read it at the moment it runs, not at the moment it
@@ -133,13 +133,33 @@ export function SilentVideo({
     // plain <source src> can't demux that. Safari/iOS play .m3u8 natively
     // off `src`, so they're left alone; everywhere else needs hls.js to
     // pull the segments in and feed them to the element via MediaSource.
+    // `cancelled` guards the dynamic import below: a card can scroll out
+    // and unmount while the hls.js chunk is still in flight, and attaching a
+    // player to a detached element leaks a decoder that nothing will pause.
+    let cancelled = false;
     if (el.canPlayType("application/vnd.apple.mpegurl")) {
       el.src = src;
-    } else if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(src);
-      hls.attachMedia(el);
-      hlsRef.current = hls;
+    } else {
+      // Imported here rather than at module scope so the ~600KB hls.js
+      // bundle is fetched only by browsers that actually need it, and only
+      // once a card is genuinely in view — it used to be part of the
+      // homepage's initial JS for every visitor, iOS included, where it is
+      // dead weight because the branch above handles playback natively.
+      import("hls.js").then(({ default: Hls }) => {
+        if (cancelled || !Hls.isSupported()) return;
+        // Resolution is already decided by `src` (callers point at one
+        // rendition playlist, not the master — see Creative.tsx), because
+        // iOS takes the native branch above and never reaches this code
+        // at all, so a player-side level cap would fix nothing where it
+        // actually matters. What is left to tune is buffering: these are
+        // ambient loops that pause the moment they leave the viewport, so
+        // the default runway buffers far more of each clip than a passing
+        // card ever plays.
+        const hls = new Hls({ maxBufferLength: 10, backBufferLength: 10 });
+        hls.attachMedia(el);
+        hls.loadSource(src);
+        hlsRef.current = hls;
+      });
     }
 
     // Guarded on still-being-in-view, because activation and exit can
@@ -152,6 +172,7 @@ export function SilentVideo({
     // this component exists to prevent.
     if (inView.current) el.play().catch(() => {});
     return () => {
+      cancelled = true;
       el.removeEventListener("loadedmetadata", onLoadedMetadata);
       hlsRef.current?.destroy();
       hlsRef.current = null;

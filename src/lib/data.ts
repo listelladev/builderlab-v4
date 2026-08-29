@@ -174,7 +174,7 @@ export const videoTestimonials: VideoTestimonial[] = [
     wistiaId: "fe0l0e47nx",
     name: "Mike Wolf",
     statValue: 2,
-    statPrefix: "+",
+    statPrefix: "+$",
     statSuffix: "M",
     statLabel: "revenue added",
     blurb:

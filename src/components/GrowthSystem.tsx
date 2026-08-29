@@ -295,20 +295,9 @@ function Step({
           whileHover={{
             y: -4,
             borderColor: step.accent,
-            boxShadow: `0 20px 50px -20px ${step.accent}55`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
         >
-          {/* Top bar, not left — on mobile the numbered node sits above the
-              card (the rail runs straight down through the stack), so a
-              left-edge accent bar had nothing to connect to. A top bar reads
-              as "this card continues from the node above it" instead. */}
-          <div
-            className={`absolute top-0 inset-x-0 h-1 transition-opacity duration-300 ${
-              active ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-            }`}
-            style={{ background: step.accent }}
-          />
           <StepCardBody step={step} />
         </motion.div>
       </div>
@@ -342,16 +331,9 @@ function Step({
           whileHover={{
             y: -4,
             borderColor: step.accent,
-            boxShadow: `0 20px 50px -20px ${step.accent}55`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
         >
-          <div
-            className={`absolute left-0 inset-y-0 w-1 transition-opacity duration-300 ${
-              active ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-            }`}
-            style={{ background: step.accent }}
-          />
           <StepCardBody step={step} />
         </motion.div>
       </motion.div>
@@ -448,7 +430,7 @@ export function GrowthSystem() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             How it works
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-4 text-balance">
             The Builder Growth Engine&trade;
           </h2>
           <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto">
