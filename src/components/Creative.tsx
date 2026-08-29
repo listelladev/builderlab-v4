@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { Clapperboard, PenLine, Scissors, Smartphone } from "lucide-react";
 import { GridOverlay } from "./GridOverlay";
 import { Reveal } from "./Reveal";
+import { usePerf } from "./PerfMode";
 import { SilentVideo } from "./SilentVideo";
 
 // Bunny Stream library 736885 ("BuilderLab"). These used to be raw,
@@ -119,6 +120,12 @@ function useTapToPause() {
 function Reels() {
   const [paused, setPaused] = useState(false);
   const tapToPause = useTapToPause();
+  // Two copies is the arithmetically correct track for a -50% marquee: half
+  // of a two-copy strip is exactly one copy, so the reset lands on an
+  // identical frame. The third copy is a third more DOM (12 more cards) for
+  // no visual difference — measured on /perf-lab before adopting.
+  const perf = usePerf();
+  const copies = perf ? 2 : 3;
 
   return (
     <div
@@ -133,9 +140,11 @@ function Reels() {
         // the :hover rule in globals.css and kill hover-to-pause outright.
         style={paused ? { animationPlayState: "paused" } : undefined}
       >
-        {[...reels, ...reels, ...reels].map((r, i) => (
-          <ReelCard key={i} c={r} mobileHidden={i % reels.length >= 6} />
-        ))}
+        {Array.from({ length: copies }, () => reels)
+          .flat()
+          .map((r, i) => (
+            <ReelCard key={i} c={r} mobileHidden={i % reels.length >= 6} />
+          ))}
       </div>
     </div>
   );

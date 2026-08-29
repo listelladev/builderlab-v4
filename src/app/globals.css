@@ -180,3 +180,53 @@ button:not(:disabled) {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------------
+   Perf lab (/perf-lab only): CSS reveal in place of framer-motion.
+   The class is toggled by a plain IntersectionObserver in Reveal.tsx, so
+   the trigger point and the motion match the framer version exactly
+   (24px rise, 0.7s, the same cubic-bezier, 0.12s stagger after a 0.05s
+   lead) — the difference being measured is the cost of framer's runtime,
+   not the animation itself.
+   --------------------------------------------------------------------- */
+.rv {
+  opacity: 0;
+  transform: translateY(var(--rv-y, 24px));
+}
+.rv.rv-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--rv-dur, 0.7s) cubic-bezier(0.21, 0.5, 0.28, 1)
+      var(--rv-delay, 0s),
+    transform var(--rv-dur, 0.7s) cubic-bezier(0.21, 0.5, 0.28, 1)
+      var(--rv-delay, 0s);
+}
+.rv-item {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.rv-group.rv-in > .rv-item {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.21, 0.5, 0.28, 1)
+      calc(0.05s + var(--rv-i, 0) * 0.12s),
+    transform 0.7s cubic-bezier(0.21, 0.5, 0.28, 1)
+      calc(0.05s + var(--rv-i, 0) * 0.12s);
+}
+.rv-group > .rv-item:nth-child(1) { --rv-i: 0; }
+.rv-group > .rv-item:nth-child(2) { --rv-i: 1; }
+.rv-group > .rv-item:nth-child(3) { --rv-i: 2; }
+.rv-group > .rv-item:nth-child(4) { --rv-i: 3; }
+.rv-group > .rv-item:nth-child(5) { --rv-i: 4; }
+.rv-group > .rv-item:nth-child(6) { --rv-i: 5; }
+.rv-group > .rv-item:nth-child(7) { --rv-i: 6; }
+.rv-group > .rv-item:nth-child(8) { --rv-i: 7; }
+.rv-group > .rv-item:nth-child(9) { --rv-i: 8; }
+.rv-group > .rv-item:nth-child(10) { --rv-i: 9; }
+.rv-group > .rv-item:nth-child(11) { --rv-i: 10; }
+.rv-group > .rv-item:nth-child(12) { --rv-i: 11; }
+@media (prefers-reduced-motion: reduce) {
+  .rv, .rv-item { opacity: 1; transform: none; }
+}

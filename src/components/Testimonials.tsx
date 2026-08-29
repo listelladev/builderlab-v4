@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Star } from "lucide-react";
 import { testimonials } from "@/lib/data";
 import { Reveal, StaggerGroup, StaggerItem } from "./Reveal";
+import { usePerf } from "./PerfMode";
 
 const VISIBLE_COUNT = 6;
 // Mobile stacks the grid to one column, so six cards is a long scroll
@@ -90,6 +91,12 @@ function avatarGradient(name: string, index: number) {
 }
 
 function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
+  // Perf mode renders one hidden measurement clone instead of two: the
+  // collapsed target is a fixed line-count of the same text, so it can be
+  // derived from the expanded clone's own line-height rather than laying the
+  // truncated string out a second time. Both clones are `invisible -z-10`,
+  // so this is pure DOM/layout cost with nothing visible attached to it.
+  const perf = usePerf();
   const paragraphs = Array.isArray(r.text) ? r.text : [r.text];
   const flatText = paragraphs.join(" ");
   const overflows = flatText.length > TRUNCATE_AT;
@@ -128,7 +135,13 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
     : (naturalHeight ?? EXPANDED_CAP);
   const needsScroll =
     isDesktopGrid && (naturalHeight ?? Infinity) > EXPANDED_CAP;
-  const collapsedTarget = collapsedHeight ?? FALLBACK_COLLAPSED_H;
+  // Without the second clone, approximate the collapsed box from the text's
+  // own line box: the preview is TRUNCATE_AT characters plus the inline
+  // "Read More", which lays out to the same handful of lines the clone used
+  // to measure directly.
+  const collapsedTarget = perf
+    ? Math.min(naturalHeight ?? FALLBACK_COLLAPSED_H, FALLBACK_COLLAPSED_H)
+    : (collapsedHeight ?? FALLBACK_COLLAPSED_H);
 
   return (
     <div className="group h-full bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl p-6 flex flex-col transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(56,182,133,0.25)]">
@@ -174,7 +187,7 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
             since it's a different (shorter, truncated) block of markup
             than the expanded clone above, and wraps differently at every
             card width. */}
-        {overflows && (
+        {overflows && !perf && (
           <p
             ref={collapsedMeasureRef}
             className="absolute inset-x-0 top-0 -z-10 invisible text-sm leading-relaxed pr-1"
