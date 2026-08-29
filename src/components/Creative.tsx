@@ -43,7 +43,7 @@ const reels: { src: string; label: string; poster: string }[] = REEL_GUIDS.map(
 
 function ReelCard({ c }: { c: (typeof reels)[number] }) {
   return (
-    <div className="relative shrink-0 w-[43vw] max-w-[185px] sm:w-[230px] md:w-[260px]">
+    <div className="relative shrink-0 w-[43vw] max-w-[185px] sm:w-[230px] sm:max-w-none md:w-[260px]">
       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-[#0D1814]">
         <SilentVideo
           src={c.src}
