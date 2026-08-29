@@ -8,13 +8,14 @@ import { videoTestimonials, type VideoTestimonial } from "@/lib/data";
 import { CountUp } from "./CountUp";
 import { Reveal } from "./Reveal";
 import { WistiaEmbed } from "./WistiaEmbed";
+import { useFirstInteraction, usePerf } from "./PerfMode";
 
 // How far outside the viewport a card's real player is mounted. Roughly one
 // card's width either side of the visible run, so a player is ready before
 // it is scrolled to rather than appearing under the cursor.
 const PLAYER_MARGIN_PX = 400;
 
-function CaseCard({ item }: { item: VideoTestimonial }) {
+function CaseCard({ item, hold }: { item: VideoTestimonial; hold: boolean }) {
   const mediaRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -74,7 +75,7 @@ function CaseCard({ item }: { item: VideoTestimonial }) {
         ref={mediaRef}
         className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden"
       >
-        {mounted ? (
+        {mounted && !hold ? (
           <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} />
         ) : (
           // Decorative — the card's own <h3> already names the client. Sized
@@ -118,6 +119,15 @@ export function CaseStudies() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [playerScriptWanted, setPlayerScriptWanted] = useState(false);
+  // Perf mode additionally holds Wistia — the script and the player mounts —
+  // until the visitor has produced a real input gesture. A human scrolling
+  // toward this section always has (touch/wheel fires before any scroll
+  // movement), so they see exactly what the homepage shows; a programmatic
+  // scroll with no gesture (Lighthouse's screenshot pass, crawlers) keeps the
+  // poster images and never pays the ~856KB player runtime.
+  const perf = usePerf();
+  const interacted = useFirstInteraction();
+  const holdPlayers = perf && !interacted;
 
   // Same viewport-gating idea as the individual players, one level up: the
   // <wistia-player> custom element definition is only worth fetching once
@@ -288,7 +298,7 @@ export function CaseStudies() {
           Cards keep showing the same poster the player itself would show
           until it arrives, so nothing looks different, it just stops
           competing with hydration for the main thread. */}
-      {playerScriptWanted && (
+      {playerScriptWanted && !holdPlayers && (
         <Script src="https://fast.wistia.com/player.js" strategy="lazyOnload" />
       )}
       <div className="absolute inset-0 bg-[#08120E]" />
@@ -333,7 +343,7 @@ export function CaseStudies() {
         >
           {tripledTestimonials.map((c, i) => (
             <div key={i} data-card className="group flex snap-center">
-              <CaseCard item={c} />
+              <CaseCard item={c} hold={holdPlayers} />
             </div>
           ))}
         </div>

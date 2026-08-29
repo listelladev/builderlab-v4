@@ -2,6 +2,7 @@
 
 import type HlsJs from "hls.js";
 import { useEffect, useRef, useState } from "react";
+import { useFirstInteraction, usePerf } from "./PerfMode";
 
 // How far outside the viewport a card starts fetching and playing. Small
 // enough that a wall of these isn't decoding a screenful of frames nobody
@@ -60,6 +61,14 @@ export function SilentVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<HlsJs | null>(null);
+  // Perf mode holds every clip (and the hls.js chunk the non-iOS path pulls)
+  // until the visitor has actually touched the page — same reasoning as the
+  // Wistia hold in CaseStudies: a human scrolling here has always gestured
+  // first, so they see identical behavior; a gesture-less programmatic
+  // scroll stays on the posters. Off /perf-lab, `ready` is always true.
+  const perf = usePerf();
+  const interacted = useFirstInteraction();
+  const ready = !perf || interacted;
   const [active, setActive] = useState(false);
   // Live in-view state, kept in a ref rather than state because the load
   // effect below has to read it at the moment it runs, not at the moment it
@@ -114,7 +123,7 @@ export function SilentVideo({
   // cannot run any earlier than the commit that first sets it.
   useEffect(() => {
     const el = videoRef.current;
-    if (!el || !active) return;
+    if (!el || !active || !ready) return;
 
     // Capped at 70% of duration, not the full clip — landing a few seconds
     // before the loop point reads as "video is about to end/stutter"
@@ -177,7 +186,7 @@ export function SilentVideo({
       hlsRef.current?.destroy();
       hlsRef.current = null;
     };
-  }, [active, randomizeStart, src]);
+  }, [active, ready, randomizeStart, src]);
 
   return (
     <video
@@ -185,7 +194,7 @@ export function SilentVideo({
       muted
       loop
       playsInline
-      preload={active ? "auto" : "none"}
+      preload={active && ready ? "auto" : "none"}
       poster={poster}
       aria-label={label}
       className="absolute inset-0 w-full h-full object-cover pointer-events-none"
