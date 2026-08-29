@@ -94,7 +94,7 @@ export function Hero() {
         </div>
 
         <h1
-          className="hero-in text-[38px] sm:text-[58px] lg:text-[76px] font-semibold text-white leading-[1.06] tracking-tight text-balance"
+          className="hero-in hero-in-instant text-[38px] sm:text-[58px] lg:text-[76px] font-semibold text-white leading-[1.06] tracking-tight text-balance"
           style={
             {
               "--hero-from-y": "28px",

@@ -163,3 +163,20 @@ button:not(:disabled) {
     animation: none;
   }
 }
+
+/* The headline is the LCP element on mobile, and Chrome does not count an
+   element as "contentful" while it sits at opacity 0 — so even a CSS fade
+   running off server-rendered markup holds LCP back until its first visible
+   frame, which on a saturated main thread lands seconds late. Lighthouse
+   measured exactly that: moving the hero off framer-motion fixed FCP and
+   Speed Index but left LCP at ~7s, because the fade itself was now the
+   thing being waited on.
+
+   Below `sm` the headline therefore paints immediately at full opacity.
+   Everything else in the hero still fades in around it, and desktop — where
+   the headline is not the constraint — is untouched. */
+@media (max-width: 639px) {
+  .hero-in-instant {
+    animation: none;
+  }
+}
