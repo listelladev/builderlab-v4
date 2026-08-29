@@ -116,6 +116,35 @@ const tripledTestimonials = [...videoTestimonials, ...videoTestimonials, ...vide
 
 export function CaseStudies() {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [playerScriptWanted, setPlayerScriptWanted] = useState(false);
+
+  // Same viewport-gating idea as the individual players, one level up: the
+  // <wistia-player> custom element definition is only worth fetching once
+  // this section is actually reached.
+  //
+  // No rootMargin lead time here, deliberately. This section begins right
+  // after a min-h-screen hero, so it sits barely one viewport down — any
+  // margin at all (a viewport, or even 300px) makes it intersect on the
+  // very first frame and the script loads on page load again, which is the
+  // whole thing being avoided. Cards carry their own 400px mounting margin
+  // and show the player's own poster until it arrives, so the handover
+  // stays invisible.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPlayerScriptWanted(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const scroll = (dir: number) => {
     const el = scrollerRef.current;
@@ -242,11 +271,26 @@ export function CaseStudies() {
   }, []);
 
   return (
-    <section id="cases" className="relative pt-24 pb-24 lg:pt-32 lg:pb-32 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="cases"
+      className="relative pt-24 pb-24 lg:pt-32 lg:pb-32 overflow-hidden"
+    >
       {/* Registers the <wistia-player> custom element globally — loaded
           once here rather than per-embed, even though every card is
-          tripled for the carousel's infinite-scroll illusion. */}
-      <Script src="https://fast.wistia.com/player.js" strategy="lazyOnload" />
+          tripled for the carousel's infinite-scroll illusion.
+          
+          Rendered only once the section is within a viewport of being
+          reached. Even on lazyOnload this ran on every visit to the
+          homepage, and Lighthouse costed it at 856KB and ~2.5s of script
+          bootup on mobile (publicApi.js was being pulled once per player)
+          — all of it for a section most visitors have not scrolled to yet.
+          Cards keep showing the same poster the player itself would show
+          until it arrives, so nothing looks different, it just stops
+          competing with hydration for the main thread. */}
+      {playerScriptWanted && (
+        <Script src="https://fast.wistia.com/player.js" strategy="lazyOnload" />
+      )}
       <div className="absolute inset-0 bg-[#08120E]" />
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[160px] opacity-30"

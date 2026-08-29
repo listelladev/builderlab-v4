@@ -123,3 +123,43 @@ button:not(:disabled) {
   background-size: 100% 400%;
   animation: gradient-flow 11s ease-in-out infinite;
 }
+
+/* Hero entrance, done in CSS rather than framer-motion.
+   ------------------------------------------------------------------
+   Every element above the fold used to be a motion.* with
+   `initial={{ opacity: 0 }}`, which means the hero paints nothing at all
+   until React has hydrated and framer has run its first frame. Lighthouse
+   measured the consequence on mobile: the <h1> is the LCP element, and of
+   its 5.4s it spent 4757ms in "render delay" — the markup arrived in
+   600ms and then sat invisible waiting for JavaScript.
+
+   A CSS animation on the server-rendered markup starts at first paint
+   with no JS involved. Timings, offsets and easings below are the exact
+   values the framer transitions used, so the motion is unchanged:
+   framer's "easeOut" is cubic-bezier(0,0,.58,1) and its default tween
+   ease is cubic-bezier(.42,0,.58,1).
+
+   fill-mode is `backwards`, deliberately not `both`: it applies the start
+   state during the delay but releases the properties once the animation
+   ends, so the CTA's `hover:scale-[1.03]` transform still works. `both`
+   would pin transform at `none` for the life of the page and kill it. */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hero-from-y, 0));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-in {
+  animation: hero-in var(--hero-dur, 0.7s)
+    var(--hero-ease, cubic-bezier(0.21, 0.5, 0.28, 1)) var(--hero-delay, 0s)
+    backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-in {
+    animation: none;
+  }
+}

@@ -9,6 +9,19 @@
 // component with its own play button had to be removed, since clicking it
 // only unmounted-and-remounted the player, which put Wistia's play button
 // right back where it started instead of starting playback.
+// A <video poster> is a plain fetch, so it never goes through next/image
+// the way a <Image> would — these posters were being served at their
+// full source size (up to 2050px wide) into a card that is 288px on
+// mobile and 380px on desktop. Lighthouse costed the largest single one
+// at 354KB of waste. Routing them through the optimizer endpoint by hand
+// gets the same resize/format negotiation an <Image> would: 1080 is a
+// default deviceSize, and still covers the widest card at 3x DPR, so
+// nothing is visibly softer.
+function optimized(src: string, width = 1080, quality = 75) {
+  if (!src.startsWith("/")) return src;
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`;
+}
+
 export function WistiaEmbed({
   mediaId,
   poster,
@@ -19,7 +32,7 @@ export function WistiaEmbed({
   return (
     <wistia-player
       media-id={mediaId}
-      poster={poster}
+      poster={optimized(poster)}
       fit-strategy="cover"
       aspect="1.7777777777777777"
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}

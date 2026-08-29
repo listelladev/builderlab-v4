@@ -1,11 +1,22 @@
-"use client";
-
-import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { ArrowRight, Star } from "lucide-react";
 import { GoogleLogo } from "./GoogleLogo";
 import { MarqueeLogos } from "./MarqueeLogos";
 
-const EASE = [0.21, 0.5, 0.28, 1] as const;
+// Entrance motion lives in globals.css (.hero-in) rather than framer-motion.
+// Every element below used to be a motion.* with `initial={{ opacity: 0 }}`,
+// so the hero painted nothing until React had hydrated: Lighthouse measured
+// the <h1> as the LCP element at 5.4s on mobile, 4757ms of which was pure
+// "render delay" waiting on JavaScript. A CSS animation on server-rendered
+// markup starts at first paint instead. Durations, offsets and easings here
+// are the exact values the framer transitions used, so the motion is
+// unchanged — framer's "easeOut" is cubic-bezier(0,0,.58,1) and its default
+// tween ease is cubic-bezier(.42,0,.58,1).
+//
+// With the motion.* wrappers gone, nothing in this section needs the client,
+// so it no longer ships as client JS at all.
+const EASE_OUT = "cubic-bezier(0,0,.58,1)";
+const EASE_DEFAULT = "cubic-bezier(.42,0,.58,1)";
 
 export function Hero() {
   return (
@@ -57,17 +68,19 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 max-w-[900px] mx-auto px-6 text-center flex flex-col items-center">
-        <motion.div
-          className="relative inline-flex items-center gap-2.5 rounded-full px-4 py-[11px] mb-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.1),0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(100deg, rgba(255,255,255,0.08), rgba(255,255,255,0.028))",
-            backdropFilter: "blur(20px) saturate(180%)",
-            WebkitBackdropFilter: "blur(20px) saturate(180%)",
-          }}
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+        <div
+          className="hero-in relative inline-flex items-center gap-2.5 rounded-full px-4 py-[11px] mb-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.1),0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden"
+          style={
+            {
+              background:
+                "linear-gradient(100deg, rgba(255,255,255,0.08), rgba(255,255,255,0.028))",
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              "--hero-from-y": "-16px",
+              "--hero-dur": "0.6s",
+              "--hero-ease": EASE_OUT,
+            } as CSSProperties
+          }
         >
           <GoogleLogo />
           <div className="flex gap-0.5">
@@ -78,47 +91,63 @@ export function Hero() {
           <span className="text-xs sm:text-sm text-white/80">
             <b className="text-white">35+</b> 5-Star Google Reviews
           </span>
-        </motion.div>
+        </div>
 
-        <motion.h1
-          className="text-[38px] sm:text-[58px] lg:text-[76px] font-semibold text-white leading-[1.06] tracking-tight text-balance"
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+        <h1
+          className="hero-in text-[38px] sm:text-[58px] lg:text-[76px] font-semibold text-white leading-[1.06] tracking-tight text-balance"
+          style={
+            {
+              "--hero-from-y": "28px",
+              "--hero-dur": "0.8s",
+              "--hero-delay": "0.1s",
+            } as CSSProperties
+          }
         >
           The growth partner for custom home builders.
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          className="mt-8 text-base sm:text-lg lg:text-xl text-white/65 max-w-[748px] leading-relaxed"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
+        <p
+          className="hero-in mt-8 text-base sm:text-lg lg:text-xl text-white/65 max-w-[748px] leading-relaxed"
+          style={
+            {
+              "--hero-from-y": "20px",
+              "--hero-dur": "0.7s",
+              "--hero-delay": "0.25s",
+            } as CSSProperties
+          }
         >
           We craft <b className="text-white font-semibold">scroll-stopping ads</b> proven
           to land projects. Positioning you as the builder everyone recognizes.
           Delivering leads your team will love.
-        </motion.p>
+        </p>
 
-        <motion.a
+        <a
           href="/contact"
-          className="group mt-12 inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-base font-semibold hover:scale-[1.03] transition-transform duration-500 ease-out shadow-[0_0_50px_rgba(56,182,133,0.25)]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: EASE }}
+          className="hero-in group mt-12 inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-base font-semibold hover:scale-[1.03] transition-transform duration-500 ease-out shadow-[0_0_50px_rgba(56,182,133,0.25)]"
+          style={
+            {
+              "--hero-from-y": "20px",
+              "--hero-dur": "0.7s",
+              "--hero-delay": "0.4s",
+            } as CSSProperties
+          }
         >
           Book My Free Strategy Call
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
-        </motion.a>
+        </a>
 
-        <motion.p
-          className="mt-14 text-xs uppercase tracking-[0.15em] sm:tracking-[0.25em] text-white/40 whitespace-nowrap"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+        <p
+          className="hero-in mt-14 text-xs uppercase tracking-[0.15em] sm:tracking-[0.25em] text-white/40 whitespace-nowrap"
+          style={
+            {
+              "--hero-dur": "0.8s",
+              "--hero-delay": "0.6s",
+              "--hero-ease": EASE_DEFAULT,
+            } as CSSProperties
+          }
         >
           Trusted By <b className="text-white/60">70+</b> Home Builders
-        </motion.p>
+        </p>
       </div>
 
       <MarqueeLogos />
