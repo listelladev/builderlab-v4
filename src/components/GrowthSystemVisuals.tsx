@@ -537,11 +537,11 @@ export function CreativeEngineGrid() {
         <motion.div
           key={e.title}
           className="rounded-xl p-4 sm:p-5 border cursor-default"
-          style={tintedCard(GREEN)}
+          style={tintedCard(YELLOW)}
           whileHover={{
             y: -4,
-            borderColor: GREEN,
-            boxShadow: `0 16px 36px -16px ${GREEN}66`,
+            borderColor: YELLOW,
+            boxShadow: `0 16px 36px -16px ${YELLOW}66`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
         >
@@ -594,11 +594,11 @@ export function RevenueLoopVisual() {
   return (
     <motion.div
       className="rounded-2xl p-6 lg:p-8 border cursor-default"
-      style={tintedCard(GREEN)}
+      style={tintedCard(ORANGE)}
       whileHover={{
         y: -4,
-        borderColor: GREEN,
-        boxShadow: `0 20px 50px -20px ${GREEN}55`,
+        borderColor: ORANGE,
+        boxShadow: `0 20px 50px -20px ${ORANGE}55`,
       }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
     >
@@ -715,14 +715,13 @@ const birchHillPages = [
   { label: "Website — 6", image: "/images/website-slider/6.jpeg" },
 ];
 
-// Shared hover treatment for the three Own Your Market cards: green stroke
-// + lift, matching every other "mini container" in this system. The pink
-// stays only on the inner accents (AI Search highlight, the section
-// heading), not the card chrome.
+// Shared hover treatment for the three Own Your Market cards: stroke color
+// shifts to the section's pink accent and the card lifts slightly, matching
+// the interaction every other "mini container" in this system already has.
 const marketCardHover = {
   y: -4,
-  borderColor: GREEN,
-  boxShadow: `0 20px 50px -20px ${GREEN}55`,
+  borderColor: PINK,
+  boxShadow: `0 20px 50px -20px ${PINK}55`,
 };
 const marketCardTransition = { type: "spring", stiffness: 300, damping: 22 } as const;
 
@@ -744,7 +743,7 @@ export function WebsiteModule() {
   return (
     <motion.div
       className="rounded-2xl p-4 h-full flex flex-col border cursor-default"
-      style={tintedCard(GREEN)}
+      style={tintedCard(PINK)}
       whileHover={marketCardHover}
       transition={marketCardTransition}
     >
@@ -786,7 +785,7 @@ export function SearchModule() {
   return (
     <motion.div
       className="rounded-2xl p-4 h-full flex flex-col border cursor-default"
-      style={tintedCard(GREEN)}
+      style={tintedCard(PINK)}
       whileHover={marketCardHover}
       transition={marketCardTransition}
     >
@@ -822,7 +821,7 @@ export function AiSearchModule() {
   return (
     <motion.div
       className="rounded-2xl p-4 h-full flex flex-col border cursor-default"
-      style={tintedCard(GREEN)}
+      style={tintedCard(PINK)}
       whileHover={marketCardHover}
       transition={marketCardTransition}
     >

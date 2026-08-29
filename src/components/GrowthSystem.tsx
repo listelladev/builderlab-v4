@@ -289,13 +289,13 @@ function Step({
         <motion.div
           className="relative w-full border rounded-2xl p-6 overflow-hidden"
           style={{
-            background: `linear-gradient(160deg, ${GREEN}22, transparent 55%), #0B0B0B`,
-            borderColor: `${GREEN}33`,
+            background: `linear-gradient(160deg, ${step.accent}22, transparent 55%), #0B0B0B`,
+            borderColor: `${step.accent}33`,
           }}
           whileHover={{
             y: -4,
-            borderColor: GREEN,
-            boxShadow: `0 20px 50px -20px ${GREEN}55`,
+            borderColor: step.accent,
+            boxShadow: `0 20px 50px -20px ${step.accent}55`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
         >
@@ -307,7 +307,7 @@ function Step({
             className={`absolute top-0 inset-x-0 h-1 transition-opacity duration-300 ${
               active ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             }`}
-            style={{ background: GREEN }}
+            style={{ background: step.accent }}
           />
           <StepCardBody step={step} />
         </motion.div>
@@ -336,13 +336,13 @@ function Step({
         <motion.div
           className="relative border rounded-2xl p-10 overflow-hidden"
           style={{
-            background: `linear-gradient(160deg, ${GREEN}22, transparent 55%), #0B0B0B`,
-            borderColor: `${GREEN}33`,
+            background: `linear-gradient(160deg, ${step.accent}22, transparent 55%), #0B0B0B`,
+            borderColor: `${step.accent}33`,
           }}
           whileHover={{
             y: -4,
-            borderColor: GREEN,
-            boxShadow: `0 20px 50px -20px ${GREEN}55`,
+            borderColor: step.accent,
+            boxShadow: `0 20px 50px -20px ${step.accent}55`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
         >
@@ -350,7 +350,7 @@ function Step({
             className={`absolute left-0 inset-y-0 w-1 transition-opacity duration-300 ${
               active ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             }`}
-            style={{ background: GREEN }}
+            style={{ background: step.accent }}
           />
           <StepCardBody step={step} />
         </motion.div>
