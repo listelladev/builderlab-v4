@@ -28,10 +28,10 @@ export default function CaseStudiesPage() {
               <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
                 Case studies
               </span>
-              <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
+              <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
                 What happens when we plug in.
               </h1>
-              <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
                 Real custom home builders, real numbers. Here&apos;s what the
                 Builderlab Growth System looks like once it&apos;s actually
                 installed.

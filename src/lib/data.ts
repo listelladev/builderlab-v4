@@ -11,12 +11,14 @@ export const navLinks: NavLink[] = [
   {
     label: "Resources",
     children: [
-      // TODO: swap in the real Ads Handbook URL once provided.
       {
         label: "Builder Backstage Podcast",
         href: "https://podcasts.apple.com/ca/podcast/the-builder-backstage/id6802168059",
       },
-      { label: "Builder Ads Handbook", href: "#" },
+      {
+        label: "Builder Ads Handbook",
+        href: "https://go.builderlab.com/the-builder-ads-handbook",
+      },
       { label: "YouTube Channel", href: "https://www.youtube.com/@thebuilderlab" },
     ],
   },
@@ -198,9 +200,9 @@ export const featuredWebsites: FeaturedWebsite[] = [
 
 export const builderTypes = [
   { num: "01", name: "Custom Home Builders" },
-  { num: "02", name: "Modular Home Builders" },
+  { num: "02", name: "Home Remodelers" },
   { num: "03", name: "Design-Build Firms" },
-  { num: "04", name: "Large-Scale Remodelers" },
+  { num: "04", name: "Modular Home Builders" },
 ];
 
 export const steps = [

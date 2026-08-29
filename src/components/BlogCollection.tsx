@@ -31,10 +31,10 @@ export function BlogCollection({ posts }: { posts: BlogPost[] }) {
               <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
                 The blog
               </span>
-              <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
+              <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
                 Growth, unpacked.
               </h1>
-              <p className="text-lg text-white/60 leading-relaxed">
+              <p className="text-base sm:text-lg text-white/60 leading-relaxed">
                 Strategy, creative, and sales insight from the team installing
                 growth systems for custom home builders every day.
               </p>

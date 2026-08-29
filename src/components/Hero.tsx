@@ -14,18 +14,37 @@ export function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center pt-24 sm:pt-36 lg:pt-44 pb-16 overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Bright, localised mint pool behind the LEFT portion of the review
+            pill. Kept tight and punchy so its falloff edge lands mid-pill —
+            that light/dark seam is what the glass picks up and reflects. */}
         <div
-          className="absolute top-[-10%] left-[-12%] w-[800px] h-[640px] rounded-full blur-[120px] opacity-[0.16]"
+          className="absolute top-[3%] left-[32%] -translate-x-1/2 w-[440px] h-[300px] rounded-full blur-[90px] opacity-[0.34]"
           style={{
             background:
-              "radial-gradient(ellipse at center, #38B685, transparent 80%)",
+              "radial-gradient(ellipse at center, #7FE9C6, transparent 72%)",
+          }}
+        />
+        {/* Soft mid-green just off to the right, a shade deeper — gives the
+            right half of the pill a different hue to sit over. */}
+        <div
+          className="absolute top-[2%] left-[62%] -translate-x-1/2 w-[520px] h-[380px] rounded-full blur-[120px] opacity-[0.13]"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, #2E9E73, transparent 78%)",
           }}
         />
         <div
-          className="absolute top-[22%] right-[-12%] w-[800px] h-[640px] rounded-full blur-[120px] opacity-[0.16]"
+          className="absolute top-[-16%] left-[-26%] w-[820px] h-[660px] rounded-full blur-[120px] opacity-[0.13]"
           style={{
             background:
-              "radial-gradient(ellipse at center, #38B685, transparent 80%)",
+              "radial-gradient(ellipse at center, #2E9E73, transparent 80%)",
+          }}
+        />
+        <div
+          className="absolute top-[30%] right-[-16%] w-[820px] h-[660px] rounded-full blur-[120px] opacity-[0.14]"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, #2E9E73, transparent 80%)",
           }}
         />
         <div
@@ -39,10 +58,10 @@ export function Hero() {
 
       <div className="relative z-10 max-w-[900px] mx-auto px-6 text-center flex flex-col items-center">
         <motion.div
-          className="relative inline-flex items-center gap-2.5 rounded-full px-4 py-[11px] mb-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),inset_0_1px_0_rgba(255,255,255,0.25),inset_0_0_20px_rgba(255,255,255,0.04),0_8px_24px_rgba(0,0,0,0.25)] overflow-hidden"
+          className="relative inline-flex items-center gap-2.5 rounded-full px-4 py-[11px] mb-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.1),0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden"
           style={{
             background:
-              "linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04))",
+              "linear-gradient(100deg, rgba(255,255,255,0.08), rgba(255,255,255,0.028))",
             backdropFilter: "blur(20px) saturate(180%)",
             WebkitBackdropFilter: "blur(20px) saturate(180%)",
           }}
@@ -56,25 +75,22 @@ export function Hero() {
               <Star key={i} className="w-3 h-3 fill-[#FFC107] text-[#FFC107]" />
             ))}
           </div>
-          <span className="text-sm text-white/80">
-            <b className="text-white">30+</b> 5-Star Google Reviews
+          <span className="text-xs sm:text-sm text-white/80">
+            <b className="text-white">35+</b> 5-Star Google Reviews
           </span>
         </motion.div>
 
         <motion.h1
-          className="text-[46px] sm:text-[58px] lg:text-[76px] font-bold text-white leading-[1.06] tracking-tight text-balance"
+          className="text-[38px] sm:text-[58px] lg:text-[76px] font-semibold text-white leading-[1.06] tracking-tight text-balance"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
         >
-          The growth partner for{" "}
-          <em className="not-italic text-[#38B685]">
-            custom home builders.
-          </em>
+          The growth partner for custom home builders.
         </motion.h1>
 
         <motion.p
-          className="mt-8 text-lg lg:text-xl text-white/65 max-w-[748px] leading-relaxed"
+          className="mt-8 text-base sm:text-lg lg:text-xl text-white/65 max-w-[748px] leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
@@ -96,7 +112,7 @@ export function Hero() {
         </motion.a>
 
         <motion.p
-          className="mt-14 text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.25em] text-white/40 whitespace-nowrap"
+          className="mt-14 text-xs uppercase tracking-[0.15em] sm:tracking-[0.25em] text-white/40 whitespace-nowrap"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}

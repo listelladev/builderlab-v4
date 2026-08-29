@@ -27,7 +27,38 @@ const FALLBACK_COLLAPSED_H = 168;
 
 type Testimonial = (typeof testimonials)[number];
 
-function ReviewCard({ r }: { r: Testimonial }) {
+// Distinct gradient per reviewer so the initials avatars read as different
+// people at a glance rather than one repeated green chip. Assigned by the
+// reviewer's position in the list (not a name hash — that clustered several
+// names onto the same few colours), and ordered so adjacent cards never
+// share a hue family; with 10 entries a colour can't recur inside a screen.
+const AVATAR_GRADIENTS = [
+  "from-violet-400 to-violet-700",
+  "from-orange-400 to-orange-600",
+  "from-sky-400 to-blue-600",
+  "from-rose-400 to-pink-600",
+  "from-teal-400 to-cyan-600",
+  "from-amber-300 to-yellow-500",
+  "from-fuchsia-500 to-purple-700",
+  "from-lime-400 to-green-600",
+  "from-red-500 to-rose-700",
+  "from-indigo-400 to-blue-700",
+];
+
+// Hand-picked gradients for specific reviewers; everyone else falls back to
+// the position-based cycle above.
+const AVATAR_GRADIENT_OVERRIDES: Record<string, string> = {
+  "Vlad Voskoboinikov": "from-red-500 to-yellow-400",
+};
+
+function avatarGradient(name: string, index: number) {
+  return (
+    AVATAR_GRADIENT_OVERRIDES[name] ??
+    AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length]
+  );
+}
+
+function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
   const paragraphs = Array.isArray(r.text) ? r.text : [r.text];
   const flatText = paragraphs.join(" ");
   const overflows = flatText.length > TRUNCATE_AT;
@@ -49,7 +80,7 @@ function ReviewCard({ r }: { r: Testimonial }) {
   const collapsedTarget = collapsedHeight ?? FALLBACK_COLLAPSED_H;
 
   return (
-    <div className="group h-full bg-[#0D1814] border border-white/5 rounded-2xl p-6 flex flex-col transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(56,182,133,0.25)]">
+    <div className="group h-full bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl p-6 flex flex-col transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(56,182,133,0.25)]">
       <div className="flex items-center gap-2 mb-4">
         <div className="flex items-center gap-1.5 bg-black/30 border border-white/10 rounded-md pl-2 pr-3 py-1">
           <Image
@@ -146,7 +177,12 @@ function ReviewCard({ r }: { r: Testimonial }) {
         </motion.div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-[#38B685]/15 text-[#38B685] text-sm font-bold flex items-center justify-center transition-colors duration-500 group-hover:bg-[#38B685] group-hover:text-[#08120E]">
+        <div
+          className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatarGradient(
+            r.name,
+            index,
+          )} text-white text-sm font-bold flex items-center justify-center`}
+        >
           {r.initials}
         </div>
         <div>
@@ -184,19 +220,19 @@ export function Testimonials() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What our partners say
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance mb-4">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white text-balance mb-4">
             Don&apos;t Take Our Word For It.
           </h2>
-          <p className="text-lg text-white/60 leading-relaxed">
+          <p className="text-base sm:text-lg text-white/60 leading-relaxed">
             Real reviews from the custom home builders we&apos;ve helped
-            grow. 30+ five-star ratings on Google.
+            grow. 35+ five-star ratings on Google.
           </p>
         </Reveal>
 
         <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {visible.map((t, i) => (
             <StaggerItem key={i}>
-              <ReviewCard r={t} />
+              <ReviewCard r={t} index={i} />
             </StaggerItem>
           ))}
         </StaggerGroup>
@@ -214,7 +250,7 @@ export function Testimonials() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-5">
                     {rest.map((t, i) => (
-                      <ReviewCard key={i} r={t} />
+                      <ReviewCard key={i} r={t} index={VISIBLE_COUNT + i} />
                     ))}
                   </div>
                 </motion.div>

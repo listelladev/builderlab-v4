@@ -21,7 +21,7 @@ export function LegalContent({ doc }: { doc: LegalDoc }) {
               (opacity: 0 is in the initial HTML) and stays that way for
               most of the scroll, reading as a blank/slow-loading page. */}
           <div className="relative z-10 max-w-[805px] mx-auto px-6 lg:px-0 text-left">
-            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
+            <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
               {doc.title}
             </h1>
             <p className="text-sm text-white/40 mb-14">

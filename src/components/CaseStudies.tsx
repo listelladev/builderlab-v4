@@ -66,7 +66,7 @@ function CaseCard({ item }: { item: VideoTestimonial }) {
   }, []);
 
   return (
-    <article className="case-card shrink-0 w-[340px] sm:w-[380px] h-full flex flex-col bg-[#0D1814] border border-white/5 rounded-2xl overflow-hidden transition-[translate,box-shadow] duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)]">
+    <article className="case-card shrink-0 w-[288px] sm:w-[380px] h-full flex flex-col bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-out group-hover:-translate-y-1">
       {/* aspect-video (not a fixed h-52) so the box's own aspect always
           matches the player's native 16:9 — nothing needs to crop/cover to
           fill it, it just already fits. */}
@@ -91,14 +91,14 @@ function CaseCard({ item }: { item: VideoTestimonial }) {
       </div>
       <div className="p-6 flex-1 flex flex-col">
         <div className="mb-3">
-          <div className="text-[33px] leading-9 font-bold text-[#38B685] tabular-nums">
+          <div className="text-[52px] sm:text-[58px] leading-none font-bold text-[#38B685] tabular-nums">
             {item.statPrefix}
             <CountUp value={item.statValue} />
             {item.statSuffix}
           </div>
           <div className="text-sm text-white/60">{item.statLabel}</div>
         </div>
-        <h3 className="text-lg font-bold text-white mb-3">{item.name}</h3>
+        <h3 className="text-2xl sm:text-lg font-bold text-white mb-3">{item.name}</h3>
         <p className="text-sm text-white/60 leading-relaxed">
           &ldquo;{item.blurb}&rdquo;
         </p>
@@ -242,7 +242,7 @@ export function CaseStudies() {
   }, []);
 
   return (
-    <section id="cases" className="relative pt-8 pb-24 lg:pt-32 lg:pb-32 overflow-hidden">
+    <section id="cases" className="relative pt-24 pb-24 lg:pt-32 lg:pb-32 overflow-hidden">
       {/* Registers the <wistia-player> custom element globally — loaded
           once here rather than per-embed, even though every card is
           tripled for the carousel's infinite-scroll illusion. */}
@@ -266,16 +266,26 @@ export function CaseStudies() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What our clients say
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white text-balance">
             What Happens When We Plug In.
           </h2>
         </Reveal>
       </div>
 
       <div className="relative">
+        {/* Edge fade is a mask on the scroller itself (not overlay divs), so
+            it hugs the cards' real height — no clipping above/below them —
+            and the fade width stays inside the peek zone without reaching
+            over the centred card. */}
         <div
           ref={scrollerRef}
-          className="flex items-stretch gap-[100vw] sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pt-4 pb-20 -mb-16 scrollbar-hide"
+          className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pt-4 pb-20 -mb-16 scrollbar-hide [--edge-fade:28px] sm:[--edge-fade:64px]"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent)",
+          }}
         >
           {tripledTestimonials.map((c, i) => (
             <div key={i} data-card className="group flex snap-center">

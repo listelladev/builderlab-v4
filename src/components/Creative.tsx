@@ -43,7 +43,7 @@ const reels: { src: string; label: string; poster: string }[] = REEL_GUIDS.map(
 
 function ReelCard({ c }: { c: (typeof reels)[number] }) {
   return (
-    <div className="relative shrink-0 w-[62vw] max-w-[280px] sm:w-[230px] md:w-[260px]">
+    <div className="relative shrink-0 w-[43vw] max-w-[185px] sm:w-[230px] md:w-[260px]">
       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-[#0D1814]">
         <SilentVideo
           src={c.src}
@@ -147,10 +147,10 @@ export function Creative() {
         <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
           Our creative
         </span>
-        <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
+        <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
           Creative That Stops The Scroll.
         </h2>
-        <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
           Disruptive ads engineered to earn attention and trust. Scripted, edited,
           and produced in-house.
         </p>

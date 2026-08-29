@@ -32,10 +32,10 @@ export default async function ClientWinsPage() {
               <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
                 Client wins
               </span>
-              <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
+              <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
                 Real Builders, Real Results.
               </h1>
-              <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
                 Trusted by <b className="text-white font-semibold">100+</b>{" "}
                 custom home builders. Here&apos;s what they have to say.
               </p>

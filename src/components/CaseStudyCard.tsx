@@ -1,14 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import type { CaseStudy } from "@/lib/case-studies";
 
+// Detail pages still exist and will be relinked once their content is
+// updated — for now the collection cards render as plain, non-clickable
+// panels (no <Link>, no "View case study" CTA).
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
-    <Link
-      href={`/case-studies/${study.slug}`}
-      className="group relative block aspect-[4/5] bg-[#161616] border border-white/5 hover:border-[#38B685]/40 rounded-2xl overflow-hidden transition-colors duration-700 ease-out"
-    >
+    <div className="group relative block aspect-[4/5] bg-[#161616] border border-white/5 rounded-2xl overflow-hidden transition-colors duration-700 ease-out">
       {/* Image: height-animated (not clip-path) so object-cover recomputes
           its crop for the frame's actual current size, at rest that's the
           56% visible frame, composed properly for that shape, rather than
@@ -47,11 +45,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
             </li>
           ))}
         </ul>
-        <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#38B685] group-hover:text-white transition-colors duration-700 ease-out">
-          View case study
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
-        </span>
       </div>
-    </Link>
+    </div>
   );
 }

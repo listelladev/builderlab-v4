@@ -51,10 +51,10 @@ export default function ContactPage() {
                   <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
                     Get in touch
                   </span>
-                  <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
+                  <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
                     Ready to grow?
                   </h1>
-                  <p className="text-lg text-white/60 leading-relaxed max-w-lg">
+                  <p className="text-base sm:text-lg text-white/60 leading-relaxed max-w-lg">
                     No sales reps. No middlemen. Tell us a bit about your
                     business and we&apos;ll be in touch within 24 hours to
                     schedule your free strategy call.

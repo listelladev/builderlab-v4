@@ -448,10 +448,10 @@ export function GrowthSystem() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             How it works
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
             The Builder Growth Engine&trade;
           </h2>
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto">
             Installed in 21 days. Built to fill your pipeline, attract better
             clients, and become the builder everyone knows.
           </p>

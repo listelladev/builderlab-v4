@@ -43,7 +43,7 @@ export function Apply() {
           inner max-w wrapper below, centered with extra breathing room on
           either side rather than stretching to fill the wider card. */}
       <div className="relative z-10 max-w-[900px] mx-auto px-6 lg:px-10">
-        <Reveal className="bg-[#0D1814] border border-white/10 rounded-3xl px-8 py-12 sm:px-12 sm:py-16 text-center">
+        <Reveal className="bg-white/[0.06] backdrop-blur-md border border-white/10 rounded-3xl px-8 py-12 sm:px-12 sm:py-16 text-center">
           <div className="max-w-[522px] mx-auto">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2.5 mb-6">
               <div className="flex items-center gap-2.5">
@@ -55,11 +55,11 @@ export function Apply() {
                 </div>
               </div>
               <span className="text-sm text-white/70">
-                <b className="text-white">30+</b> 5-Star Google Reviews
+                <b className="text-white">35+</b> 5-Star Google Reviews
               </span>
             </div>
 
-            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-10 text-balance">
+            <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-10 text-balance">
               Ready To Get More Builds?
             </h2>
 

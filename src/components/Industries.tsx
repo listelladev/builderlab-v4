@@ -23,10 +23,10 @@ export function Industries() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             Who this is for
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance leading-tight">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
             We Partner With Established Builders Ready To Grow.
           </h2>
-          <p className="text-lg text-white/60 leading-relaxed">
+          <p className="text-base sm:text-lg text-white/60 leading-relaxed">
             Your clients don&apos;t decide to build a home overnight. They
             don&apos;t impulse buy. They research. They compare. They ask
             around. And they choose the builder they trust most. We make

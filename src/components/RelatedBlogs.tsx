@@ -36,7 +36,7 @@ export function RelatedBlogs({
             <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
               More from the blog
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-white text-balance">
+            <h2 className="text-[32px]/[1.15] sm:text-3xl lg:text-4xl font-bold text-white text-balance">
               Related Articles.
             </h2>
           </Reveal>
