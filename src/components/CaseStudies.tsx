@@ -246,7 +246,7 @@ export function CaseStudies() {
       {/* Registers the <wistia-player> custom element globally — loaded
           once here rather than per-embed, even though every card is
           tripled for the carousel's infinite-scroll illusion. */}
-      <Script src="https://fast.wistia.com/player.js" strategy="afterInteractive" />
+      <Script src="https://fast.wistia.com/player.js" strategy="lazyOnload" />
       <div className="absolute inset-0 bg-[#08120E]" />
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[160px] opacity-30"

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preconnect } from "react-dom";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -16,6 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  // Emitted as <link rel="preconnect"> in the SSR'd head: the reel videos
+  // and Wistia testimonials live on these hosts, and on a phone the
+  // DNS+TCP+TLS handshake otherwise happens only once the first media
+  // request is already being made.
+  preconnect("https://vz-8f67defd-6ab.b-cdn.net");
+  preconnect("https://fast.wistia.com");
   return (
     <html lang="en" className={`h-full antialiased ${signature.variable}`}>
       <body className="min-h-full flex flex-col bg-[#08120e] text-[#f4f4f9]">

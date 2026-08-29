@@ -53,9 +53,20 @@ const reels: { src: string; label: string; poster: string }[] = REEL_GUIDS.map(
   }),
 );
 
-function ReelCard({ c }: { c: (typeof reels)[number] }) {
+// `mobileHidden` drops the card from layout below `sm` entirely (not just
+// visually): SilentVideo's own visibility check reads a display:none card
+// as 0x0 and never fetches its clip. A phone fits barely more than one
+// card on screen, yet every distinct clip that cycled past pulled its own
+// segments — all twelve of them. Six still reads as an endless varied
+// reel there, for half the video bytes; every clip still shows from `sm`
+// up.
+function ReelCard({ c, mobileHidden }: { c: (typeof reels)[number]; mobileHidden?: boolean }) {
   return (
-    <div className="relative shrink-0 w-[43vw] max-w-[185px] sm:w-[230px] sm:max-w-none md:w-[260px]">
+    <div
+      className={`relative shrink-0 w-[43vw] max-w-[185px] sm:w-[230px] sm:max-w-none md:w-[260px] ${
+        mobileHidden ? "hidden sm:block" : ""
+      }`}
+    >
       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-[#0D1814]">
         <SilentVideo
           src={c.src}
@@ -123,7 +134,7 @@ function Reels() {
         style={paused ? { animationPlayState: "paused" } : undefined}
       >
         {[...reels, ...reels, ...reels].map((r, i) => (
-          <ReelCard key={i} c={r} />
+          <ReelCard key={i} c={r} mobileHidden={i % reels.length >= 6} />
         ))}
       </div>
     </div>

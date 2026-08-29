@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Star } from "lucide-react";
@@ -31,8 +31,30 @@ const EASE = [0.21, 0.5, 0.28, 1] as const;
 // desktop's wider 3-column grid, so a height tuned against desktop ran
 // short on mobile.
 const TRUNCATE_AT = 280;
+// The cap (and the internal scroll past it) only applies from md up, where
+// cards sit three across and one novel-length review would stretch its
+// whole row. Mobile is a single column, so an expanded card can simply be
+// as tall as its text — scrolling inside a card on a touchscreen fights
+// the page's own scroll.
 const EXPANDED_CAP = 320;
 const FALLBACK_COLLAPSED_H = 168;
+
+// Same useSyncExternalStore pattern as Creative's useTapToPause: matchMedia
+// is an external store, and the value only picks the expand animation's
+// pixel target, so the server snapshot (false = mobile-first) has nothing
+// visible to disagree with.
+const DESKTOP_GRID = "(min-width: 768px)";
+function useDesktopGrid() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(DESKTOP_GRID);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(DESKTOP_GRID).matches,
+    () => false,
+  );
+}
 
 type Testimonial = (typeof testimonials)[number];
 
@@ -77,15 +99,35 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
   const measureRef = useRef<HTMLDivElement>(null);
   const collapsedMeasureRef = useRef<HTMLDivElement>(null);
 
+  // A ResizeObserver rather than a measure-once-on-mount effect: on mobile
+  // the 4th-6th cards mount inside a `hidden md:block` wrapper, and an
+  // element inside display:none measures scrollHeight 0 — a height the
+  // animation would then treat as the real collapsed/expanded target,
+  // leaving the quote invisible after "Show more" reveals the card. The
+  // observer fires again the moment the clones get real boxes (and on any
+  // later width change, e.g. rotation), so the stored heights always come
+  // from an actually-laid-out card. Zero-height readings are ignored for
+  // the same reason.
   useEffect(() => {
-    if (measureRef.current) setNaturalHeight(measureRef.current.scrollHeight);
-    if (collapsedMeasureRef.current) {
-      setCollapsedHeight(collapsedMeasureRef.current.scrollHeight);
-    }
+    const measure = () => {
+      const n = measureRef.current?.scrollHeight ?? 0;
+      if (n > 0) setNaturalHeight(n);
+      const c = collapsedMeasureRef.current?.scrollHeight ?? 0;
+      if (c > 0) setCollapsedHeight(c);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (measureRef.current) ro.observe(measureRef.current);
+    if (collapsedMeasureRef.current) ro.observe(collapsedMeasureRef.current);
+    return () => ro.disconnect();
   }, []);
 
-  const expandedTarget = Math.min(naturalHeight ?? EXPANDED_CAP, EXPANDED_CAP);
-  const needsScroll = (naturalHeight ?? Infinity) > EXPANDED_CAP;
+  const isDesktopGrid = useDesktopGrid();
+  const expandedTarget = isDesktopGrid
+    ? Math.min(naturalHeight ?? EXPANDED_CAP, EXPANDED_CAP)
+    : (naturalHeight ?? EXPANDED_CAP);
+  const needsScroll =
+    isDesktopGrid && (naturalHeight ?? Infinity) > EXPANDED_CAP;
   const collapsedTarget = collapsedHeight ?? FALLBACK_COLLAPSED_H;
 
   return (
@@ -145,6 +187,7 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
           </p>
         )}
 
+        {overflows ? (
         <motion.div
           animate={{ height: expanded ? expandedTarget : collapsedTarget }}
           transition={{ duration: 0.35, ease: EASE }}
@@ -184,6 +227,18 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
             </p>
           )}
         </motion.div>
+        ) : (
+          // Short reviews never truncate, so there is nothing to animate
+          // between — but they used to render inside the same animated box,
+          // whose height fell back to a hardcoded 168px whenever nothing had
+          // been measured (the collapsed clone only exists for overflowing
+          // text). A two-line review sat in that full-size box with dead
+          // space under it, which mobile's single column made obvious. A
+          // plain paragraph just takes the height of its own text.
+          <p className="text-white/70 text-sm leading-relaxed">
+            &ldquo;{flatText}&rdquo;
+          </p>
+        )}
       </div>
       <div className="flex items-center gap-3">
         <div
