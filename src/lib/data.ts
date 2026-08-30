@@ -50,6 +50,7 @@ export const partnerLogos = [
   { src: "/images/partners/meta-partner.png", alt: "Meta Business Partner", href: "https://www.facebook.com/business", width: 1138, height: 485, displayHeight: 38 },
   { src: "/images/partners/gohighlevel.png", alt: "GoHighLevel", href: "https://www.gohighlevel.com/", width: 500, height: 113, displayHeight: 26 },
   { src: "/images/partners/wpvip.png", alt: "WordPress VIP Gold Agency Partner", href: "https://wpvip.com/partners/", width: 268, height: 103, displayHeight: 42 },
+  { src: "/images/partners/builder-backstage.webp", alt: "The Builder Backstage Podcast", href: "https://podcasts.apple.com/ca/podcast/the-builder-backstage/id6802168059", width: 800, height: 800, displayHeight: 60, rounded: true },
 ];
 
 export const socialLinks = [

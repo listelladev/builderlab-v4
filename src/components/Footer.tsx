@@ -108,7 +108,7 @@ export function Footer() {
                     width={p.width}
                     height={p.height}
                     style={{ height: p.displayHeight }}
-                    className="w-auto object-contain"
+                    className={`w-auto object-contain ${p.rounded ? "rounded-md" : ""}`}
                   />
                 </a>
               ))}
