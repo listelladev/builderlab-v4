@@ -59,7 +59,7 @@ export function Apply() {
               </span>
             </div>
 
-            <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-10 text-balance">
+            <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white mb-10 text-balance">
               Ready To Get More Builds?
             </h2>
 
@@ -67,13 +67,18 @@ export function Apply() {
               {points.map((p) => (
                 <div
                   key={p.title}
-                  className="flex flex-col items-center text-center gap-3 sm:flex-row sm:items-start sm:text-left sm:gap-4 bg-white/[0.03] border border-white/5 rounded-2xl p-5"
+                  className="flex flex-col items-center text-center gap-3 sm:flex-row sm:items-start sm:text-left sm:gap-4 bg-white/[0.03] border border-white/5 rounded-2xl p-5 transition-transform duration-300 ease-out hover:-translate-y-1"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 42%, transparent 70%)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
+                  }}
                 >
                   <span className="shrink-0 w-10 h-10 rounded-full bg-[#38B685]/15 flex items-center justify-center">
                     <p.icon className="w-5 h-5 text-[#38B685]" />
                   </span>
                   <div>
-                    <h3 className="text-white font-semibold mb-1">{p.title}</h3>
+                    <h3 className="text-white font-medium mb-1">{p.title}</h3>
                     <p className="text-sm text-white/50 leading-relaxed">{p.body}</p>
                   </div>
                 </div>

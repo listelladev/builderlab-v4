@@ -29,7 +29,7 @@ export function ContactForm() {
         <div className="w-16 h-16 rounded-full bg-[#38B685] mx-auto mb-6 flex items-center justify-center">
           <Check className="w-7 h-7 text-black" />
         </div>
-        <h3 className="text-2xl font-bold text-white mb-3">
+        <h3 className="text-2xl font-medium text-white mb-3">
           Message received.
         </h3>
         <p className="text-white/60 max-w-md mx-auto">

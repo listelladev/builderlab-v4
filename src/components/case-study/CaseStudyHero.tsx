@@ -29,7 +29,7 @@ export function CaseStudyHero({ study }: { study: CaseStudy }) {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             {study.industry}
           </span>
-          <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance leading-tight">
+          <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-medium text-white mb-6 text-balance leading-tight">
             {study.name}
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-white/60 leading-relaxed">

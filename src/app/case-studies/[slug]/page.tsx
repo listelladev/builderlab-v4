@@ -74,7 +74,7 @@ export default async function CaseStudyPage({
           />
           <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
             <Reveal>
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
+              <h2 className="text-4xl lg:text-5xl font-medium text-white mb-6 text-balance">
                 Ready for Results Like These?
               </h2>
               <a

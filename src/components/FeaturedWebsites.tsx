@@ -185,7 +185,7 @@ export function FeaturedWebsites() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             Websites We&apos;ve Built
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white text-balance">
+          <h2 className="text-4xl lg:text-5xl font-medium text-white text-balance">
             Websites That Convert.
           </h2>
         </Reveal>

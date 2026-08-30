@@ -150,7 +150,7 @@ function StepCardBody({ step }: { step: (typeof stages)[number] }) {
     <div>
       {isMarket ? (
         <div>
-          <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
+          <h3 className="text-2xl lg:text-3xl font-medium text-white mb-4">
             {step.title}
           </h3>
           <p className="text-sm sm:text-base text-white/60 leading-relaxed mb-6">
@@ -179,7 +179,7 @@ function StepCardBody({ step }: { step: (typeof stages)[number] }) {
         // gap.
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
           <div>
-            <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
+            <h3 className="text-2xl lg:text-3xl font-medium text-white mb-4">
               {step.title}
             </h3>
             <p
@@ -430,7 +430,7 @@ export function GrowthSystem() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             How it works
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-4 text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white mb-4 text-balance">
             The Builder Growth Engine&trade;
           </h2>
           <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto">

@@ -186,45 +186,49 @@ export function Footer() {
 
             <div className="border-t border-white/10 mt-8" />
 
-            {/* Three-column grid rather than flex justify-between: with two
-                unequal-width siblings (copyright text vs. terms/privacy
-                links), a flex row centers nothing — it only pushes the
-                icons toward whichever side has less content. A dedicated
-                center column keeps the icon cluster genuinely centered on
-                the section regardless of how wide the text on either side
-                is. Mobile stacks all three, icons still first for visual
-                priority, each centered on its own row. */}
-            <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 pt-6 pb-2">
-              <p className="text-sm text-white/40 text-center md:text-left order-2 md:order-1">
+            {/* The icons get their own banded row between the two rules,
+                with equal padding above and below (py-6) rather than
+                inheriting a container's pt plus a flex gap — that pairing
+                is what left them sitting closer to the lower rule. */}
+            <div className="flex items-center justify-center gap-3 py-6">
+              {socialLinks.map((s) => {
+                const Icon = socialIcons[s.label as keyof typeof socialIcons];
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="w-9 h-9 rounded-full border border-white/15 text-white/60 hover:text-white hover:border-[#38B685]/60 hover:bg-[#38B685]/10 hover:-translate-y-0.5 flex items-center justify-center transition-all duration-300"
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Second rule, mirroring the one above the icons, so the social
+                cluster reads as its own banded row. Full width to match. */}
+            <div className="border-t border-white/10" />
+
+            {/* Copyright left, legal links right on one line from sm up;
+                stacked and centered below that. The links keep their
+                smaller 11px size. */}
+            <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 pt-6 pb-2">
+              <p className="text-sm text-white/40 text-center sm:text-left">
                 © {new Date().getFullYear()} Builderlab. All rights reserved.
               </p>
-              <div className="flex items-center justify-center gap-3 order-1 md:order-2">
-                {socialLinks.map((s) => {
-                  const Icon = socialIcons[s.label as keyof typeof socialIcons];
-                  return (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={s.label}
-                      className="w-9 h-9 rounded-full border border-white/15 text-white/60 hover:text-white hover:border-[#38B685]/60 hover:bg-[#38B685]/10 hover:-translate-y-0.5 flex items-center justify-center transition-all duration-300"
-                    >
-                      <Icon className="w-4 h-4" />
-                    </a>
-                  );
-                })}
-              </div>
-              <div className="flex items-center justify-center md:justify-end gap-4 order-3">
+              <div className="flex items-center gap-4">
                 <Link
                   href="/terms-conditions"
-                  className="text-xs text-white/30 hover:text-white/50 transition-colors"
+                  className="text-[11px] text-white/30 hover:text-white/50 transition-colors"
                 >
                   Terms
                 </Link>
                 <Link
                   href="/privacy-policy"
-                  className="text-xs text-white/30 hover:text-white/50 transition-colors"
+                  className="text-[11px] text-white/30 hover:text-white/50 transition-colors"
                 >
                   Privacy
                 </Link>

@@ -131,7 +131,20 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
   const collapsedTarget = collapsedHeight ?? FALLBACK_COLLAPSED_H;
 
   return (
-    <div className="group h-full bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl p-6 flex flex-col transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(56,182,133,0.25)]">
+    // Glass treatment, same as the hero's reviews pill: a white sheen
+    // pooling from the top inside edge plus a brighter inset hairline on the
+    // top rim. Done as a background-image + inset shadow rather than overlay
+    // elements — border-radius clips backgrounds on its own, so the card
+    // needs no overflow-hidden and no extra DOM, and the panel stays
+    // transparent (the sheen fades out by ~70% down).
+    <div
+      className="group h-full bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl p-6 flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1"
+      style={{
+        backgroundImage:
+          "linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 42%, transparent 70%)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.20)",
+      }}
+    >
       <div className="flex items-center gap-2 mb-4">
         <div className="flex items-center gap-1.5 bg-black/30 border border-white/10 rounded-md pl-2 pr-3 py-1">
           <Image
@@ -284,7 +297,7 @@ export function Testimonials() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What our partners say
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white text-balance mb-4">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white text-balance mb-4">
             Don&apos;t Take Our Word For It.
           </h2>
           <p className="text-base sm:text-lg text-white/60 leading-relaxed">

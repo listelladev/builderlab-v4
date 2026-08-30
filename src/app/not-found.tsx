@@ -21,7 +21,7 @@ export default function NotFound() {
             <p className="text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
               Page not found
             </p>
-            <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 text-balance">
+            <h1 className="text-5xl lg:text-7xl font-medium text-white mb-6 text-balance">
               404 Error
             </h1>
             <p className="text-lg text-white/50 mb-10">

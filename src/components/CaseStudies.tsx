@@ -90,7 +90,18 @@ function CaseCard({ item, hold }: { item: VideoTestimonial; hold: boolean }) {
           />
         )}
       </div>
-      <div className="p-6 flex-1 flex flex-col">
+      {/* Glass treatment on the body rather than the <article>: the card's
+          own top edge sits behind the video/poster, so a sheen there would
+          never be seen. Pooling it from the top of the text area puts the
+          highlight where the card actually reads as a surface. */}
+      <div
+        className="p-6 flex-1 flex flex-col"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 42%, transparent 70%)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.16)",
+        }}
+      >
         <div className="mb-3">
           <div className="text-[52px] sm:text-[58px] leading-none font-bold text-[#38B685] tabular-nums">
             {item.statPrefix}
@@ -99,7 +110,7 @@ function CaseCard({ item, hold }: { item: VideoTestimonial; hold: boolean }) {
           </div>
           <div className="text-sm text-white/60">{item.statLabel}</div>
         </div>
-        <h3 className="text-2xl sm:text-lg font-bold text-white mb-3">{item.name}</h3>
+        <h3 className="text-2xl sm:text-lg font-medium text-white mb-3">{item.name}</h3>
         <p className="text-sm text-white/60 leading-relaxed">
           &ldquo;{item.blurb}&rdquo;
         </p>
@@ -319,7 +330,7 @@ export function CaseStudies() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What our clients say
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white text-balance">
             What Happens When We Plug In.
           </h2>
         </Reveal>

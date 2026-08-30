@@ -13,7 +13,7 @@ export function CaseStudyWhatWeDid({ items }: { items: CaseStudyWork[] }) {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             What we did
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white text-balance">
             The System We Installed.
           </h2>
         </Reveal>
@@ -29,7 +29,7 @@ export function CaseStudyWhatWeDid({ items }: { items: CaseStudyWork[] }) {
                       <div className="shrink-0 w-11 h-11 rounded-lg bg-[#38B685]/10 border border-[#38B685]/20 flex items-center justify-center group-hover:bg-[#38B685]/20 transition-colors duration-500">
                         <Icon className="w-5 h-5 text-[#38B685]" />
                       </div>
-                      <h3 className="text-lg font-bold text-white transition-[font-size] duration-300 ease-out group-hover:text-[22px]">
+                      <h3 className="text-lg font-medium text-white transition-[font-size] duration-300 ease-out group-hover:text-[22px]">
                         {item.title}
                       </h3>
                     </div>

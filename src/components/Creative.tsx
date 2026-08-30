@@ -177,7 +177,7 @@ export function Creative() {
         <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
           Our creative
         </span>
-        <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-6 text-balance">
+        <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white mb-6 text-balance">
           Creative That Stops The Scroll.
         </h2>
         <p className="text-base sm:text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">

@@ -24,7 +24,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
       <span className="text-xs font-semibold uppercase tracking-wider text-[#38B685] mb-3">
         {post.categoryName}
       </span>
-      <h3 className="text-xl font-bold text-white mb-2 leading-snug group-hover:text-[#38B685] transition-colors duration-500">
+      <h3 className="text-xl font-medium text-white mb-2 leading-snug group-hover:text-[#38B685] transition-colors duration-500">
         {post.title}
       </h3>
       <p className="text-xs text-white/40 mb-3">

@@ -69,7 +69,7 @@ export function Hero() {
 
       <div className="relative z-10 max-w-[900px] mx-auto px-6 text-center flex flex-col items-center">
         <div
-          className="hero-in relative inline-flex items-center gap-2.5 rounded-full px-4 py-[11px] mb-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.1),0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden"
+          className="hero-in relative inline-flex items-center gap-2.5 rounded-full px-4 py-[11px] mb-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.14),inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.06),0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden"
           style={
             {
               background:
@@ -82,19 +82,46 @@ export function Hero() {
             } as CSSProperties
           }
         >
-          <GoogleLogo />
-          <div className="flex gap-0.5">
+          {/* Glass highlight: a soft white sheen pooling along the top
+              inside edge, plus a brighter inset hairline on the top rim
+              above. Both sit inside the pill's overflow-hidden rounding and
+              are pointer-events-none, so the pill stays transparent — it
+              reads as light catching the top curve of glass rather than a
+              lighter fill. */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(255,255,255,0.22), rgba(255,255,255,0.06) 55%, transparent)",
+            }}
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(120% 80% at 22% -18%, rgba(255,255,255,0.28), transparent 60%)",
+            }}
+          />
+          {/* `relative` on each child so they are positioned siblings and
+              therefore paint after — above — the two absolutely positioned
+              sheen layers declared before them. */}
+          <span className="relative flex items-center">
+            <GoogleLogo />
+          </span>
+          <div className="relative flex gap-0.5">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-3 h-3 fill-[#FFC107] text-[#FFC107]" />
             ))}
           </div>
-          <span className="text-xs sm:text-sm text-white/80">
+          <span className="relative text-xs sm:text-sm text-white/80">
             <b className="text-white">35+</b> 5-Star Google Reviews
           </span>
         </div>
 
         <h1
-          className="hero-in hero-in-instant text-[38px] sm:text-[58px] lg:text-[76px] font-semibold text-white leading-[1.06] tracking-tight text-balance"
+          className="hero-in hero-in-instant text-[38px] sm:text-[58px] lg:text-[76px] font-medium text-white leading-[1.06] tracking-tight text-balance"
           style={
             {
               "--hero-from-y": "28px",

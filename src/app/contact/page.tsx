@@ -51,7 +51,7 @@ export default function ContactPage() {
                   <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
                     Get in touch
                   </span>
-                  <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-bold text-white mb-6 text-balance">
+                  <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-medium text-white mb-6 text-balance">
                     Ready to grow?
                   </h1>
                   <p className="text-base sm:text-lg text-white/60 leading-relaxed max-w-lg">
@@ -69,7 +69,7 @@ export default function ContactPage() {
                           <p.icon className="w-5 h-5 text-[#38B685]" />
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold mb-1">
+                          <h3 className="text-white font-medium mb-1">
                             {p.title}
                           </h3>
                           <p className="text-sm text-white/50 leading-relaxed">

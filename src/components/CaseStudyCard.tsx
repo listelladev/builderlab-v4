@@ -31,7 +31,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out pointer-events-none" />
 
       <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8">
-        <h3 className="text-xl lg:text-2xl font-bold text-white group-hover:text-[#38B685] transition-colors duration-700 ease-out mb-3">
+        <h3 className="text-xl lg:text-2xl font-medium text-white group-hover:text-[#38B685] transition-colors duration-700 ease-out mb-3">
           {study.name}
         </h3>
         <ul className="mb-4 space-y-1.5">

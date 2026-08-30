@@ -23,7 +23,7 @@ export function Industries() {
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             Who this is for
           </span>
-          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-semibold sm:font-bold text-white mb-6 text-balance">
+          <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white mb-6 text-balance">
             We Partner With Established Builders Ready To Grow.
           </h2>
           <p className="text-base sm:text-lg text-white/60 leading-relaxed">
@@ -46,7 +46,7 @@ export function Industries() {
                 <span className="text-[#38B685] text-sm font-mono mb-4 block">
                   {ind.num}
                 </span>
-                <h3 className="text-xl lg:text-2xl font-semibold text-white group-hover:text-[#38B685] transition-colors duration-700 ease-out">
+                <h3 className="text-xl lg:text-2xl font-medium text-white group-hover:text-[#38B685] transition-colors duration-700 ease-out">
                   {ind.name}
                 </h3>
               </div>

@@ -46,7 +46,7 @@ function StepCardBody({ step }: { step: (typeof steps)[number] }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
       <div>
-        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
+        <h3 className="text-2xl lg:text-3xl font-medium text-white mb-4">
           {step.title}
         </h3>
         <p className="text-sm sm:text-base text-white/60 leading-relaxed mb-6">
@@ -238,7 +238,7 @@ export function HowItWorks() {
           <span className="inline-flex items-center text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4 px-4 py-1.5 rounded-full border border-[#38B685]/40">
             How it works
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
+          <h2 className="text-4xl lg:text-5xl font-medium text-white mb-4 text-balance">
             Builderlab Growth System&trade;
           </h2>
           <p className="text-lg text-white/60 max-w-2xl mx-auto">

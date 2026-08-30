@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SilentVideo } from "./SilentVideo";
 import {
@@ -11,7 +10,6 @@ import {
   DollarSign,
   Lightbulb,
   Megaphone,
-  MessageCircle,
   RefreshCw,
   Search,
   Sparkles,
@@ -258,224 +256,254 @@ const CREATIVE_REEL_SRC =
 
 function VideoCreativeMockup() {
   return (
-    <div className="relative h-full w-full bg-black">
-      <SilentVideo
-        src={CREATIVE_REEL_SRC}
-        poster="/images/creative-posters/7.jpg"
-        label="BuilderLab ad creative"
-      />
-    </div>
-  );
-}
-
-// 2. Lead Capture Form — three non-interactive slides rebuilt from a real
-// Meta lead form (question cards, radio rows, Continue button). They swipe
-// automatically every few seconds, same slide treatment as Own Your
-// Market's website mock.
-function FormCard({ children }: { children: ReactNode }) {
-  return (
-    <div className="rounded-xl bg-white p-3 space-y-2 shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
-      {children}
-    </div>
-  );
-}
-
-function FormQuestion({ children }: { children: ReactNode }) {
-  return (
-    <p className="text-[12px] sm:text-[13px] font-bold text-[#1c2b33] leading-snug">
-      {children}
-    </p>
-  );
-}
-
-function FormOption({ label }: { label: string }) {
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-black/15 bg-white px-3 py-2">
-      <span className="text-[11.5px] sm:text-[12.5px] text-black/75 leading-snug">
-        {label}
-      </span>
-      <span className="w-4 h-4 rounded-full border border-black/30 shrink-0" />
-    </div>
-  );
-}
-
-function FormContinue() {
-  return (
-    <div className="rounded-md bg-[#1877F2] py-2.5 text-center text-[12.5px] font-semibold text-white">
-      Continue
-    </div>
-  );
-}
-
-const leadFormSlides = [
-  <div key="s1" className="flex flex-col gap-2.5">
-    <p className="px-2 text-center text-[14px] sm:text-[15px] font-medium leading-snug text-[#1c2b33]/70">
-      Fill out a few quick details to schedule your complimentary Design &amp;
-      Build Consultation.
-    </p>
-    <FormCard>
-      <FormQuestion>What are you interested in?</FormQuestion>
-      <FormOption label="Custom Home" />
-      <FormOption label="Full Home Remodel" />
-      <FormOption label="Other" />
-    </FormCard>
-    <FormContinue />
-  </div>,
-  <div key="s2" className="flex flex-col gap-2.5">
-    <FormCard>
-      <FormQuestion>What is your estimated timeline to start?</FormQuestion>
-      <FormOption label="ASAP" />
-      <FormOption label="1-6 months" />
-      <FormOption label="6-12 months" />
-      <FormOption label="12+ months" />
-    </FormCard>
-    <FormContinue />
-  </div>,
-  <div key="s3" className="flex flex-col gap-2.5">
-    <FormCard>
-      <FormQuestion>Do you currently own land or a lot?</FormQuestion>
-      <FormOption label="Yes, I have land" />
-      <FormOption label="I'm in the process of purchasing" />
-      <FormOption label="No, I do not have land" />
-    </FormCard>
-    <FormContinue />
-  </div>,
-];
-
-function LeadFormMockup() {
-  const [index, setIndex] = useState(0);
-  useEffect(() => {
-    const id = setInterval(
-      () => setIndex((i) => (i + 1) % leadFormSlides.length),
-      3200,
-    );
-    return () => clearInterval(id);
-  }, []);
-  return (
-    <div className="relative h-full w-full overflow-hidden bg-[#EBEDF0]">
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={index}
-          className="absolute inset-0 flex flex-col justify-center overflow-hidden p-3.5"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
-          transition={{ duration: 0.6, ease: [0.21, 0.5, 0.28, 1] }}
-        >
-          {leadFormSlides[index]}
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// 3. Automated CRM Follow-Up — an iPhone lock screen that sits dimmed,
-// then a text slides up and the screen lights up as it "arrives", holds,
-// and eases back down before coming up again a couple of seconds later.
-// The phone is zoomed in and pushed down so the panel clips off roughly
-// its bottom half, and a faded site photo sits behind it under a black wash.
-const FOLLOWUP_LOOP = 5.5;
-// Both tracks start and end on the same state — screen dark, banner gone —
-// so the loop point is invisible: the dim overlay returns all the way to
-// its initial 0.6 as the banner fades, then holds there through the
-// repeatDelay before the next arrival, rather than ending bright and
-// snapping dark.
-const FOLLOWUP_BASE = {
-  duration: FOLLOWUP_LOOP,
-  repeat: Infinity,
-  repeatDelay: 1.6,
-} as const;
-
-function PhoneFollowUpMockup() {
-  return (
-    <div className="relative h-full w-full overflow-hidden bg-black">
-      {/* Faded site photo behind the phone, under a black wash. */}
-      <Image
-        src="/images/meta-ad-mockup.webp"
-        alt=""
-        fill
-        sizes="(min-width: 1024px) 380px, 100vw"
-        className="object-cover opacity-45"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-black/65" />
-
-      {/* Titanium frame: a dark rounded shell with the screen inset a few
-          px inside it, plus a hairline highlight so the edge catches light
-          against the bright photo behind it. */}
-      <div className="absolute left-1/2 top-20 h-[175%] w-[280px] -translate-x-1/2 rounded-[3rem] bg-gradient-to-b from-[#141416] via-[#050506] to-black p-[5px] shadow-[0_24px_70px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/10">
-        <div className="relative h-full w-full overflow-hidden rounded-[2.65rem] bg-black ring-1 ring-black/80">
-        {/* Layered so the wallpaper reads as depth rather than a flat
-            gradient: a green base, a bright top-left bloom, and a deeper
-            green glow low-right. */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1c3b33] via-[#0f231d] to-[#060b09]" />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(120% 55% at 25% 8%, rgba(96,208,166,0.38), transparent 60%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(90% 50% at 80% 55%, rgba(56,182,133,0.24), transparent 65%)",
-          }}
-        />
-        {/* Screen sits dim, then lifts toward full brightness as the
-            message lands, then dims again — in step with the banner. */}
-        <motion.div
-          className="absolute inset-0 bg-black"
-          animate={{ opacity: [0.6, 0.6, 0.12, 0.12, 0.6] }}
-          transition={{
-            ...FOLLOWUP_BASE,
-            times: [0, 0.12, 0.32, 0.74, 0.98],
-            ease: "easeInOut",
-          }}
-        />
-        <div className="absolute left-1/2 top-3 h-4 w-16 -translate-x-1/2 rounded-full bg-black/85" />
-        <div className="absolute inset-x-0 top-12 text-center text-white">
-          <p className="text-[10px] font-medium text-white/70">
-            Thursday, August 27
-          </p>
-          <p className="text-[44px] font-semibold leading-none tracking-tight">
-            9:41
-          </p>
-        </div>
-        <motion.div
-          className="absolute inset-x-4 top-[17%]"
-          animate={{ y: [44, 0, 0, 44], opacity: [0, 1, 1, 0] }}
-          transition={{
-            ...FOLLOWUP_BASE,
-            times: [0, 0.16, 0.66, 0.86],
-            ease: [0.21, 0.5, 0.28, 1],
-          }}
-        >
-          <div className="rounded-2xl bg-white/90 p-3 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] backdrop-blur-md">
-            <div className="mb-1.5 flex items-center gap-1.5">
-              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#38B685]">
-                <MessageCircle className="h-3 w-3 text-white" />
-              </span>
-              <span className="text-[9.5px] font-semibold uppercase tracking-wide text-black/55">
-                Messages
-              </span>
-              <span className="ml-auto text-[9.5px] text-black/40">now</span>
-            </div>
-            <p className="text-[12px] font-semibold text-black/90">Blackbriar Development</p>
-            <p className="text-[12px] leading-snug text-black/70">
-              Still thinking it over? Take another look before you decide.
-            </p>
-          </div>
-        </motion.div>
+    <div className="relative h-full w-full overflow-hidden">
+      <SystemPanelBackdrop />
+      {/* The reel floats inside the panel at its native 9:16 instead of
+          filling it — same treatment as its two sibling panels, whose
+          content also sits on the shared grid backdrop rather than
+          bleeding to the edges. Height-driven: it takes the panel's height
+          minus padding and derives its width from the aspect ratio. */}
+      <div className="relative h-full flex items-center justify-center p-5">
+        <div className="relative h-full aspect-[9/16] rounded-lg border border-white/10 overflow-hidden shadow-[0_18px_44px_-18px_rgba(0,0,0,0.8)]">
+          <SilentVideo
+            src={CREATIVE_REEL_SRC}
+            poster="/images/creative-posters/7.jpg"
+            label="BuilderLab ad creative"
+          />
         </div>
       </div>
     </div>
   );
 }
 
+// 2. Lead Capture Form — the three questions from the real Meta lead form,
+// with the form chrome (white cards, radio rows, Continue button) stripped
+// away so only the questions remain. They ride a 3D drum seen edge-on: each
+// one rises into place, holds, then rotates away over the top as the next
+// comes up from below, like a rolodex viewed straight on rather than a flat
+// horizontal swipe.
+// Shared backdrop for the two "system" panels (lead form + CRM): near-black
+// base, a faint yellow crown along the top edge, and a fine graph-grid
+// fading out from the upper half — the section's GridOverlay motif at panel
+// scale. Replaces the earlier three-layer yellow wash, which swallowed the
+// whole panel in amber; the yellow now reads as an accent, not a fill.
+function SystemPanelBackdrop() {
+  return (
+    <>
+      <div className="absolute inset-0 bg-[#0B0A07]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(130% 55% at 50% 0%, ${YELLOW}26, transparent 55%)`,
+        }}
+      />
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: `linear-gradient(to right, transparent, ${YELLOW}99, transparent)` }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
+          backgroundSize: "26px 26px",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 30%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 30%, transparent 80%)",
+        }}
+      />
+    </>
+  );
+}
+
+const LEAD_FORM_QUESTIONS = [
+  "What are you interested in?",
+  "What is your estimated timeline to start?",
+  "Do you currently own land or a lot?",
+];
+
+const QUESTION_HOLD_MS = 3800;
+
+function LeadFormMockup() {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const id = setInterval(
+      () => setIndex((i) => (i + 1) % LEAD_FORM_QUESTIONS.length),
+      QUESTION_HOLD_MS,
+    );
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="relative h-full w-full overflow-hidden">
+      <SystemPanelBackdrop />
+
+      {/* The drum, resting at dead centre. Default AnimatePresence
+          (both mounted during the handoff) is deliberate here: the exit and
+          entry paths don't share space — out goes up and back, in arrives
+          from ~120px below — so seeing both mid-flight is the carousel
+          effect, not a collision. */}
+      <div
+        className="absolute inset-0 px-6 sm:px-7"
+        style={{ perspective: "900px" }}
+      >
+        <div
+          className="relative h-full"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <AnimatePresence initial={false}>
+            <motion.p
+              key={index}
+              className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[22px] sm:text-[26px] font-semibold leading-[1.25] tracking-tight text-white text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
+              initial={{ opacity: 0, rotateX: -50, y: 120 }}
+              animate={{ opacity: 1, rotateX: 0, y: 0 }}
+              exit={{ opacity: 0, rotateX: 55, y: -64 }}
+              transition={{ duration: 0.65, ease: [0.21, 0.5, 0.28, 1] }}
+              style={{ transformOrigin: "50% 50%" }}
+            >
+              {LEAD_FORM_QUESTIONS[index]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 3. Automated CRM Follow-Up — a CRM activity feed rather than a phone.
+// The exchange lands one card at a time from the top down, each captioned
+// with its sender (the lead's number on the left, Blackbriar on the
+// right). Typing dots precede every landing.
+type ChatLine = { from: "client" | "company"; text: string };
+
+const FOLLOWUP_THREAD: ChatLine[] = [
+  { from: "client", text: "Hi, I\u2019m looking for a home builder in West Hollywood" },
+  { from: "company", text: "Hi, this is John with Blackbriar Development, how can we help?" },
+  { from: "client", text: "Can I book a call to learn more about your services?" },
+  {
+    from: "company",
+    text: "Definitely! We have time tomorrow at 6pm or Wednesday at 9am. Do either of those times work?",
+  },
+];
+
+const TYPING_MS = 1000;   // dots showing before each card lands
+const SETTLE_MS = 1100;   // card readable before the next starts typing
+const RESTART_MS = 2600;  // full feed held before it clears and loops
+
+function TypingDots({ from }: { from: ChatLine["from"] }) {
+  const mine = from === "company";
+  return (
+    <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+      <div
+        className={`flex items-center gap-1 rounded-lg border px-3 py-2 ${
+          mine ? "border-transparent" : "border-white/10 bg-white/[0.06]"
+        }`}
+        style={mine ? { background: `${YELLOW}1F`, borderColor: `${YELLOW}40` } : undefined}
+      >
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            className="block w-1.5 h-1.5 rounded-full"
+            style={{ background: mine ? YELLOW : "rgba(255,255,255,0.6)" }}
+            animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
+            transition={{
+              duration: 1.1,
+              repeat: Infinity,
+              delay: i * 0.16,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ChatBubble({ line }: { line: ChatLine }) {
+  const mine = line.from === "company";
+  return (
+    <motion.div
+      className={`flex flex-col gap-1 ${mine ? "items-end" : "items-start"}`}
+      initial={{ opacity: 0, y: -12, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.25 } }}
+      transition={{ type: "spring", stiffness: 380, damping: 26 }}
+    >
+      <span
+        className="text-[9.5px] font-semibold uppercase tracking-[0.14em]"
+        style={{ color: mine ? YELLOW : "rgba(255,255,255,0.4)" }}
+      >
+        {mine ? "Blackbriar Development" : "310-990-2423"}
+      </span>
+      <p
+        className={`max-w-[88%] rounded-lg border px-3 py-2 text-[12.5px] sm:text-[13px] leading-snug ${
+          mine ? "text-white/90" : "border-white/10 bg-white/[0.06] text-white/80"
+        }`}
+        style={
+          mine
+            ? { background: `${YELLOW}1F`, borderColor: `${YELLOW}40` }
+            : undefined
+        }
+      >
+        {line.text}
+      </p>
+    </motion.div>
+  );
+}
+
+function PhoneFollowUpMockup() {
+  // `shown` is how many cards have landed; `typing` is whether the dots for
+  // the next one are up. One self-rescheduling timer drives both, so the
+  // typing pause and the read pause can differ.
+  const [shown, setShown] = useState(0);
+  const [typing, setTyping] = useState(true);
+
+  useEffect(() => {
+    let id: ReturnType<typeof setTimeout>;
+    if (shown >= FOLLOWUP_THREAD.length) {
+      id = setTimeout(() => {
+        setShown(0);
+        setTyping(true);
+      }, RESTART_MS);
+    } else if (typing) {
+      id = setTimeout(() => {
+        setTyping(false);
+        setShown((n) => n + 1);
+      }, TYPING_MS);
+    } else {
+      id = setTimeout(() => setTyping(true), SETTLE_MS);
+    }
+    return () => clearTimeout(id);
+  }, [shown, typing]);
+
+  const next = FOLLOWUP_THREAD[shown];
+
+  return (
+    <div className="relative h-full w-full overflow-hidden">
+      <SystemPanelBackdrop />
+
+      {/* Fixed top-down stack: the first card lands in the top slot and
+          stays there, each next card takes the slot below. */}
+      <div className="relative h-full flex flex-col justify-start gap-2.5 p-4">
+        <AnimatePresence initial={false}>
+          {FOLLOWUP_THREAD.slice(0, shown).map((line, i) => (
+            <ChatBubble key={`${line.from}-${i}`} line={line} />
+          ))}
+        </AnimatePresence>
+        {typing && next && <TypingDots from={next.from} />}
+      </div>
+    </div>
+  );
+}
+
+// One shared yellow accent across all three — connector dot, sliding
+// pulse, border and hover glow — matching the step's own stage colour, and
+// one shared height: the video now floats inside its panel at 9:16 rather
+// than dictating a taller box.
 const adChannels = [
-  { label: "High-Performance Creative", accent: GREEN, Mockup: VideoCreativeMockup },
-  { label: "Lead Capture Form", accent: BLUE, Mockup: LeadFormMockup },
+  { label: "High-Performance Creative", accent: YELLOW, Mockup: VideoCreativeMockup },
+  { label: "Lead Capture Form", accent: YELLOW, Mockup: LeadFormMockup },
   { label: "Automated CRM Follow-Up", accent: YELLOW, Mockup: PhoneFollowUpMockup },
 ];
 
@@ -511,7 +539,7 @@ export function AdsChannelsVisual() {
           {/* All three share this height so the video, the form slides, and
               the phone read as one row of equal-height panels. */}
           <motion.div
-            className="relative w-full h-[440px] sm:h-[520px] rounded-xl border overflow-hidden cursor-default"
+            className="relative w-full h-[380px] sm:h-[440px] rounded-xl border overflow-hidden cursor-default"
             style={{ borderColor: `${c.accent}40` }}
             whileHover={{ y: -3, boxShadow: `0 12px 32px -12px ${c.accent}66` }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}

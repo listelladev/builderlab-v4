@@ -104,13 +104,13 @@ export function ArticleContent({ body }: { body: BodyBlock[] }) {
       if (style === "h2") {
         nodes.push(
           <Reveal key={block._key}>
-            <h2 className="text-2xl lg:text-3xl font-bold text-white mt-14 mb-5">{content}</h2>
+            <h2 className="text-2xl lg:text-3xl font-medium text-white mt-14 mb-5">{content}</h2>
           </Reveal>
         );
       } else if (style === "h3") {
         nodes.push(
           <Reveal key={block._key}>
-            <h3 className="text-xl font-bold text-white mt-10 mb-4">{content}</h3>
+            <h3 className="text-xl font-medium text-white mt-10 mb-4">{content}</h3>
           </Reveal>
         );
       } else if (style === "blockquote") {
