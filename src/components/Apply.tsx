@@ -86,9 +86,7 @@ export function Apply() {
             </div>
 
             <a
-              href="https://go.builderlab.com/application"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
               className="group w-full inline-flex items-center justify-center gap-2 bg-[#38B685] text-black py-5 rounded-full text-lg font-bold hover:scale-[1.02] transition-transform duration-500 ease-out"
             >
               Start My Application

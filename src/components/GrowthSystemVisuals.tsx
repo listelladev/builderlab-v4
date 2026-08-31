@@ -327,10 +327,12 @@ const QUESTION_STEP_MS = 1400;  // gap between each question landing
 const QUESTION_HOLD_MS = 3200;  // full set held before it clears and replays
 
 function LeadFormMockup() {
-  // The three questions accumulate rather than replace one another: the
-  // first fades up and settles high in the panel, the second lands under
-  // it, the third under that, so the finished state shows the whole form's
-  // worth of questions at once. Then it clears and replays.
+  // Each question owns a fixed slot from the first frame — all three are
+  // always laid out, only their opacity/offset changes — so question one
+  // sits in the upper position and stays there when two and three arrive.
+  // Rendering them as they arrive (mounting into a flex column) reflowed
+  // the earlier ones upward every time a new one appeared, which is the
+  // bumping this replaces.
   const [shown, setShown] = useState(0);
   useEffect(() => {
     const done = shown >= LEAD_FORM_QUESTIONS.length;
@@ -345,21 +347,20 @@ function LeadFormMockup() {
     <div className="relative h-full w-full overflow-hidden">
       <SystemPanelBackdrop />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 sm:px-7">
-        <AnimatePresence initial={false}>
-          {LEAD_FORM_QUESTIONS.slice(0, shown).map((q) => (
-            <motion.p
-              key={q}
-              className="text-center text-[19px] sm:text-[22px] font-medium leading-[1.3] tracking-tight text-white text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
-              initial={{ opacity: 0, y: 34 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, transition: { duration: 0.25 } }}
-              transition={{ duration: 0.6, ease: [0.21, 0.5, 0.28, 1] }}
-            >
-              {q}
-            </motion.p>
-          ))}
-        </AnimatePresence>
+      <div className="absolute inset-0 flex flex-col justify-center gap-6 px-6 sm:px-7">
+        {LEAD_FORM_QUESTIONS.map((q, i) => (
+          <motion.p
+            key={q}
+            className="text-center text-[19px] sm:text-[22px] font-medium leading-[1.3] tracking-tight text-white text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
+            initial={false}
+            animate={
+              i < shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }
+            }
+            transition={{ duration: 0.55, ease: [0.21, 0.5, 0.28, 1] }}
+          >
+            {q}
+          </motion.p>
+        ))}
       </div>
     </div>
   );
@@ -372,10 +373,10 @@ function LeadFormMockup() {
 type ChatLine = { from: "client" | "company"; text: string };
 
 // Shown above the lead's own messages in place of their phone number.
-const LEAD_NAME = "Marcus Hale";
+const LEAD_NAME = "Lead";
 
 const FOLLOWUP_THREAD: ChatLine[] = [
-  { from: "client", text: "Hi, I\u2019m looking for a home builder in West Hollywood" },
+  { from: "client", text: "I\u2019m looking for a home builder in XYZ City." },
   { from: "company", text: "Hi, this is John with XYZ Builders, how can we help?" },
   { from: "client", text: "Can I book a call to learn more about your services?" },
   {
