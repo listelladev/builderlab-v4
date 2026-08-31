@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { SectionGlow } from "@/components/SectionGlow";
-import { ContactForm } from "@/components/ContactForm";
+import { RoasForm } from "@/components/RoasForm";
 
 export const metadata: Metadata = {
   title: "Contact | Builderlab",
@@ -95,8 +95,11 @@ export default function ContactPage() {
               </div>
 
               <Reveal delay={0.15}>
-                <div className="bg-[#161616] border border-white/5 rounded-2xl p-8 lg:p-10">
-                  <ContactForm />
+                {/* Tighter padding than the old hand-built form had: the
+                    embed draws its own field chrome, so the previous
+                    p-8/p-10 read as a double frame around it. */}
+                <div className="bg-[#161616] border border-white/5 rounded-2xl p-4 sm:p-6">
+                  <RoasForm />
                 </div>
               </Reveal>
             </div>
