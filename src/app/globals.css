@@ -274,3 +274,31 @@ button:not(:disabled) {
   }
 }
 
+
+/* ---------------------------------------------------------------------
+   Diagnostic profile: any URL with ?fx=off renders the page with every
+   decorative effect stripped — no animations, transitions, filters,
+   backdrop blurs, masks, or scroll reveals. Content, layout and images
+   are untouched. Exists to answer, on a real handset, whether the
+   remaining scroll roughness comes from the decorative compositing load
+   (measured: 29 blur layers, 11 masked layers over 3.9MP, 152 gradient
+   fills, ~49 elements animating in per scroll — each several times the
+   reference site) or from page fundamentals. The class is set before
+   first paint by an inline script in layout.tsx.
+   --------------------------------------------------------------------- */
+html.fx-off *,
+html.fx-off *::before,
+html.fx-off *::after {
+  animation: none !important;
+  transition: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+html.fx-off .rv-armed,
+html.fx-off .rv-group.rv-armed > .rv-item {
+  opacity: 1 !important;
+  transform: none !important;
+}

@@ -26,6 +26,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`h-full antialiased ${signature.variable}`}>
       <body className="min-h-full flex flex-col bg-[#08120e] text-[#f4f4f9]">
+        {/* Diagnostic: ?fx=off strips every decorative effect (animations,
+            transitions, filters, backdrop-filters, masks, reveals) via CSS
+            under html.fx-off — see globals.css. Inline and first in <body>
+            so the class exists before any content paints. Used to bisect
+            real-device rendering cost; harmless and inert otherwise. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if(location.search.indexOf('fx=off')>-1)document.documentElement.classList.add('fx-off');",
+          }}
+        />
         {children}
       </body>
     </html>
