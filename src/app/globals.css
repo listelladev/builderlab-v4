@@ -97,12 +97,6 @@ button:not(:disabled) {
     animation-play-state: paused;
   }
 }
-/* Footer services strip on mobile. The rule was dropped in an earlier
-   cleanup while the class stayed in Footer.tsx, leaving the strip frozen —
-   restored, at the faster pace a one-card-wide viewport needs. */
-.animate-marquee-mobile {
-  animation: marquee-slow 34s linear infinite;
-}
 
 @keyframes gradient-flow {
   0% {

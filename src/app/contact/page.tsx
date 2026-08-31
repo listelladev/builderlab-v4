@@ -95,10 +95,13 @@ export default function ContactPage() {
               </div>
 
               <Reveal delay={0.15}>
-                {/* Tighter padding than the old hand-built form had: the
-                    embed draws its own field chrome, so the previous
-                    p-8/p-10 read as a double frame around it. */}
-                <div className="bg-[#161616] border border-white/5 rounded-2xl p-4 sm:p-6">
+                {/* #232326 is the embed's own background, sampled from the
+                    rendered iframe (it is cross-origin, so it cannot be read
+                    via getComputedStyle). Matching it means the card reads as
+                    one surface instead of a lighter form floating on a darker
+                    panel. Padding stays tight for the same reason — the embed
+                    draws its own field chrome. */}
+                <div className="bg-[#232326] border border-white/5 rounded-2xl p-4 sm:p-6">
                   <RoasForm />
                 </div>
               </Reveal>

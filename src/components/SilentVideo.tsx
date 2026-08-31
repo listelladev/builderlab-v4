@@ -45,6 +45,7 @@ export function SilentVideo({
   label,
   randomizeStart,
   poster,
+  rate,
 }: {
   /** HLS playlist URL (Bunny Stream serves .m3u8, not a plain file). */
   src: string;
@@ -58,6 +59,9 @@ export function SilentVideo({
    * source is still buffering, so there's something that already looks
    * like the video instead of a blank card. */
   poster?: string;
+  /** Playback speed. Applied on every loadedmetadata (a loop or a source
+   * swap resets the element's rate), not just once on mount. */
+  rate?: number;
 }) {
   // Diagnostic kill switch: loading any page with ?novideo=1 keeps every
   // clip on its poster — no HLS pipeline is ever created. Exists so the
@@ -139,6 +143,7 @@ export function SilentVideo({
     // loadedmetadata fires, so the seek has to happen in that handler
     // rather than synchronously here.
     const onLoadedMetadata = () => {
+      if (rate && rate !== 1) el.playbackRate = rate;
       if (randomizeStart && !seeked.current && el.duration > 0) {
         seeked.current = true;
         el.currentTime = Math.random() * el.duration * 0.7;
@@ -194,7 +199,7 @@ export function SilentVideo({
       hlsRef.current?.destroy();
       hlsRef.current = null;
     };
-  }, [active, ready, randomizeStart, src]);
+  }, [active, ready, randomizeStart, rate, src]);
 
   return (
     <video

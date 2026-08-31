@@ -30,6 +30,12 @@ const STREAM_CDN = "https://vz-8f67defd-6ab.b-cdn.net";
 // that a fixed rendition can't adapt downward on a weak connection, which
 // is an acceptable deal for muted, decorative, autoplaying loops.
 const REEL_RENDITION = "480p";
+// Playback speed for the reel carousel. Note this is NOT a match of the
+// reference site: its videos were measured at playbackRate 1, and its
+// marquee runs 32s against our 30s — what reads as "faster" over there is
+// how the clips themselves are cut, not a player setting. This is a
+// deliberate choice of our own; set it back to 1 to disable.
+const REEL_PLAYBACK_RATE = 1.25;
 const REEL_GUIDS = [
   "fbe44624-8f14-4f20-9646-1d540e5110b6", // Ad 1
   "aa82e2b5-6b94-4ddc-befb-09b8735439df", // Ad 2
@@ -72,6 +78,7 @@ function ReelCard({ c, mobileHidden }: { c: (typeof reels)[number]; mobileHidden
           src={c.src}
           label={c.label}
           poster={c.poster}
+          rate={REEL_PLAYBACK_RATE}
           randomizeStart
         />
       </div>

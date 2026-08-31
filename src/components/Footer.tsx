@@ -63,22 +63,11 @@ export function Footer() {
             Sits above the wordmark block below (not overlapping it) with
             its own bottom margin doing the separation. */}
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
-          <div className="-mx-6 sm:hidden relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r from-[#060A08] to-transparent pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l from-[#060A08] to-transparent pointer-events-none" />
-            <div className="flex animate-marquee-mobile gap-3 w-max">
-              {[...footerServices, ...footerServices, ...footerServices].map((s, i) => (
-                <span
-                  key={i}
-                  className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50 whitespace-nowrap transition-all duration-300 hover:border-[#38B685] hover:text-[#38B685] hover:shadow-[0_0_18px_rgba(56,182,133,0.35)]"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="hidden sm:flex flex-wrap justify-center gap-3">
+          {/* Wraps at every breakpoint — as many pills per line as fit,
+              then onto the next. Mobile used to get a separate marquee
+              track (three duplicated copies scrolling horizontally), which
+              meant the list was never all visible at once. */}
+          <div className="flex flex-wrap justify-center gap-3">
             {footerServices.map((s) => (
               <span
                 key={s}
@@ -93,7 +82,7 @@ export function Footer() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40 mb-8">
               Official partners
             </p>
-            <div className="group/partners grid grid-cols-2 justify-items-center items-center gap-x-12 gap-y-10 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-6">
+            <div className="group/partners grid grid-cols-1 justify-items-center items-center gap-y-10 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-6">
               {partnerLogos.map((p) => (
                 <a
                   key={p.alt}
@@ -182,6 +171,10 @@ export function Footer() {
               </a>
               <span className="hidden sm:inline">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
               <span>9AM-5PM Mon-Fri</span>
+            </div>
+
+            <div className="mt-3 text-center text-sm text-white/50">
+              Calgary&nbsp;&nbsp;|&nbsp;&nbsp;Miami
             </div>
 
             <div className="border-t border-white/10 mt-8" />
