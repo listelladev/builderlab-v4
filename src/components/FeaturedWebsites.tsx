@@ -113,7 +113,7 @@ function SiteCard({
           <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
         </span>
         {/* Desktop: full pill button beside the title. */}
-        <span className="hidden sm:inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-white bg-white/10 backdrop-blur px-4 py-2.5 rounded-full group-hover:bg-[#38B685] transition-colors duration-500 ease-out">
+        <span className="hidden sm:inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-white bg-white/10 backdrop-blur max-lg:backdrop-blur-none px-4 py-2.5 rounded-full group-hover:bg-[#38B685] transition-colors duration-500 ease-out">
           View Site
           <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:translate-x-1 transition-all duration-500 ease-out">
             <ArrowRight className="w-3 h-3 text-white group-hover:text-[#38B685] transition-colors duration-500 ease-out" />

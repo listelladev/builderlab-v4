@@ -22,7 +22,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         />
       </div>
 
-      <span className="absolute top-4 left-4 z-10 text-xs font-semibold uppercase tracking-wider text-white/80 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">
+      <span className="absolute top-4 left-4 z-10 text-xs font-semibold uppercase tracking-wider text-white/80 bg-black/50 backdrop-blur-sm max-lg:backdrop-blur-none px-3 py-1.5 rounded-full">
         {study.industry}
       </span>
 

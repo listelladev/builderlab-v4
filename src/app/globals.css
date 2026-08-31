@@ -182,18 +182,20 @@ button:not(:disabled) {
 }
 
 /* ---------------------------------------------------------------------
-   Perf lab (/perf-lab only): CSS reveal in place of framer-motion.
-   The class is toggled by a plain IntersectionObserver in Reveal.tsx, so
-   the trigger point and the motion match the framer version exactly
-   (24px rise, 0.7s, the same cubic-bezier, 0.12s stagger after a 0.05s
-   lead) — the difference being measured is the cost of framer's runtime,
-   not the animation itself.
+   Scroll reveals (Reveal.tsx), as a progressive enhancement.
+
+   Nothing is hidden by default: the SSR'd page is fully visible, and a
+   wrapper is hidden only after mounted JS has confirmed it is still below
+   the viewport (`.rv-armed`, added by Reveal.tsx). This is what keeps a
+   slow phone from showing blank containers while hydration catches up —
+   the failure mode of the previous always-hidden variant. Trigger point,
+   rise, duration, easing and stagger match the framer-motion originals.
    --------------------------------------------------------------------- */
-.rv {
+.rv-armed {
   opacity: 0;
   transform: translateY(var(--rv-y, 24px));
 }
-.rv.rv-in {
+.rv-armed.rv-in {
   opacity: 1;
   transform: none;
   transition:
@@ -202,11 +204,11 @@ button:not(:disabled) {
     transform var(--rv-dur, 0.7s) cubic-bezier(0.21, 0.5, 0.28, 1)
       var(--rv-delay, 0s);
 }
-.rv-item {
+.rv-group.rv-armed > .rv-item {
   opacity: 0;
   transform: translateY(24px);
 }
-.rv-group.rv-in > .rv-item {
+.rv-group.rv-armed.rv-in > .rv-item {
   opacity: 1;
   transform: none;
   transition:
@@ -228,7 +230,11 @@ button:not(:disabled) {
 .rv-group > .rv-item:nth-child(11) { --rv-i: 10; }
 .rv-group > .rv-item:nth-child(12) { --rv-i: 11; }
 @media (prefers-reduced-motion: reduce) {
-  .rv, .rv-item { opacity: 1; transform: none; }
+  .rv-armed,
+  .rv-group.rv-armed > .rv-item {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ---------------------------------------------------------------------
@@ -267,3 +273,4 @@ button:not(:disabled) {
     filter: blur(45px);
   }
 }
+

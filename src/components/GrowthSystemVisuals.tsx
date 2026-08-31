@@ -163,7 +163,7 @@ export function PositioningVisual() {
             style={{ left: `${c.x}%`, top: `${c.y}%` }}
           >
             <motion.span
-              className="inline-flex items-center gap-0.5 sm:gap-1.5 text-[8px] sm:text-sm text-white/80 bg-white/5 border rounded-full px-1 py-0.5 sm:px-3.5 sm:py-2 whitespace-nowrap backdrop-blur-sm"
+              className="inline-flex items-center gap-0.5 sm:gap-1.5 text-[8px] sm:text-sm text-white/80 bg-white/5 border rounded-full px-1 py-0.5 sm:px-3.5 sm:py-2 whitespace-nowrap backdrop-blur-sm max-lg:backdrop-blur-none"
               style={{ borderColor: `${c.accent}55` }}
               animate={{ y: [0, -10, 0] }}
               transition={{

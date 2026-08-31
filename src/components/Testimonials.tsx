@@ -138,7 +138,7 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
     // needs no overflow-hidden and no extra DOM, and the panel stays
     // transparent (the sheen fades out by ~70% down).
     <div
-      className="group h-full bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl p-6 flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1"
+      className="group h-full bg-white/[0.06] backdrop-blur-md max-lg:backdrop-blur-none border border-white/5 rounded-2xl p-6 flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1"
       style={{
         backgroundImage:
           "linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 42%, transparent 70%)",

@@ -43,7 +43,7 @@ export function Apply() {
           inner max-w wrapper below, centered with extra breathing room on
           either side rather than stretching to fill the wider card. */}
       <div className="relative z-10 max-w-[900px] mx-auto px-6 lg:px-10">
-        <Reveal className="bg-white/[0.06] backdrop-blur-md border border-white/10 rounded-3xl px-8 py-12 sm:px-12 sm:py-16 text-center">
+        <Reveal className="bg-white/[0.06] backdrop-blur-md max-lg:backdrop-blur-none border border-white/10 rounded-3xl px-8 py-12 sm:px-12 sm:py-16 text-center">
           <div className="max-w-[522px] mx-auto">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2.5 mb-6">
               <div className="flex items-center gap-2.5">

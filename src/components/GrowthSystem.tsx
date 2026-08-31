@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { GridOverlay } from "./GridOverlay";
+import { Reveal } from "./Reveal";
 import {
   PositioningVisual,
   AdsChannelsVisual,
@@ -420,13 +421,12 @@ export function GrowthSystem() {
       <GridOverlay />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-10">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease: EASE }}
-        >
+        {/* Reveal, not framer whileInView: framer SSRs its initial
+            opacity-0 inline, so on a slow phone this heading was blank
+            until hydration — the same failure the Reveal wrappers were
+            reworked to avoid (they arm only after JS confirms the element
+            is still below the viewport). */}
+        <Reveal className="text-center mb-16">
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             How it works
           </span>
@@ -437,7 +437,7 @@ export function GrowthSystem() {
             Installed in 21 days. Built to fill your pipeline, attract better
             clients, and become the builder everyone knows.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div ref={railRef} className="relative">
           {/* Desktop rail: centered under the 4rem-wide number column so it

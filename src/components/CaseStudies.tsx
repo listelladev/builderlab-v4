@@ -35,7 +35,7 @@ function CaseCard({
   const [playing, setPlaying] = useState(false);
 
   return (
-    <article className="case-card shrink-0 w-[288px] sm:w-[380px] h-full flex flex-col bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-out group-hover:-translate-y-1">
+    <article className="case-card shrink-0 w-[288px] sm:w-[380px] h-full flex flex-col bg-white/[0.06] backdrop-blur-md max-lg:backdrop-blur-none border border-white/5 rounded-2xl overflow-hidden shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-out group-hover:-translate-y-1">
       {/* aspect-video (not a fixed h-52) so the box's own aspect always
           matches the player's native 16:9 — nothing needs to crop/cover to
           fill it, it just already fits. */}
@@ -62,7 +62,7 @@ function CaseCard({
               className="object-cover"
             />
             <span className="absolute inset-0 flex items-center justify-center">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black/55 backdrop-blur-[2px] ring-1 ring-white/25 transition-transform duration-300 ease-out group-hover:scale-105">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black/55 backdrop-blur-[2px] max-lg:backdrop-blur-none ring-1 ring-white/25 transition-transform duration-300 ease-out group-hover:scale-105">
                 <svg viewBox="0 0 24 24" className="ml-0.5 h-6 w-6 fill-white" aria-hidden>
                   <path d="M8 5.5v13l11-6.5-11-6.5Z" />
                 </svg>
