@@ -97,6 +97,12 @@ button:not(:disabled) {
     animation-play-state: paused;
   }
 }
+/* Footer services strip on mobile. The rule was dropped in an earlier
+   cleanup while the class stayed in Footer.tsx, leaving the strip frozen —
+   restored, at the faster pace a one-card-wide viewport needs. */
+.animate-marquee-mobile {
+  animation: marquee-slow 34s linear infinite;
+}
 
 @keyframes gradient-flow {
   0% {
@@ -237,42 +243,6 @@ button:not(:disabled) {
   }
 }
 
-/* ---------------------------------------------------------------------
-   Mobile: cap the decorative section glows.
-
-   Every section paints its ambient background with a radial-gradient div
-   under a large blur(). A blur's rasterized surface extends roughly three
-   radii past the element on every side, so a blur(180px) on a 1000x400 box
-   is a 2080x1480 layer the compositor has to redraw — on a 390px phone
-   screen, for a glow that is mostly off-canvas anyway.
-
-   Measured against valiantdigital.com.au on the same device profile: they
-   composite 16.1 megapixels of blurred surface, we composited 58. Their
-   largest radius is 80px; ours ran 150-180px. That gap is what shows up on
-   a real handset as tiles rasterizing in progressively while you scroll —
-   an emulated iPhone runs on the desktop GPU and hides it entirely, which
-   is why this did not reproduce in earlier local A/B tests.
-
-   Capping the radius keeps the gradient (already soft on its own) while
-   cutting the surface from ~58MP to ~19MP. Laptops and desktops are
-   untouched: they have the GPU headroom and the glows are sized for that
-   canvas.
-
-   The breakpoint is 1023px, not the usual 767px, because a phone in
-   landscape is 844px wide — capping only below 768px would drop the fix
-   the moment the device is rotated, which is precisely when the glows get
-   wider relative to the screen. Tablets get it for the same reason. */
-@media (max-width: 1023px) {
-  [class*="blur-[90px]"],
-  [class*="blur-[120px]"],
-  [class*="blur-[130px]"],
-  [class*="blur-[140px]"],
-  [class*="blur-[150px]"],
-  [class*="blur-[160px]"],
-  [class*="blur-[180px]"] {
-    filter: blur(45px);
-  }
-}
 
 
 /* ---------------------------------------------------------------------
@@ -301,4 +271,48 @@ html.fx-off .rv-armed,
 html.fx-off .rv-group.rv-armed > .rv-item {
   opacity: 1 !important;
   transform: none !important;
+}
+
+/* ---------------------------------------------------------------------
+   Mobile rendering profile (phones + tablets, <=1023px).
+
+   This is the ?fx=off diagnostic promoted to the default after on-device
+   A/B on multiple iPhones: with the decorative stack stripped the site
+   scrolls smoothly; with it on, sections rastered in visibly. The stack
+   measured several times the reference site on every axis (29 blur layers,
+   11 masked layers over 3.9MP, 152 gradient fills, ~49 scroll-in
+   animations), and no single member was the culprit — the pile was.
+
+   So below 1024px: no filters, no backdrop blurs, no masks, no CSS
+   transitions, no CSS animations, and scroll reveals render visible
+   (Reveal.tsx also skips arming there). The radial-gradient glow divs
+   still paint (unblurred, they are already soft); framer-driven inline
+   animations (the lead-form drum, the CRM feed, hover springs) are rAF
+   inline styles and unaffected.
+
+   The two marquees are exempt: translate-only animations composite for
+   near nothing, and freezing them would hide most of the reel and logo
+   strips. Desktop keeps the full treatment — it has the GPU for it.
+   --------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  *,
+  *::before,
+  *::after {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    transition: none !important;
+  }
+  *:not([class*="animate-marquee"]),
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+  .rv-armed,
+  .rv-group.rv-armed > .rv-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

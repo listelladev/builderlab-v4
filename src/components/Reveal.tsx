@@ -27,6 +27,11 @@ function useRevealOnce<T extends HTMLElement>(amount = 0.2) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Phones and tablets render without scroll reveals at all (see the
+    // mobile rendering profile in globals.css, adopted after on-device
+    // A/B): skip the observer machinery instead of arming and letting CSS
+    // override it.
+    if (window.innerWidth < 1024) return;
     // Arm only what the visitor cannot currently see. A wrapper partially
     // on screen (or scrolled past before hydration) stays static — hiding
     // it now would be a visible flash.
