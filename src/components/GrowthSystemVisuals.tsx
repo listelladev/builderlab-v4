@@ -318,54 +318,48 @@ function SystemPanelBackdrop() {
 }
 
 const LEAD_FORM_QUESTIONS = [
-  "What are you interested in?",
-  "What is your estimated timeline to start?",
-  "Do you currently own land or a lot?",
+  "Are you looking to build in XYZ city?",
+  "What is your estimated project budget?",
+  "How soon are you looking to build?",
 ];
 
-const QUESTION_HOLD_MS = 3800;
+const QUESTION_STEP_MS = 1400;  // gap between each question landing
+const QUESTION_HOLD_MS = 3200;  // full set held before it clears and replays
 
 function LeadFormMockup() {
-  const [index, setIndex] = useState(0);
+  // The three questions accumulate rather than replace one another: the
+  // first fades up and settles high in the panel, the second lands under
+  // it, the third under that, so the finished state shows the whole form's
+  // worth of questions at once. Then it clears and replays.
+  const [shown, setShown] = useState(0);
   useEffect(() => {
-    const id = setInterval(
-      () => setIndex((i) => (i + 1) % LEAD_FORM_QUESTIONS.length),
-      QUESTION_HOLD_MS,
+    const done = shown >= LEAD_FORM_QUESTIONS.length;
+    const id = setTimeout(
+      () => setShown(done ? 0 : shown + 1),
+      done ? QUESTION_HOLD_MS : QUESTION_STEP_MS,
     );
-    return () => clearInterval(id);
-  }, []);
+    return () => clearTimeout(id);
+  }, [shown]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">
       <SystemPanelBackdrop />
 
-      {/* The drum, resting at dead centre. Default AnimatePresence
-          (both mounted during the handoff) is deliberate here: the exit and
-          entry paths don't share space — out goes up and back, in arrives
-          from ~120px below — so seeing both mid-flight is the carousel
-          effect, not a collision. */}
-      <div
-        className="absolute inset-0 px-6 sm:px-7"
-        style={{ perspective: "900px" }}
-      >
-        <div
-          className="relative h-full"
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          <AnimatePresence initial={false}>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 sm:px-7">
+        <AnimatePresence initial={false}>
+          {LEAD_FORM_QUESTIONS.slice(0, shown).map((q) => (
             <motion.p
-              key={index}
-              className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[22px] sm:text-[26px] font-semibold leading-[1.25] tracking-tight text-white text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
-              initial={{ opacity: 0, rotateX: -50, y: 120 }}
-              animate={{ opacity: 1, rotateX: 0, y: 0 }}
-              exit={{ opacity: 0, rotateX: 55, y: -64 }}
-              transition={{ duration: 0.65, ease: [0.21, 0.5, 0.28, 1] }}
-              style={{ transformOrigin: "50% 50%" }}
+              key={q}
+              className="text-center text-[19px] sm:text-[22px] font-medium leading-[1.3] tracking-tight text-white text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
+              initial={{ opacity: 0, y: 34 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, transition: { duration: 0.25 } }}
+              transition={{ duration: 0.6, ease: [0.21, 0.5, 0.28, 1] }}
             >
-              {LEAD_FORM_QUESTIONS[index]}
+              {q}
             </motion.p>
-          </AnimatePresence>
-        </div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -377,9 +371,12 @@ function LeadFormMockup() {
 // right). Typing dots precede every landing.
 type ChatLine = { from: "client" | "company"; text: string };
 
+// Shown above the lead's own messages in place of their phone number.
+const LEAD_NAME = "Marcus Hale";
+
 const FOLLOWUP_THREAD: ChatLine[] = [
   { from: "client", text: "Hi, I\u2019m looking for a home builder in West Hollywood" },
-  { from: "company", text: "Hi, this is John with Blackbriar Development, how can we help?" },
+  { from: "company", text: "Hi, this is John with XYZ Builders, how can we help?" },
   { from: "client", text: "Can I book a call to learn more about your services?" },
   {
     from: "company",
@@ -434,7 +431,7 @@ function ChatBubble({ line }: { line: ChatLine }) {
         className="text-[9.5px] font-semibold uppercase tracking-[0.14em]"
         style={{ color: mine ? YELLOW : "rgba(255,255,255,0.4)" }}
       >
-        {mine ? "Blackbriar Development" : "310-990-2423"}
+        {mine ? "Builder" : LEAD_NAME}
       </span>
       <p
         className={`max-w-[88%] rounded-lg border px-3 py-2 text-[12.5px] sm:text-[13px] leading-snug ${

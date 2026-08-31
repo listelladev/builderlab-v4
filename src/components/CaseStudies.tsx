@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -11,10 +11,20 @@ import { WistiaEmbed } from "./WistiaEmbed";
 
 function CaseCard({
   item,
+  cardId,
+  activeId,
   onPlay,
+  onStop,
 }: {
   item: VideoTestimonial;
+  /** Identity for this card within the tripled track — index-based, since
+   * the same testimonial appears three times and must not be treated as
+   * one card. */
+  cardId: string;
+  /** The card currently allowed to play; anything else unmounts. */
+  activeId: string | null;
   onPlay: () => void;
+  onStop: () => void;
 }) {
   // The player mounts on click, not on approach.
   //
@@ -32,23 +42,55 @@ function CaseCard({
   // WistiaEmbed's `autoplay`), so it still takes a single press — the
   // failure mode of an earlier facade was a button that only swapped itself
   // for Wistia's own button and needed a second press.
-  const [playing, setPlaying] = useState(false);
+  // Only one card plays at a time: the parent tracks which id is active, so
+  // starting a second video unmounts the first (Wistia has no cross-instance
+  // pause API, and unmounting also frees the player runtime). This covers
+  // desktop and tablet, where several cards are on screen at once.
+  const playing = activeId === cardId;
+  const mediaRef = useRef<HTMLDivElement>(null);
+
+  // Mobile: the carousel scrolls horizontally, so a playing card can leave
+  // the frame without the page scrolling at all. An observer against the
+  // scroller stops playback once the card is more than half out of view.
+  // Registered only while this card is the playing one, so idle cards cost
+  // nothing.
+  useEffect(() => {
+    const el = mediaRef.current;
+    if (!playing || !el) return;
+    // Only stop a card that has actually been seen. An observer's first
+    // callback fires immediately with the current state, and a card sitting
+    // outside the carousel's visible run reports isIntersecting:false right
+    // away — which would stop playback on the very frame it started.
+    let seen = false;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          seen = true;
+        } else if (seen) {
+          onStop();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [playing, onStop]);
 
   return (
     <article className="case-card shrink-0 w-[288px] sm:w-[380px] h-full flex flex-col bg-white/[0.06] backdrop-blur-md max-lg:backdrop-blur-none border border-white/5 rounded-2xl overflow-hidden shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-out group-hover:-translate-y-1">
       {/* aspect-video (not a fixed h-52) so the box's own aspect always
           matches the player's native 16:9 — nothing needs to crop/cover to
           fill it, it just already fits. */}
-      <div className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden">
+      <div
+        ref={mediaRef}
+        className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden"
+      >
         {playing ? (
           <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} autoplay />
         ) : (
           <button
             type="button"
-            onClick={() => {
-              onPlay();
-              setPlaying(true);
-            }}
+            onClick={onPlay}
             aria-label={`Play ${item.name}'s testimonial`}
             className="absolute inset-0 w-full h-full cursor-pointer"
           >
@@ -114,6 +156,10 @@ export function CaseStudies() {
   // testimonial. It used to load when the section came into view, which
   // meant everyone who scrolled past paid for it.
   const [playerScriptWanted, setPlayerScriptWanted] = useState(false);
+  // Which card is playing, if any. Held here rather than per-card so that
+  // starting one stops whatever was running.
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const stop = useCallback(() => setActiveId(null), []);
 
 
   const scroll = (dir: number) => {
@@ -303,7 +349,16 @@ export function CaseStudies() {
         >
           {tripledTestimonials.map((c, i) => (
             <div key={i} data-card className="group flex snap-center">
-              <CaseCard item={c} onPlay={() => setPlayerScriptWanted(true)} />
+              <CaseCard
+                item={c}
+                cardId={String(i)}
+                activeId={activeId}
+                onPlay={() => {
+                  setPlayerScriptWanted(true);
+                  setActiveId(String(i));
+                }}
+                onStop={stop}
+              />
             </div>
           ))}
         </div>

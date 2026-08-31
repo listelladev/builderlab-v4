@@ -243,6 +243,13 @@ export const steps = [
 // so they don't silently drift stale the longer this ships unchanged.
 export const testimonials = [
   {
+    text: "BuilderLab Marketing it is so extremely helpful to help build our company. They take so much pride in making sure we got amazing results. The process was seamless, and we had so much support along every step of the way. I can't recommend them enough.",
+    name: "Michael OHoro",
+    company: "",
+    date: "August 2026",
+    initials: "MO",
+  },
+  {
     text: [
       "I am the owner of Koze Design & Build in Vancouver, Canada, and have been working with Eric from Builder Lab for the past three weeks. In that short time, he has exceeded my expectations.",
       "One of the concerns when hiring a consultant is that after the initial excitement, communication drops off and it's difficult to see the value being delivered. My experience with Eric has been the exact opposite. He is highly engaged, responsive, and proactive. He feels more like an extension of our team than an outside consultant.",
