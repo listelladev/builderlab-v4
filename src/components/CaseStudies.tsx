@@ -8,86 +8,67 @@ import { videoTestimonials, type VideoTestimonial } from "@/lib/data";
 import { CountUp } from "./CountUp";
 import { Reveal } from "./Reveal";
 import { WistiaEmbed } from "./WistiaEmbed";
-import { useFirstInteraction } from "./PerfMode";
 
-// How far outside the viewport a card's real player is mounted. Roughly one
-// card's width either side of the visible run, so a player is ready before
-// it is scrolled to rather than appearing under the cursor.
-const PLAYER_MARGIN_PX = 400;
-
-function CaseCard({ item, hold }: { item: VideoTestimonial; hold: boolean }) {
-  const mediaRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  // The carousel renders three copies of every testimonial so it can scroll
-  // endlessly, which came to two dozen <wistia-player> elements on the
-  // homepage — each one a custom-element upgrade plus its own media
-  // metadata request, for cards that are mostly parked far off the side of
-  // a horizontal scroller and may never be looked at.
+function CaseCard({
+  item,
+  onPlay,
+}: {
+  item: VideoTestimonial;
+  onPlay: () => void;
+}) {
+  // The player mounts on click, not on approach.
   //
-  // Mounting the real player only near the viewport keeps that down to the
-  // handful actually in play. Until then the card shows the same poster the
-  // player itself would show, so the swap is invisible, and crucially there
-  // is no facade in front of the player once it exists: playback still
-  // starts on a single click of Wistia's own play button. An earlier
-  // wrapper with its own play button broke exactly this — clicking it only
-  // unmounted and remounted the player, putting Wistia's button right back
-  // where it started instead of starting playback.
-  useEffect(() => {
-    const el = mediaRef.current;
-    if (!el) return;
-
-    // Same synchronous first look as SilentVideo: the observer's initial
-    // callback is not a reliable "are you visible right now?" answer, and
-    // this scroller additionally jumps its own scrollLeft on mount to
-    // centre the middle copy.
-    const r = el.getBoundingClientRect();
-    if (
-      r.width > 0 &&
-      r.top < window.innerHeight + PLAYER_MARGIN_PX &&
-      r.bottom > -PLAYER_MARGIN_PX &&
-      r.left < window.innerWidth + PLAYER_MARGIN_PX &&
-      r.right > -PLAYER_MARGIN_PX
-    ) {
-      setMounted(true);
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setMounted(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: `${PLAYER_MARGIN_PX}px` },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  // Measured on a throttled iPhone profile against production: Wistia's
+  // runtime was responsible for every long frame on the page. Scrolling the
+  // homepage produced 607ms of long tasks (single tasks up to 178ms), a p99
+  // frame of 142ms and 13 janky frames; with Wistia blocked the same scroll
+  // ran 0 long tasks, a p99 of 14.9ms and no janky frames — better than the
+  // reference site we benchmark against. Blocking the video CDN instead
+  // changed nothing, so this was the whole of it.
+  //
+  // Mounting on approach meant every card scrolled past paid that cost for a
+  // video almost nobody plays. The card now shows its poster with a play
+  // button until tapped; the tap both mounts the player and starts it (see
+  // WistiaEmbed's `autoplay`), so it still takes a single press — the
+  // failure mode of an earlier facade was a button that only swapped itself
+  // for Wistia's own button and needed a second press.
+  const [playing, setPlaying] = useState(false);
 
   return (
     <article className="case-card shrink-0 w-[288px] sm:w-[380px] h-full flex flex-col bg-white/[0.06] backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-[0_24px_48px_-20px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-out group-hover:-translate-y-1">
       {/* aspect-video (not a fixed h-52) so the box's own aspect always
           matches the player's native 16:9 — nothing needs to crop/cover to
           fill it, it just already fits. */}
-      <div
-        ref={mediaRef}
-        className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden"
-      >
-        {mounted && !hold ? (
-          <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} />
+      <div className="case-card__media relative aspect-video shrink-0 bg-gradient-to-br from-[#15241E] to-[#0D1814] overflow-hidden">
+        {playing ? (
+          <WistiaEmbed mediaId={item.wistiaId} poster={item.poster} autoplay />
         ) : (
-          // Decorative — the card's own <h3> already names the client. Sized
-          // through next/image rather than handed to the player at full
-          // resolution, which is what the poster attribute does today.
-          <Image
-            src={item.poster}
-            alt=""
-            fill
-            sizes="380px"
-            className="object-cover"
-          />
+          <button
+            type="button"
+            onClick={() => {
+              onPlay();
+              setPlaying(true);
+            }}
+            aria-label={`Play ${item.name}'s testimonial`}
+            className="absolute inset-0 w-full h-full cursor-pointer"
+          >
+            {/* Decorative — the button's aria-label and the card's own <h3>
+                already name the client. */}
+            <Image
+              src={item.poster}
+              alt=""
+              fill
+              sizes="380px"
+              className="object-cover"
+            />
+            <span className="absolute inset-0 flex items-center justify-center">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black/55 backdrop-blur-[2px] ring-1 ring-white/25 transition-transform duration-300 ease-out group-hover:scale-105">
+                <svg viewBox="0 0 24 24" className="ml-0.5 h-6 w-6 fill-white" aria-hidden>
+                  <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                </svg>
+              </span>
+            </span>
+          </button>
         )}
       </div>
       {/* Glass treatment on the body rather than the <article>: the card's
@@ -129,42 +110,11 @@ const tripledTestimonials = [...videoTestimonials, ...videoTestimonials, ...vide
 export function CaseStudies() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  // The player runtime is fetched the first time a visitor actually plays a
+  // testimonial. It used to load when the section came into view, which
+  // meant everyone who scrolled past paid for it.
   const [playerScriptWanted, setPlayerScriptWanted] = useState(false);
-  // Wistia — the script and the player mounts — additionally holds until the
-  // visitor has produced a real input gesture. A human scrolling toward this
-  // section always has (touch/wheel fires before any scroll movement), so
-  // nothing they can see changes; a programmatic scroll with no gesture
-  // (Lighthouse's screenshot pass, crawlers) keeps the poster images and
-  // never pays the ~856KB player runtime.
-  const interacted = useFirstInteraction();
-  const holdPlayers = !interacted;
 
-  // Same viewport-gating idea as the individual players, one level up: the
-  // <wistia-player> custom element definition is only worth fetching once
-  // this section is actually reached.
-  //
-  // No rootMargin lead time here, deliberately. This section begins right
-  // after a min-h-screen hero, so it sits barely one viewport down — any
-  // margin at all (a viewport, or even 300px) makes it intersect on the
-  // very first frame and the script loads on page load again, which is the
-  // whole thing being avoided. Cards carry their own 400px mounting margin
-  // and show the player's own poster until it arrives, so the handover
-  // stays invisible.
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setPlayerScriptWanted(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
 
   const scroll = (dir: number) => {
     const el = scrollerRef.current;
@@ -308,7 +258,7 @@ export function CaseStudies() {
           Cards keep showing the same poster the player itself would show
           until it arrives, so nothing looks different, it just stops
           competing with hydration for the main thread. */}
-      {playerScriptWanted && !holdPlayers && (
+      {playerScriptWanted && (
         <Script src="https://fast.wistia.com/player.js" strategy="lazyOnload" />
       )}
       <div className="absolute inset-0 bg-[#08120E]" />
@@ -353,7 +303,7 @@ export function CaseStudies() {
         >
           {tripledTestimonials.map((c, i) => (
             <div key={i} data-card className="group flex snap-center">
-              <CaseCard item={c} hold={holdPlayers} />
+              <CaseCard item={c} onPlay={() => setPlayerScriptWanted(true)} />
             </div>
           ))}
         </div>
