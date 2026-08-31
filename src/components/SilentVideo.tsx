@@ -59,6 +59,15 @@ export function SilentVideo({
    * like the video instead of a blank card. */
   poster?: string;
 }) {
+  // Diagnostic kill switch: loading any page with ?novideo=1 keeps every
+  // clip on its poster — no HLS pipeline is ever created. Exists so the
+  // "is it the videos?" question can be answered on a real handset by
+  // comparing the same page with and without the flag, since native HLS
+  // playback cost is invisible to desktop emulation. Read lazily in the
+  // effects below (never during render), so SSR markup is unaffected.
+  const noVideo = () =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).has("novideo");
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<HlsJs | null>(null);
   // Every clip (and the hls.js chunk the non-iOS path pulls) holds until the
@@ -89,7 +98,7 @@ export function SilentVideo({
       r.bottom > -MARGIN_PX &&
       r.left < window.innerWidth + MARGIN_PX &&
       r.right > -MARGIN_PX;
-    if (onScreen) {
+    if (onScreen && !noVideo()) {
       inView.current = true;
       setActive(true);
     }
@@ -103,6 +112,7 @@ export function SilentVideo({
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
+        if (noVideo()) return;
         inView.current = entry.isIntersecting;
         if (entry.isIntersecting) {
           setActive(true);
