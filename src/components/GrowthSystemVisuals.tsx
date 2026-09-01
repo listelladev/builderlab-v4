@@ -253,6 +253,12 @@ export function PositioningVisual() {
 // rendition has to be chosen in the URL, not in player config.
 const CREATIVE_REEL_SRC =
   "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/720p/video.m3u8";
+// Progressive MP4 of the same 720p rendition, taken on phones instead of the
+// playlist (see SilentVideo's mp4Src): HLS needs a playlist fetch and a whole
+// segment before its first frame, and this panel was still arriving on its
+// poster. Same rendition — no resolution change.
+const CREATIVE_REEL_MP4 =
+  "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/play_720p.mp4";
 
 function VideoCreativeMockup() {
   return (
@@ -267,6 +273,7 @@ function VideoCreativeMockup() {
         <div className="relative h-full aspect-[9/16] rounded-lg border border-white/10 overflow-hidden shadow-[0_18px_44px_-18px_rgba(0,0,0,0.8)]">
           <SilentVideo
             src={CREATIVE_REEL_SRC}
+            mp4Src={CREATIVE_REEL_MP4}
             poster="/images/creative-posters/7.jpg"
             label="BuilderLab ad creative"
           />
