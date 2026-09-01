@@ -36,7 +36,7 @@ export default async function ClientWinsPage() {
                 Real Builders, Real Results.
               </h1>
               <p className="text-base sm:text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-                Trusted by <b className="text-white font-semibold">100+</b>{" "}
+                Trusted by <b className="text-white font-semibold">70+</b>{" "}
                 custom home builders. Here&apos;s what they have to say.
               </p>
             </Reveal>

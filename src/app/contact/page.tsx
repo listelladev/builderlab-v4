@@ -81,17 +81,6 @@ export default function ContactPage() {
                   ))}
                 </div>
 
-                <Reveal delay={0.3} className="mt-12 pt-8 border-t border-white/10">
-                  <p className="text-sm text-white/40 mb-1">
-                    Prefer email?
-                  </p>
-                  <a
-                    href="mailto:info@builderlab.com"
-                    className="text-lg text-white hover:text-[#38B685] transition-colors font-semibold"
-                  >
-                    info@builderlab.com
-                  </a>
-                </Reveal>
               </div>
 
               <Reveal delay={0.15}>

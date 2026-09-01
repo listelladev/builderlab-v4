@@ -81,7 +81,8 @@ button:not(:disabled) {
    a single DOM tree that restyles across breakpoints, instead of separate
    mobile and desktop trees that each mounted their own set of videos. */
 .animate-marquee-slow {
-  animation: marquee-slow 48s linear infinite;
+  /* 1.2x the previous pace on mobile (was 48s). */
+  animation: marquee-slow 40s linear infinite;
 }
 @media (min-width: 640px) {
   .animate-marquee-slow {
@@ -308,5 +309,14 @@ html.fx-off .rv-group.rv-armed > .rv-item {
   .rv-group.rv-armed > .rv-item {
     opacity: 1 !important;
     transform: none !important;
+  }
+  /* Exempt: these two tints are how the client logos are legible at all
+     (source art is dark-on-transparent). Small images, negligible cost —
+     unlike the full-page glow layers this profile exists to cut. */
+  .logo-tint-flat {
+    filter: brightness(0) invert(1) !important;
+  }
+  .logo-tint-detail {
+    filter: grayscale(1) invert(1) !important;
   }
 }

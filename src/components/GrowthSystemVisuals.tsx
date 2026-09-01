@@ -575,7 +575,10 @@ const creativeEngine = [
 
 export function CreativeEngineGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    // auto-rows-fr so both rows are the same height: grid rows size to their
+    // own content by default, which left Creative Strategy and Ad Scripting
+    // shorter than the two beneath them.
+    <div className="grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-3">
       {creativeEngine.map((e) => (
         <motion.div
           key={e.title}

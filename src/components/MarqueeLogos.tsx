@@ -17,10 +17,16 @@ export function MarqueeLogos() {
               width={280}
               height={logo.height}
               style={{ height: logo.height }}
+              // The tint classes are CSS filters, and the mobile rendering
+              // profile in globals.css zeroes filters below 1024px — which
+              // left these logos rendering in their source colours (dark on
+              // dark). The `logo-tint-*` classes re-apply them there; they
+              // are small images, nothing like the full-page glow layers
+              // that profile exists to cut.
               className={`w-auto object-contain ${
                 logo.filter === "detail"
-                  ? "grayscale invert"
-                  : "brightness-0 invert"
+                  ? "grayscale invert logo-tint-detail"
+                  : "brightness-0 invert logo-tint-flat"
               }`}
             />
           </div>
