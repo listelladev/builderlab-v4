@@ -51,13 +51,15 @@ const REEL_GUIDS = [
   "32adff00-140a-4b81-945a-31cab60eda2d", // Ad 12
 ];
 
-const reels: { src: string; label: string; poster: string }[] = REEL_GUIDS.map(
-  (guid, i) => ({
+// `mp4` is Bunny's progressive fallback of the same rendition, used by
+// SilentVideo on phones only — see its `mp4Src` prop for why.
+const reels: { src: string; mp4: string; label: string; poster: string }[] =
+  REEL_GUIDS.map((guid, i) => ({
     src: `${STREAM_CDN}/${guid}/${REEL_RENDITION}/video.m3u8`,
+    mp4: `${STREAM_CDN}/${guid}/play_${REEL_RENDITION}.mp4`,
     label: `Ad ${i + 1}`,
     poster: `/images/creative-posters/${i + 1}.jpg`,
-  }),
-);
+  }));
 
 // `mobileHidden` drops the card from layout below `sm` entirely (not just
 // visually): SilentVideo's own visibility check reads a display:none card
@@ -76,6 +78,7 @@ function ReelCard({ c, mobileHidden }: { c: (typeof reels)[number]; mobileHidden
       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-[#0D1814]">
         <SilentVideo
           src={c.src}
+          mp4Src={c.mp4}
           label={c.label}
           poster={c.poster}
           rate={REEL_PLAYBACK_RATE}

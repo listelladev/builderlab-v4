@@ -9,6 +9,14 @@ import { useFirstInteraction } from "./PerfMode";
 // can see, large enough that a card is already running by the time it
 // scrolls in, rather than popping from poster to video in front of you.
 const MARGIN_PX = 300;
+// Phones get a much longer lead. Reported from real devices: cards were
+// reaching the screen still on their poster, because 300px is under half a
+// phone viewport of notice and a stream needs longer than that to buffer
+// on cellular. ~1.2 screens ahead means the clip is running by the time it
+// scrolls in. Read lazily (inside effects), never during render.
+const MOBILE_MARGIN_PX = 1000;
+const isPhone = () => typeof window !== "undefined" && window.innerWidth < 1024;
+const margin = () => (isPhone() ? MOBILE_MARGIN_PX : MARGIN_PX);
 
 // Plain, ambient background video for a thumbnail: autoplays muted and
 // looped with no sound, so unlike a real player it needs no click-to-unmute
@@ -46,6 +54,7 @@ export function SilentVideo({
   randomizeStart,
   poster,
   rate,
+  mp4Src,
 }: {
   /** HLS playlist URL (Bunny Stream serves .m3u8, not a plain file). */
   src: string;
@@ -62,6 +71,12 @@ export function SilentVideo({
   /** Playback speed. Applied on every loadedmetadata (a loop or a source
    * swap resets the element's rate), not just once on mount. */
   rate?: number;
+  /** Progressive MP4 of the same rendition, used on phones instead of the
+   * HLS playlist. HLS needs a playlist fetch and then a full segment before
+   * its first frame; a faststart MP4 paints from the first bytes, which is
+   * the difference between a card arriving mid-play and arriving on its
+   * poster. Desktop keeps HLS. */
+  mp4Src?: string;
 }) {
   // Diagnostic kill switch: loading any page with ?novideo=1 keeps every
   // clip on its poster — no HLS pipeline is ever created. Exists so the
@@ -95,13 +110,14 @@ export function SilentVideo({
     const el = videoRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
+    const m = margin();
     const onScreen =
       r.width > 0 &&
       r.height > 0 &&
-      r.top < window.innerHeight + MARGIN_PX &&
-      r.bottom > -MARGIN_PX &&
-      r.left < window.innerWidth + MARGIN_PX &&
-      r.right > -MARGIN_PX;
+      r.top < window.innerHeight + m &&
+      r.bottom > -m &&
+      r.left < window.innerWidth + m &&
+      r.right > -m;
     if (onScreen && !noVideo()) {
       inView.current = true;
       setActive(true);
@@ -125,7 +141,7 @@ export function SilentVideo({
           el.pause();
         }
       },
-      { rootMargin: `${MARGIN_PX}px` },
+      { rootMargin: `${margin()}px` },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -159,7 +175,9 @@ export function SilentVideo({
     // and unmount while the hls.js chunk is still in flight, and attaching a
     // player to a detached element leaks a decoder that nothing will pause.
     let cancelled = false;
-    if (el.canPlayType("application/vnd.apple.mpegurl")) {
+    if (mp4Src && isPhone()) {
+      el.src = mp4Src;
+    } else if (el.canPlayType("application/vnd.apple.mpegurl")) {
       el.src = src;
     } else {
       // Imported here rather than at module scope so the ~600KB hls.js
@@ -199,7 +217,7 @@ export function SilentVideo({
       hlsRef.current?.destroy();
       hlsRef.current = null;
     };
-  }, [active, ready, randomizeStart, rate, src]);
+  }, [active, ready, randomizeStart, rate, src, mp4Src]);
 
   return (
     <video
