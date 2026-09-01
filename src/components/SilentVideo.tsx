@@ -12,9 +12,12 @@ const MARGIN_PX = 300;
 // Phones get a much longer lead. Reported from real devices: cards were
 // reaching the screen still on their poster, because 300px is under half a
 // phone viewport of notice and a stream needs longer than that to buffer
-// on cellular. ~1.2 screens ahead means the clip is running by the time it
-// scrolls in. Read lazily (inside effects), never during render.
-const MOBILE_MARGIN_PX = 1000;
+// on cellular. ~3.5 screens ahead means the carousel begins loading on the
+// visitor's first scroll gesture and the deeper ads panel a few seconds
+// before it arrives — enough for a faststart MP4 to be running by then.
+// (1000px, the previous value, still had cards arriving on their poster.)
+// Read lazily (inside effects), never during render.
+const MOBILE_MARGIN_PX = 3000;
 const isPhone = () => typeof window !== "undefined" && window.innerWidth < 1024;
 const margin = () => (isPhone() ? MOBILE_MARGIN_PX : MARGIN_PX);
 
@@ -158,9 +161,15 @@ export function SilentVideo({
     // rather than genuinely mid-content, and duration isn't known until
     // loadedmetadata fires, so the seek has to happen in that handler
     // rather than synchronously here.
+    // The random start is skipped on the phone MP4 path: a seek right after
+    // loadedmetadata abandons the file head the browser has just buffered
+    // sequentially and refetches from an arbitrary offset, which on
+    // cellular costs the first frame exactly the time this component is
+    // trying to save. Desktop HLS seeks by segment and keeps it.
+    const usingMp4 = Boolean(mp4Src && isPhone());
     const onLoadedMetadata = () => {
       if (rate && rate !== 1) el.playbackRate = rate;
-      if (randomizeStart && !seeked.current && el.duration > 0) {
+      if (randomizeStart && !usingMp4 && !seeked.current && el.duration > 0) {
         seeked.current = true;
         el.currentTime = Math.random() * el.duration * 0.7;
       }

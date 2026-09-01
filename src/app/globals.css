@@ -81,8 +81,8 @@ button:not(:disabled) {
    a single DOM tree that restyles across breakpoints, instead of separate
    mobile and desktop trees that each mounted their own set of videos. */
 .animate-marquee-slow {
-  /* 1.4x the original 48s pace on mobile. */
-  animation: marquee-slow 34s linear infinite;
+  /* ~1.7x the original 48s pace on mobile (1.4x, then a further 20%). */
+  animation: marquee-slow 28s linear infinite;
 }
 @media (min-width: 640px) {
   .animate-marquee-slow {
