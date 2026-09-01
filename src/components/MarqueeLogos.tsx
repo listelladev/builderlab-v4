@@ -17,6 +17,14 @@ export function MarqueeLogos() {
               width={280}
               height={logo.height}
               style={{ height: logo.height }}
+              // Eager, not the default lazy: every logo starts off to the
+              // right of the viewport in the scrolling track, so a lazy
+              // loader treats it as off-screen and only fetches it once the
+              // marquee has carried it into view — each one then pops in on
+              // arrival instead of the strip reading as one continuous loop.
+              // Seven small files, ~100KB in total; well worth loading up
+              // front.
+              loading="eager"
               // The tint classes are CSS filters, and the mobile rendering
               // profile in globals.css zeroes filters below 1024px — which
               // left these logos rendering in their source colours (dark on
