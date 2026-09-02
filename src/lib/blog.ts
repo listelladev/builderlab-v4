@@ -42,7 +42,10 @@ export type BlogPost = {
   readTime: number;
   readTimeOverride?: number;
   featuredImage: SanityImage;
-  body: BodyBlock[];
+  /** Legacy Portable-Text body (posts written before the WYSIWYG editor). */
+  body?: BodyBlock[];
+  /** Sanitized HTML from the WYSIWYG editor. Preferred when present. */
+  bodyHtml?: string;
   categoryName: string;
 };
 
@@ -57,6 +60,7 @@ const POST_PROJECTION = `{
   readTime,
   readTimeOverride,
   body,
+  bodyHtml,
   "categoryName": category->name
 }`;
 

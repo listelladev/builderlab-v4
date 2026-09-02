@@ -1,4 +1,5 @@
 import "server-only";
+import { isRichHtmlEmpty } from "@/lib/html";
 
 export const MAX_IMAGE_BYTES = 4 * 1024 * 1024; // 4MB
 
@@ -44,6 +45,7 @@ export type BlogPostDraft = {
   featuredImage?: { asset?: unknown };
   excerpt?: string;
   body?: unknown[];
+  bodyHtml?: string;
 };
 
 export function validateBlogPostForPublish(doc: BlogPostDraft): string[] {
@@ -57,7 +59,8 @@ export function validateBlogPostForPublish(doc: BlogPostDraft): string[] {
   if (!doc.featuredImage || !doc.featuredImage.asset)
     errors.push("A featured image is required before publishing.");
   if (!doc.excerpt || !doc.excerpt.trim()) errors.push("Excerpt is required before publishing.");
-  if (!Array.isArray(doc.body) || doc.body.length === 0)
+  const hasBlocks = Array.isArray(doc.body) && doc.body.length > 0;
+  if (!hasBlocks && isRichHtmlEmpty(doc.bodyHtml))
     errors.push("Article body is required before publishing.");
   return errors;
 }

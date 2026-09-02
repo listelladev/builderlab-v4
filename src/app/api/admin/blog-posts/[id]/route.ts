@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { sanityWriteClient } from "@/lib/sanity/client";
 import { requireAuth } from "@/lib/sanity/auth";
 import { slugify, estimateReadTimeMinutes, validateBlogPostForPublish } from "@/lib/sanity/validate";
+import { sanitizeRichHtml, estimateReadTimeFromHtml, isRichHtmlEmpty } from "@/lib/html";
 
 const EDITABLE_FIELDS = [
   "title",
@@ -11,7 +12,6 @@ const EDITABLE_FIELDS = [
   "publishedAt",
   "featuredImage",
   "excerpt",
-  "body",
   "readTimeOverride",
 ] as const;
 
@@ -55,6 +55,15 @@ export const PATCH = requireAuth(async (req: NextRequest, ctx: RouteContext) => 
     patch.category = body.category ? { _type: "reference", _ref: body.category } : undefined;
   }
 
+  // The WYSIWYG editor sends the whole article as HTML. Once a post has been
+  // saved that way its legacy Portable-Text `body` is retired so there is a
+  // single source of truth for the public page.
+  const unset: string[] = [];
+  if ("bodyHtml" in body) {
+    patch.bodyHtml = sanitizeRichHtml(body.bodyHtml);
+    if (Array.isArray(existing.body) && existing.body.length) unset.push("body");
+  }
+
   // Slug is only touched when the admin explicitly sends one — editing the
   // title never silently overwrites a slug they customized.
   if (typeof body.slug === "string" && body.slug.trim()) {
@@ -75,13 +84,19 @@ export const PATCH = requireAuth(async (req: NextRequest, ctx: RouteContext) => 
   const merged = { ...existing, ...patch } as {
     readTimeOverride?: number;
     body?: unknown[];
+    bodyHtml?: string;
     published?: boolean;
   };
+  if (unset.includes("body")) merged.body = undefined;
   merged.readTimeOverride =
     typeof merged.readTimeOverride === "number" && merged.readTimeOverride > 0
       ? merged.readTimeOverride
       : undefined;
-  patch.readTime = merged.readTimeOverride ?? estimateReadTimeMinutes(merged.body);
+  patch.readTime =
+    merged.readTimeOverride ??
+    (!isRichHtmlEmpty(merged.bodyHtml)
+      ? estimateReadTimeFromHtml(merged.bodyHtml)
+      : estimateReadTimeMinutes(merged.body));
 
   let publishedValue = existing.published;
   if (body.action === "publish" || body.published === true) {
@@ -95,6 +110,8 @@ export const PATCH = requireAuth(async (req: NextRequest, ctx: RouteContext) => 
   }
   patch.published = publishedValue;
 
-  const updated = await client.patch(id).set(patch).commit();
+  let tx = client.patch(id).set(patch);
+  if (unset.length) tx = tx.unset(unset);
+  const updated = await tx.commit();
   return NextResponse.json({ post: updated });
 });

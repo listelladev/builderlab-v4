@@ -11,10 +11,13 @@ import { CaseStudyStats } from "@/components/case-study/CaseStudyStats";
 import { CaseStudyAbout } from "@/components/case-study/CaseStudyAbout";
 import { CaseStudyWhatWeDid } from "@/components/case-study/CaseStudyWhatWeDid";
 import { CaseStudyResults } from "@/components/case-study/CaseStudyResults";
-import { caseStudies, getCaseStudy } from "@/lib/case-studies";
+import { getCaseStudies, getCaseStudy } from "@/lib/case-studies";
 
-export function generateStaticParams() {
-  return caseStudies.map((study) => ({ slug: study.slug }));
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const studies = await getCaseStudies();
+  return studies.map((study) => ({ slug: study.slug }));
 }
 
 export async function generateMetadata({
@@ -23,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const study = await getCaseStudy(slug);
   if (!study) return {};
   return {
     title: `${study.name} | Case Studies | Builderlab`,
@@ -37,7 +40,7 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const study = await getCaseStudy(slug);
   if (!study) notFound();
 
   return (
@@ -46,25 +49,27 @@ export default async function CaseStudyPage({
       <main>
         <CaseStudyHero study={study} />
         <CaseStudyStats stats={study.stats} />
-        <CaseStudyAbout name={study.name} about={study.about} />
+        <CaseStudyAbout name={study.name} aboutHtml={study.aboutHtml} />
         <CaseStudyWhatWeDid items={study.whatWeDid} />
         <CaseStudyResults
-          results={study.results}
+          resultsHtml={study.resultsHtml}
           image={study.resultsImage}
           name={study.name}
         />
 
-        <section className="relative py-20 lg:py-28 overflow-hidden border-t border-white/5">
-          <div className="absolute inset-0 bg-[#08120E]" />
-          <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
-            <TestimonialMedia
-              image={study.resultsImage}
-              quote={study.testimonial.quote}
-              name={study.testimonial.name}
-              role={study.testimonial.role}
-            />
-          </div>
-        </section>
+        {study.testimonial && (
+          <section className="relative py-20 lg:py-28 overflow-hidden border-t border-white/5">
+            <div className="absolute inset-0 bg-[#08120E]" />
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
+              <TestimonialMedia
+                image={study.resultsImage}
+                quote={study.testimonial.quote}
+                name={study.testimonial.name}
+                role={study.testimonial.role}
+              />
+            </div>
+          </section>
+        )}
 
         <section className="relative py-20 lg:py-28 overflow-hidden">
           <SectionGlow

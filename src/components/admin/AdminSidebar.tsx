@@ -10,6 +10,8 @@ export function AdminSidebar() {
   const router = useRouter();
   const blogActive = pathname.startsWith("/admin/blog");
   const clientWinsActive = pathname.startsWith("/admin/client-wins");
+  const caseStudiesActive = pathname.startsWith("/admin/case-studies");
+  const testimonialsActive = pathname.startsWith("/admin/testimonials");
 
   async function logout() {
     await adminApi("/api/auth/logout", { method: "POST" });
@@ -38,6 +40,22 @@ export function AdminSidebar() {
           }`}
         >
           Client Wins
+        </Link>
+        <Link
+          href="/admin/case-studies"
+          className={`px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors ${
+            caseStudiesActive ? "bg-[#38B685] text-[#08120E]" : "text-white/60 hover:bg-white/5 hover:text-white"
+          }`}
+        >
+          Case Studies
+        </Link>
+        <Link
+          href="/admin/testimonials"
+          className={`px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors ${
+            testimonialsActive ? "bg-[#38B685] text-[#08120E]" : "text-white/60 hover:bg-white/5 hover:text-white"
+          }`}
+        >
+          Reviews
         </Link>
       </nav>
       <div className="flex-1" />

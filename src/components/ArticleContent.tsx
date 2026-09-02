@@ -34,8 +34,16 @@ function renderSpans(children: PortableTextSpan[], markDefs: PortableTextBlock["
   });
 }
 
-/** Portable Text body blocks -> article JSX. Groups consecutive list-item blocks into one <ul>/<ol>. */
-export function ArticleContent({ body }: { body: BodyBlock[] }) {
+/**
+ * Article body -> JSX. Posts saved from the WYSIWYG editor carry sanitized
+ * HTML (`bodyHtml`, styled by .article-html in globals.css); older posts
+ * still carry Portable Text blocks, rendered below with consecutive
+ * list-item blocks grouped into one <ul>/<ol>.
+ */
+export function ArticleContent({ body, bodyHtml }: { body?: BodyBlock[]; bodyHtml?: string }) {
+  if (typeof bodyHtml === "string" && bodyHtml.trim()) {
+    return <div className="article-html" dangerouslySetInnerHTML={{ __html: bodyHtml }} />;
+  }
   if (!Array.isArray(body)) return null;
 
   const nodes: ReactNode[] = [];

@@ -4,7 +4,9 @@ import { Footer } from "@/components/Footer";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/Reveal";
 import { SectionGlow } from "@/components/SectionGlow";
-import { caseStudies } from "@/lib/case-studies";
+import { getCaseStudies } from "@/lib/case-studies";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Case Studies | Builderlab",
@@ -12,7 +14,8 @@ export const metadata: Metadata = {
     "Real results from the custom home builders we've helped grow. See how we've turned referral-only builders into predictable growth engines.",
 };
 
-export default function CaseStudiesPage() {
+export default async function CaseStudiesPage() {
+  const caseStudies = await getCaseStudies();
   return (
     <>
       <Header />

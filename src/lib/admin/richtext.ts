@@ -1,8 +1,8 @@
 "use client";
 
-// Minimal Portable-Text-style (de)serializer for the blog article block
-// editor. Only semantic marks are supported — no raw HTML/CSS ever reaches
-// the stored content.
+// Portable-Text helpers left over from the original block editor. Still
+// used by portable-to-html.ts to convert legacy article bodies the first
+// time they are opened in the WYSIWYG editor.
 
 import type {
   PortableTextBlock,

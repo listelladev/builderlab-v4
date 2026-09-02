@@ -320,3 +320,200 @@ html.fx-off .rv-group.rv-armed > .rv-item {
     filter: grayscale(1) invert(1) !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Rich text (WYSIWYG) — shared by the admin editor surface (.tiptap-body)
+   and the public render of stored HTML (.article-html, .rich-inline). Keep
+   the two in step so what the admin sees is what the page shows.
+   ------------------------------------------------------------------------ */
+.tiptap-body {
+  outline: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.tiptap-body > * + * {
+  margin-top: 0.9em;
+}
+.tiptap-body h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  margin-top: 1.6em;
+  line-height: 1.25;
+}
+.tiptap-body h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #fff;
+  margin-top: 1.4em;
+  line-height: 1.3;
+}
+.tiptap-body ul,
+.article-html ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+}
+.tiptap-body ol,
+.article-html ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+}
+.tiptap-body li > p {
+  margin: 0;
+}
+.tiptap-body li + li,
+.article-html li + li {
+  margin-top: 0.4em;
+}
+.tiptap-body ::marker,
+.article-html ::marker {
+  color: #38b685;
+}
+.tiptap-body blockquote {
+  border-left: 2px solid #38b685;
+  padding-left: 1rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+}
+.tiptap-body a,
+.article-html a,
+.rich-inline a {
+  color: #38b685;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.tiptap-body hr,
+.article-html hr {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1.5em 0;
+}
+.tiptap-body figure {
+  margin: 1.5em 0;
+}
+.tiptap-body figure img,
+.tiptap-body > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tiptap-body figure.ProseMirror-selectednode img {
+  outline: 2px solid #38b685;
+  outline-offset: 2px;
+}
+.tiptap-body figcaption {
+  margin-top: 0.6em;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  min-height: 1.4em;
+}
+.tiptap-body figcaption:empty::before {
+  content: "Add a caption (optional)";
+  color: rgba(255, 255, 255, 0.25);
+}
+.tiptap-body p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Public article body (blog posts stored as HTML). Mirrors the classes the
+   Portable-Text renderer in ArticleContent.tsx applies per block. */
+.article-html > * + * {
+  margin-top: 1.5rem;
+}
+.article-html p,
+.article-html li {
+  font-size: 1rem;
+  line-height: 1.625;
+  color: rgba(255, 255, 255, 0.7);
+}
+.article-html h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #fff;
+  margin-top: 3.5rem;
+  margin-bottom: 1.25rem;
+}
+.article-html h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 500;
+  color: #fff;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.article-html h2 + *,
+.article-html h3 + * {
+  margin-top: 0;
+}
+.article-html ul,
+.article-html ol {
+  margin-top: 1.5rem;
+}
+.article-html li + li {
+  margin-top: 0.75rem;
+}
+.article-html blockquote {
+  border-left: 2px solid #38b685;
+  padding-left: 1.25rem;
+  font-style: italic;
+}
+.article-html blockquote p {
+  margin: 0;
+}
+.article-html figure {
+  margin: 2.5rem 0;
+}
+.article-html figure img,
+.article-html > img {
+  display: block;
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.article-html figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+.article-html figcaption:empty {
+  display: none;
+}
+.article-html a:hover {
+  text-decoration-color: #38b685;
+}
+@media (min-width: 1024px) {
+  .article-html h2 {
+    font-size: 1.875rem;
+  }
+}
+
+/* Short rich-text fields rendered inside a fixed typographic slot (case
+   study "about"/"results"): inherit the slot's font, just space paragraphs. */
+.rich-inline > * + * {
+  margin-top: 1em;
+}
+.rich-inline ul,
+.rich-inline ol {
+  padding-left: 1.4rem;
+  text-align: left;
+}
+.rich-inline ul {
+  list-style: disc;
+}
+.rich-inline ol {
+  list-style: decimal;
+}
+.rich-inline strong {
+  color: #fff;
+  font-weight: 600;
+}

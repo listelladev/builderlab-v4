@@ -2,7 +2,8 @@ import "server-only";
 import { NextResponse, type NextRequest } from "next/server";
 import { sanityWriteClient } from "@/lib/sanity/client";
 import { requireAuth } from "@/lib/sanity/auth";
-import { slugify, estimateReadTimeMinutes, validateBlogPostForPublish } from "@/lib/sanity/validate";
+import { slugify, validateBlogPostForPublish } from "@/lib/sanity/validate";
+import { sanitizeRichHtml, estimateReadTimeFromHtml } from "@/lib/html";
 
 export const GET = requireAuth(async () => {
   const client = sanityWriteClient();
@@ -35,7 +36,11 @@ export const POST = requireAuth(async (req: NextRequest) => {
     }
   }
 
-  const bodyContent = Array.isArray(body.body) ? body.body : [];
+  const bodyHtml = sanitizeRichHtml(body.bodyHtml);
+  const readTimeOverride =
+    typeof body.readTimeOverride === "number" && body.readTimeOverride > 0
+      ? body.readTimeOverride
+      : undefined;
 
   const doc = {
     _type: "blogPost",
@@ -46,9 +51,9 @@ export const POST = requireAuth(async (req: NextRequest) => {
     publishedAt: body.publishedAt || undefined,
     featuredImage: body.featuredImage || undefined,
     excerpt: typeof body.excerpt === "string" ? body.excerpt.trim() : "",
-    body: bodyContent,
-    readTimeOverride: typeof body.readTimeOverride === "number" ? body.readTimeOverride : undefined,
-    readTime: estimateReadTimeMinutes(bodyContent),
+    bodyHtml,
+    readTimeOverride,
+    readTime: readTimeOverride ?? estimateReadTimeFromHtml(bodyHtml),
     published: false,
   };
 

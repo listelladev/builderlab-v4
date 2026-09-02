@@ -1,0 +1,193 @@
+[
+  {
+    "slug": "mu-developments",
+    "name": "MU Developments",
+    "industry": "Custom Home Building",
+    "tagline": "A California builder who relocated to Atlanta with zero local reputation went from pure word of mouth to a signed $1.3M contract and 381 inbound leads on just $4,600 in ad spend.",
+    "highlights": [
+      "$1.3M contract from one ad lead",
+      "381 leads at $12.80 per lead",
+      "3 active sets of plans in progress"
+    ],
+    "heroImage": "/images/mu-developments.jpeg",
+    "supportingImages": [
+      "/images/case-concrete.png",
+      "/images/case-mowman.png"
+    ],
+    "stats": [
+      {
+        "label": "Custom build contract closed",
+        "value": 1.3,
+        "prefix": "$",
+        "suffix": "M"
+      },
+      {
+        "label": "Website leads generated",
+        "value": 381,
+        "suffix": "+"
+      },
+      {
+        "label": "Average cost per lead",
+        "value": 12.8,
+        "prefix": "$"
+      },
+      {
+        "label": "Active sets of plans in progress",
+        "value": 3
+      }
+    ],
+    "about": "MU Developments is an Atlanta-based custom home builder and general contracting firm founded by brothers Jeff Martin and Troy Uphoff. After years building a strong reputation in California, relocating to Georgia meant starting over: no local referral network, no builder relationships, no track record in a brand-new market.",
+    "whatWeDid": [
+      {
+        "title": "Positioning & Offer",
+        "description": "Positioned MU as the trusted choice for high-end custom builds in a brand-new market, establishing credibility fast for two builders with zero local reputation or referral network to fall back on."
+      },
+      {
+        "title": "Meta & Google Ads",
+        "description": "Launched founder-led Meta video ad campaigns showcasing MU's craftsmanship, targeted across the Atlanta metro to put their name in front of qualified homeowners immediately."
+      },
+      {
+        "title": "Lead Capture & CRM",
+        "description": "Built a full CRM and lead automation system to capture every inquiry the moment it came in, so no lead went cold while Jeff and Troy stayed focused on running the business."
+      },
+      {
+        "title": "Sales Process & Nurture",
+        "description": "Set up automated multi-touch nurture sequences and structured the pipeline to move prospects from first contact to booked consultation without manual follow-up."
+      }
+    ],
+    "results": "An ad lead from the campaign's very first week closed into a signed $1.3M contract. The campaign went on to generate 381 total website leads at $12.76 average cost per lead, with 3 active sets of plans in progress and 300+ sales conversations held since launch, turning two builders with no local reputation into an established name in a brand-new market.",
+    "resultsImage": "/images/case-nhfa.png",
+    "testimonial": {
+      "quote": "If you're on the fence, give Builderlab a chance. You will not be disappointed. Once you start, you'll be at ease knowing you'll get a return on it. Just expect it to happen, because it will.",
+      "name": "Jeff Martin",
+      "role": "MU Developments"
+    }
+  },
+  {
+    "slug": "ava-custom-homes",
+    "name": "Ava Custom Homes",
+    "industry": "Residential Construction",
+    "tagline": "A Houston custom home builder with no active marketing went from zero online leads to 108 inquiries and a three-quarter-million-dollar signed contract in under 60 days.",
+    "highlights": [
+      "$750K contract, zero manual follow-up",
+      "108 leads in under 60 days",
+      "11 automated follow-ups before close"
+    ],
+    "heroImage": "/images/ava-custom-homes.webp",
+    "supportingImages": [
+      "/images/case-nhfa.png",
+      "/images/case-toptier.png"
+    ],
+    "stats": [
+      {
+        "label": "Custom home leads generated",
+        "value": 108,
+        "suffix": "+"
+      },
+      {
+        "label": "Contract closed from ad leads",
+        "value": 750,
+        "prefix": "$",
+        "suffix": "K"
+      },
+      {
+        "label": "Average cost per lead",
+        "value": 29.1,
+        "prefix": "$"
+      },
+      {
+        "label": "Automated follow-ups before close",
+        "value": 11,
+        "suffix": "×"
+      }
+    ],
+    "about": "Ava Custom Homes is a Houston-based custom home builder founded by John and Sarah Lendvai. John brings disciplined budget and risk management grounded in building science, Sarah leads with a design-forward eye. Their portfolio spans Memorial, River Oaks, and West University, and they needed a marketing system that matched the quality of their builds.",
+    "whatWeDid": [
+      {
+        "title": "Positioning & Offer",
+        "description": "Positioned Ava around what production builders structurally can't offer: a true design-build experience from John and Sarah directly, in a market where Ava had a strong portfolio but zero digital presence."
+      },
+      {
+        "title": "Meta & Google Ads",
+        "description": "Launched a Meta ad campaign on a modest $50/day budget targeting homeowners across Houston's premium neighborhoods, including Memorial, River Oaks, and West University."
+      },
+      {
+        "title": "Lead Capture & CRM",
+        "description": "Built a system to instantly capture, track, and follow up on every inbound lead, replacing a referral-only process with no way to scale or measure what was working."
+      },
+      {
+        "title": "Revenue Tracking",
+        "description": "Connected every lead back to ad spend and pipeline outcome, tracing the full path from a single click to a signed $750,000 contract."
+      }
+    ],
+    "results": "Within three weeks of launch, a lead entered Builderlab's automated nurture sequence and received 11 follow-ups without a single manual touchpoint from the Ava team. Two months later, that lead signed a $750,000 contract, one deal that paid for the entire $3,200 in ad spend many times over, with additional deals still moving through the pipeline.",
+    "resultsImage": "/images/case-concrete.png",
+    "testimonial": {
+      "quote": "We're moving forward with the lender. The PSA is signed for eighteen thousand, and once we finalize plans and bids we'll sign the build contract for seven hundred and thirty-two thousand. I wanted to get one signed, and we did.",
+      "name": "John Lendvai",
+      "role": "Ava Custom Homes"
+    }
+  },
+  {
+    "slug": "birch-hill-homes",
+    "name": "Birch Hill Homes",
+    "industry": "Luxury Home Building",
+    "tagline": "Calgary custom home builder Chris Coleman now has a complete marketing ecosystem working for him around the clock: 111 leads generated and a brand that stands apart from every other builder in the city.",
+    "highlights": [
+      "111 leads from Meta in 2 months",
+      "$18.90 average cost per lead",
+      "Zero to full system in 2 months"
+    ],
+    "heroImage": "/images/birch-hill-homes.webp",
+    "supportingImages": [
+      "/images/case-insight.png",
+      "/images/case-concrete.png"
+    ],
+    "stats": [
+      {
+        "label": "Leads generated from Meta in 2 months",
+        "value": 111,
+        "suffix": "+"
+      },
+      {
+        "label": "Average cost per lead",
+        "value": 18.9,
+        "prefix": "$"
+      },
+      {
+        "label": "Campaigns running at once",
+        "value": 3
+      },
+      {
+        "label": "Months from zero to full system live",
+        "value": 2
+      }
+    ],
+    "about": "When Chris Coleman came to Builderlab, Birch Hill Homes had no website, no ad campaigns, no lead generation system, and no way to establish credibility with Calgary homeowners. Like most custom builders, he was relying on relationships and referrals, which works, until it doesn't.",
+    "whatWeDid": [
+      {
+        "title": "Positioning & Offer",
+        "description": "Mapped out exactly who Birch Hill's ideal clients are, what Calgary homeowners search for, and how to position Chris as the clear choice in a market full of builders who all look the same."
+      },
+      {
+        "title": "Landing Pages & CRO",
+        "description": "Built a conversion-focused, mobile-first website from scratch: service pages, a project portfolio, and an SEO-optimized blog, all built to turn curious visitors into booked consultations."
+      },
+      {
+        "title": "Meta & Google Ads",
+        "description": "Launched three founder-led Meta video campaigns across custom homes, backyard suites, and laneway homes. Chris on camera, not stock footage, answering the questions Calgary homeowners were already asking."
+      },
+      {
+        "title": "Sales Optimisation",
+        "description": "Every lead is captured instantly, followed up automatically, and booked directly into Chris's calendar, nurtured across the long custom-home sales cycle without him lifting a finger."
+      }
+    ],
+    "results": "In just two months, Birch Hill Homes went from zero online presence to a fully operational marketing machine: 111 inbound leads at $18.86 average cost per lead on $2,093.71 in total ad spend, multiple proposals out with serious prospects, and a brand Calgary homeowners now recognize on their feed before they ever pick up the phone.",
+    "resultsImage": "/images/case-toptier.png",
+    "testimonial": {
+      "quote": "Running ads without a proper foundation is like pouring fuel on a fire that isn't lit yet. Before we spent a single dollar, we needed to make sure the foundation was in place.",
+      "name": "Chris Coleman",
+      "role": "Birch Hill Homes"
+    }
+  }
+]

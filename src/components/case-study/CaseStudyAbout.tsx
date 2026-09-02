@@ -2,10 +2,11 @@ import { Reveal } from "../Reveal";
 
 export function CaseStudyAbout({
   name,
-  about,
+  aboutHtml,
 }: {
   name: string;
-  about: string;
+  /** Sanitized HTML from the admin's WYSIWYG editor. */
+  aboutHtml: string;
 }) {
   return (
     <section className="relative py-20 lg:py-28 overflow-hidden">
@@ -15,9 +16,10 @@ export function CaseStudyAbout({
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
             About {name}
           </span>
-          <p className="text-xl lg:text-2xl text-white/80 leading-relaxed text-balance">
-            {about}
-          </p>
+          <div
+            className="rich-inline text-xl lg:text-2xl text-white/80 leading-relaxed text-balance"
+            dangerouslySetInnerHTML={{ __html: aboutHtml }}
+          />
         </Reveal>
       </div>
     </section>

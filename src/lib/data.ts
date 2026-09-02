@@ -241,6 +241,8 @@ export const steps = [
 // relative timestamps ("2 months ago") are converted to a fixed
 // month/year as of that pull date rather than displayed as relative time,
 // so they don't silently drift stale the longer this ships unchanged.
+// Homepage reviews now live in the CMS (see lib/testimonials.ts); this list
+// is only the fallback used if the content lake cannot be reached.
 export const testimonials = [
   {
     text: "BuilderLab Marketing it is so extremely helpful to help build our company. They take so much pride in making sure we got amazing results. The process was seamless, and we had so much support along every step of the way. I can't recommend them enough.",

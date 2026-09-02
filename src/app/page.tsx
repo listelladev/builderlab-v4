@@ -14,8 +14,13 @@ import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
 import { Apply } from "@/components/Apply";
 import { Footer } from "@/components/Footer";
+import { getHomepageReviews } from "@/lib/testimonials";
 
-export default function Home() {
+// Reviews are CMS-managed; re-fetch at most once a minute.
+export const revalidate = 60;
+
+export default async function Home() {
+  const reviews = await getHomepageReviews();
   return (
     <>
       <Header />
@@ -27,7 +32,7 @@ export default function Home() {
         <GrowthSystem />
         {/* <FeaturedWebsites /> */}
         <Differentiator />
-        <Testimonials />
+        <Testimonials items={reviews} />
         <Faq />
         <Apply />
       </main>

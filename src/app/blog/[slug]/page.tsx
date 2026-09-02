@@ -109,7 +109,7 @@ export default async function BlogPostPage({
         <section className="relative pb-24 lg:pb-32 overflow-hidden">
           <div className="absolute inset-0 bg-[#08120E]" />
           <div className="relative z-10 max-w-[940px] mx-auto px-6 lg:px-10 text-left">
-            <ArticleContent body={post.body} />
+            <ArticleContent body={post.body} bodyHtml={post.bodyHtml} />
           </div>
         </section>
 

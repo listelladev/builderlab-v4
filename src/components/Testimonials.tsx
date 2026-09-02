@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Star } from "lucide-react";
-import { testimonials } from "@/lib/data";
+import type { ReviewItem } from "@/lib/reviews-format";
 import { Reveal, StaggerGroup, StaggerItem } from "./Reveal";
 
 const VISIBLE_COUNT = 6;
@@ -56,7 +56,7 @@ function useDesktopGrid() {
   );
 }
 
-type Testimonial = (typeof testimonials)[number];
+type Testimonial = ReviewItem;
 
 // Distinct gradient per reviewer so the initials avatars read as different
 // people at a glance rather than one repeated green chip. Assigned by the
@@ -271,10 +271,15 @@ function ReviewCard({ r, index }: { r: Testimonial; index: number }) {
   );
 }
 
-export function Testimonials() {
+// Review data comes from the CMS via the homepage's server fetch (see
+// getHomepageReviews in lib/testimonials.ts); this component only lays it
+// out. Every card renders 5 stars and the Verified chip — those are not
+// per-review fields.
+export function Testimonials({ items }: { items: ReviewItem[] }) {
   const [expanded, setExpanded] = useState(false);
-  const visible = testimonials.slice(0, VISIBLE_COUNT);
-  const rest = testimonials.slice(VISIBLE_COUNT);
+  const visible = items.slice(0, VISIBLE_COUNT);
+  const rest = items.slice(VISIBLE_COUNT);
+  if (items.length === 0) return null;
 
   return (
     <section id="reviews" className="relative py-24 lg:py-32 overflow-hidden">

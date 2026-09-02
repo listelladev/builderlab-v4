@@ -3,11 +3,12 @@ import { Reveal } from "../Reveal";
 import { SectionGlow } from "../SectionGlow";
 
 export function CaseStudyResults({
-  results,
+  resultsHtml,
   image,
   name,
 }: {
-  results: string;
+  /** Sanitized HTML from the admin's WYSIWYG editor. */
+  resultsHtml: string;
   image: string;
   name: string;
 }) {
@@ -36,7 +37,10 @@ export function CaseStudyResults({
             <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white mb-6 text-balance">
               What Changed.
             </h2>
-            <p className="text-base sm:text-lg text-white/60 leading-relaxed">{results}</p>
+            <div
+              className="rich-inline text-base sm:text-lg text-white/60 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: resultsHtml }}
+            />
           </div>
         </Reveal>
       </div>
