@@ -12,12 +12,18 @@ const MARGIN_PX = 300;
 // Phones get a much longer lead. Reported from real devices: cards were
 // reaching the screen still on their poster, because 300px is under half a
 // phone viewport of notice and a stream needs longer than that to buffer
-// on cellular. ~3.5 screens ahead means the carousel begins loading on the
-// visitor's first scroll gesture and the deeper ads panel a few seconds
-// before it arrives — enough for a faststart MP4 to be running by then.
-// (1000px, the previous value, still had cards arriving on their poster.)
+// on cellular. ~1.2 screens ahead is the value confirmed on real iPhones:
+// clips were buffered and playing on arrival.
+//
+// Do NOT raise this. 3000px was tried and broke playback: iOS Safari
+// largely ignores preload="auto" and only starts buffering on play(), so
+// the early play() call is what loads the clip — but for an element that
+// far off-screen iOS then suspends the playback it just began, and once
+// suspended that way it does not reliably resume on arrival, even when
+// nudged. Cards reached the screen buffered but frozen. The lead has to be
+// early enough to load and close enough that iOS lets it keep running.
 // Read lazily (inside effects), never during render.
-const MOBILE_MARGIN_PX = 3000;
+const MOBILE_MARGIN_PX = 1000;
 const isPhone = () => typeof window !== "undefined" && window.innerWidth < 1024;
 const margin = () => (isPhone() ? MOBILE_MARGIN_PX : MARGIN_PX);
 
