@@ -150,6 +150,38 @@ export function SilentVideo({
     return () => io.disconnect();
   }, []);
 
+  // Wake-up on real arrival. The play() in the attach effect below fires at
+  // activation — on phones up to 3000px early — and iOS Safari suspends
+  // playback for media that far outside the viewport, sometimes parking or
+  // rejecting that early call outright. Nothing then restarts it, so the
+  // card arrives with a frame showing but frozen. This second, tight
+  // observer calls play() again the moment the card is genuinely on
+  // screen, and the `pause` listener re-issues it if iOS pauses a visible
+  // clip on its own. Both are no-ops for a clip that is already running.
+  const nearView = useRef(false);
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || !active) return;
+    const nudge = () => {
+      if (nearView.current && !noVideo()) el.play().catch(() => {});
+    };
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        nearView.current = entry.isIntersecting;
+        if (entry.isIntersecting) nudge();
+      },
+      { rootMargin: "120px" },
+    );
+    io.observe(el);
+    el.addEventListener("pause", nudge);
+    document.addEventListener("visibilitychange", nudge);
+    return () => {
+      io.disconnect();
+      el.removeEventListener("pause", nudge);
+      document.removeEventListener("visibilitychange", nudge);
+    };
+  }, [active]);
+
   // The actual attach-and-play only happens once `active` flips, so this
   // cannot run any earlier than the commit that first sets it.
   useEffect(() => {
