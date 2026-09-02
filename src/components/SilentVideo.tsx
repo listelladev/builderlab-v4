@@ -24,8 +24,17 @@ const MARGIN_PX = 300;
 // early enough to load and close enough that iOS lets it keep running.
 // Read lazily (inside effects), never during render.
 const MOBILE_MARGIN_PX = 1000;
+// Horizontal lead on phones, for the reel strip. The vertical lead above
+// must not apply sideways: the strip is ~3300px wide, so a 1000px margin
+// on all sides activated every card at once — a dozen clips calling play()
+// together — and iOS, which caps concurrent playback at a handful, paused
+// most of them, including ones about to arrive. 400px lets the two or
+// three cards nearest the visible run load; the marquee (~60px/s) brings
+// the next one inside that band ~6s before it is on screen.
+const MOBILE_MARGIN_X_PX = 400;
 const isPhone = () => typeof window !== "undefined" && window.innerWidth < 1024;
 const margin = () => (isPhone() ? MOBILE_MARGIN_PX : MARGIN_PX);
+const marginX = () => (isPhone() ? MOBILE_MARGIN_X_PX : MARGIN_PX);
 
 // Plain, ambient background video for a thumbnail: autoplays muted and
 // looped with no sound, so unlike a real player it needs no click-to-unmute
@@ -120,13 +129,14 @@ export function SilentVideo({
     if (!el) return;
     const r = el.getBoundingClientRect();
     const m = margin();
+    const mx = marginX();
     const onScreen =
       r.width > 0 &&
       r.height > 0 &&
       r.top < window.innerHeight + m &&
       r.bottom > -m &&
-      r.left < window.innerWidth + m &&
-      r.right > -m;
+      r.left < window.innerWidth + mx &&
+      r.right > -mx;
     if (onScreen && !noVideo()) {
       inView.current = true;
       setActive(true);
@@ -150,7 +160,7 @@ export function SilentVideo({
           el.pause();
         }
       },
-      { rootMargin: `${margin()}px` },
+      { rootMargin: `${margin()}px ${marginX()}px` },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -171,6 +181,12 @@ export function SilentVideo({
     const nudge = () => {
       if (nearView.current && !noVideo()) el.play().catch(() => {});
     };
+    // Deliberately no `pause` listener here. An earlier version re-issued
+    // play() whenever a near-visible clip paused, and on iOS that is a
+    // feedback loop: iOS caps how many videos play at once and pauses the
+    // extras, so re-playing one forces another to pause, whose listener
+    // re-plays it, and the clip that keeps losing (the last to arrive)
+    // never gets going. Only entry and tab-return nudge now.
     const io = new IntersectionObserver(
       ([entry]) => {
         nearView.current = entry.isIntersecting;
@@ -179,11 +195,9 @@ export function SilentVideo({
       { rootMargin: "120px" },
     );
     io.observe(el);
-    el.addEventListener("pause", nudge);
     document.addEventListener("visibilitychange", nudge);
     return () => {
       io.disconnect();
-      el.removeEventListener("pause", nudge);
       document.removeEventListener("visibilitychange", nudge);
     };
   }, [active]);
