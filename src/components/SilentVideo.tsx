@@ -118,6 +118,12 @@ export function SilentVideo({
   // effect below has to read it at the moment it runs, not at the moment it
   // was scheduled — see the note there.
   const inView = useRef(false);
+  // Set once the source effect below has settled which source this element
+  // plays. The activation observer must not call play() before then: it
+  // fires the instant a card intersects, which on desktop is before HLS has
+  // been swapped in — so play() ran against the MP4 sitting in the src
+  // attribute and desktop downloaded both sources.
+  const sourceReady = useRef(false);
   // Whether the randomized seek has already been applied to this element.
   // Without this, every pause/resume cycle would re-seek and the clip would
   // visibly jump to a different moment each time the card scrolled back in.
@@ -155,7 +161,7 @@ export function SilentVideo({
         inView.current = entry.isIntersecting;
         if (entry.isIntersecting) {
           setActive(true);
-          el.play().catch(() => {});
+          if (sourceReady.current) el.play().catch(() => {});
         } else {
           el.pause();
         }
@@ -237,7 +243,10 @@ export function SilentVideo({
     // player to a detached element leaks a decoder that nothing will pause.
     let cancelled = false;
     if (mp4Src && isPhone()) {
-      el.src = mp4Src;
+      // The MP4 is already the element's src attribute (see the JSX below),
+      // so there is nothing to assign — reassigning the same URL would make
+      // iOS discard what it has buffered and start over.
+      if (el.getAttribute("src") !== mp4Src) el.src = mp4Src;
     } else if (el.canPlayType("application/vnd.apple.mpegurl")) {
       el.src = src;
     } else {
@@ -271,9 +280,11 @@ export function SilentVideo({
     // and nothing would ever pause it again — leaving it decoding
     // off-screen for the rest of the session, which is the exact failure
     // this component exists to prevent.
+    sourceReady.current = true;
     if (inView.current) el.play().catch(() => {});
     return () => {
       cancelled = true;
+      sourceReady.current = false;
       el.removeEventListener("loadedmetadata", onLoadedMetadata);
       hlsRef.current?.destroy();
       hlsRef.current = null;
@@ -283,10 +294,23 @@ export function SilentVideo({
   return (
     <video
       ref={videoRef}
+      // The MP4 URL ships in the server-rendered markup (with preload="none"
+      // nothing is fetched until play()). This mirrors the reference site's
+      // plain <video src muted loop playsinline preload="none">: iOS knows
+      // the source from first paint, and play() on approach is the only
+      // step left. Desktop's activation effect swaps in the HLS source.
+      src={mp4Src}
       muted
       loop
       playsInline
-      preload={active && ready ? "auto" : "none"}
+      // "auto" only once the source is settled. With the MP4 sitting in the
+      // src attribute, flipping to auto on activation made desktop start
+      // downloading it in the same commit the effect below swaps in HLS —
+      // both sources fetched. Desktop therefore stays "none" (hls.js and
+      // native HLS manage their own buffering); phones, which keep the MP4,
+      // get auto. `active` is false at SSR and hydration, so isPhone() is
+      // never consulted during render on the server.
+      preload={active && ready && (!mp4Src || isPhone()) ? "auto" : "none"}
       poster={poster}
       aria-label={label}
       className="absolute inset-0 w-full h-full object-cover pointer-events-none"

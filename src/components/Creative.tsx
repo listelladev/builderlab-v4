@@ -30,6 +30,13 @@ const STREAM_CDN = "https://vz-8f67defd-6ab.b-cdn.net";
 // that a fixed rendition can't adapt downward on a weak connection, which
 // is an acceptable deal for muted, decorative, autoplaying loops.
 const REEL_RENDITION = "480p";
+// Phone MP4 rendition. The reference site's clips are 540x960 / 400x704
+// but only 1.7-2.6MB each (15-20s, VP9); ours at 480p are 5.1MB, and on
+// cellular iOS will not begin playback until a comfortable share of that
+// is buffered — which is why cards arrived still frozen. 360p is 2.6MB,
+// the same per-clip bytes as the reference, and at a 166px-wide card it is
+// the same effective quality as their 180px cards. Desktop HLS stays 480p.
+const REEL_MP4_RENDITION = "360p";
 // Playback speed for the reel carousel. Note this is NOT a match of the
 // reference site: its videos were measured at playbackRate 1, and its
 // marquee runs 32s against our 30s — what reads as "faster" over there is
@@ -56,7 +63,7 @@ const REEL_GUIDS = [
 const reels: { src: string; mp4: string; label: string; poster: string }[] =
   REEL_GUIDS.map((guid, i) => ({
     src: `${STREAM_CDN}/${guid}/${REEL_RENDITION}/video.m3u8`,
-    mp4: `${STREAM_CDN}/${guid}/play_${REEL_RENDITION}.mp4`,
+    mp4: `${STREAM_CDN}/${guid}/play_${REEL_MP4_RENDITION}.mp4`,
     label: `Ad ${i + 1}`,
     poster: `/images/creative-posters/${i + 1}.jpg`,
   }));

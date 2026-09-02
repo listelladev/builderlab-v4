@@ -253,12 +253,13 @@ export function PositioningVisual() {
 // rendition has to be chosen in the URL, not in player config.
 const CREATIVE_REEL_SRC =
   "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/720p/video.m3u8";
-// Progressive MP4 of the same 720p rendition, taken on phones instead of the
-// playlist (see SilentVideo's mp4Src): HLS needs a playlist fetch and a whole
-// segment before its first frame, and this panel was still arriving on its
-// poster. Same rendition — no resolution change.
+// Progressive MP4 taken on phones instead of the playlist (see SilentVideo's
+// mp4Src). 480p (5.1MB), not the 720p file (9.8MB): iOS will not start a
+// clip until a comfortable share of it is buffered, and on cellular the
+// larger file was still filling when the panel scrolled in — the reference
+// site's clips are ~2MB for the same reason. Desktop keeps 720p HLS.
 const CREATIVE_REEL_MP4 =
-  "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/play_720p.mp4";
+  "https://vz-8f67defd-6ab.b-cdn.net/381cb534-83fc-405f-9eff-cac17eb1e7ff/play_480p.mp4";
 
 function VideoCreativeMockup() {
   return (
