@@ -25,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   preconnect("https://vz-8f67defd-6ab.b-cdn.net");
   preconnect("https://fast.wistia.com");
   preconnect("https://connect.facebook.net");
+  preconnect("https://www.clarity.ms");
   return (
     <html lang="en" className={`h-full antialiased ${signature.variable}`}>
       <body className="min-h-full flex flex-col bg-[#08120e] text-[#f4f4f9]">
@@ -69,6 +70,17 @@ fbq('track', 'PageView');`}
             src="https://www.facebook.com/tr?id=1053971497392479&ev=PageView&noscript=1"
           />
         </noscript>
+
+        {/* Microsoft Clarity, site-wide. Same `afterInteractive` treatment
+            as the Meta Pixel above, so it stays off the critical render
+            path. */}
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "yds3d2i02y");`}
+        </Script>
       </body>
     </html>
   );
