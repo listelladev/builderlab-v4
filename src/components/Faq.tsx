@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import { faqs } from "@/lib/data";
+import type { Faq as FaqType } from "@/lib/faqs";
 import { Reveal } from "./Reveal";
 
 function FaqItem({
@@ -10,11 +10,10 @@ function FaqItem({
   isOpen,
   onToggle,
 }: {
-  faq: { q: string; a: string | string[] };
+  faq: FaqType;
   isOpen: boolean;
   onToggle: () => void;
 }) {
-  const paragraphs = Array.isArray(faq.a) ? faq.a : [faq.a];
   return (
     <div className="border-b border-white/10">
       <button
@@ -22,7 +21,7 @@ function FaqItem({
         className="w-full flex items-center justify-between gap-4 py-5 text-left group"
       >
         <span className="text-lg font-semibold text-white group-hover:text-[#38B685] transition-colors">
-          {faq.q}
+          {faq.question}
         </span>
         <span
           className={`shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-300 ${
@@ -44,7 +43,7 @@ function FaqItem({
         }`}
       >
         <div className="space-y-3 pr-12">
-          {paragraphs.map((p) => (
+          {faq.answer.map((p) => (
             <p key={p} className="text-white/60 leading-relaxed">
               {p}
             </p>
@@ -55,7 +54,7 @@ function FaqItem({
   );
 }
 
-export function Faq() {
+export function Faq({ items }: { items: FaqType[] }) {
   const [open, setOpen] = useState(-1);
 
   return (
@@ -88,9 +87,9 @@ export function Faq() {
         </Reveal>
 
         <div>
-          {faqs.map((faq, i) => (
+          {items.map((faq, i) => (
             <FaqItem
-              key={faq.q}
+              key={faq._id}
               faq={faq}
               isOpen={open === i}
               onToggle={() => setOpen(open === i ? -1 : i)}

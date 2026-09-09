@@ -7,6 +7,7 @@ export type NavLink = {
 export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Case Studies", href: "/case-studies" },
+  { label: "Websites", href: "/websites" },
   { label: "Client Wins", href: "/client-wins" },
   {
     label: "Resources",
@@ -55,7 +56,7 @@ export const partnerLogos = [
 
 export const socialLinks = [
   { label: "Facebook", href: "https://www.facebook.com/builderlabmarketing" },
-  { label: "Instagram", href: "https://www.instagram.com/builderlabmarketing" },
+  { label: "Instagram", href: "https://www.instagram.com/builderlabofficial/" },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/builderlabmarketing/" },
   { label: "YouTube", href: "https://www.youtube.com/@thebuilderlab" },
 ];
@@ -191,12 +192,12 @@ export type FeaturedWebsite = {
 };
 
 export const featuredWebsites: FeaturedWebsite[] = [
-  { name: "Koze Design & Build", url: "https://kozedesignbuild.ca/", image: "/images/site-koze.jpeg" },
-  { name: "Stately Homes", url: "https://buildstately.com/", image: "/images/site-stately.jpeg" },
   { name: "Bianchi Group Developers", url: "https://bianchigroupdevelopers.com/", image: "/images/site-bianchi.jpeg" },
   { name: "Birch Hill Homes", url: "https://birchhillhomes.com/", image: "/images/site-birchhill.jpeg" },
   { name: "Alogla Homes", url: "https://aloglahomes.com/", image: "/images/site-alogla.jpeg" },
   { name: "Imagine Development Ltd.", url: "https://imaginedevelopment.com/", image: "/images/site-imagine.jpeg" },
+  { name: "Koze Design & Build", url: "https://kozedesignbuild.ca/", image: "/images/site-koze.jpeg" },
+  { name: "Stately Homes", url: "https://buildstately.com/", image: "/images/site-stately.jpeg" },
 ];
 
 export const builderTypes = [

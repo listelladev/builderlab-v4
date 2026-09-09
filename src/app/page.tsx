@@ -15,12 +15,13 @@ import { Faq } from "@/components/Faq";
 import { Apply } from "@/components/Apply";
 import { Footer } from "@/components/Footer";
 import { getHomepageReviews } from "@/lib/testimonials";
+import { getFaqs } from "@/lib/faqs";
 
-// Reviews are CMS-managed; re-fetch at most once a minute.
+// Reviews and FAQs are CMS-managed; re-fetch at most once a minute.
 export const revalidate = 60;
 
 export default async function Home() {
-  const reviews = await getHomepageReviews();
+  const [reviews, faqs] = await Promise.all([getHomepageReviews(), getFaqs()]);
   return (
     <>
       <Header />
@@ -33,7 +34,7 @@ export default async function Home() {
         {/* <FeaturedWebsites /> */}
         <Differentiator />
         <Testimonials items={reviews} />
-        <Faq />
+        <Faq items={faqs} />
         <Apply />
       </main>
       <Footer />

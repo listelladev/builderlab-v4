@@ -11,6 +11,7 @@ export function AdminSidebar() {
   const blogActive = pathname.startsWith("/admin/blog");
   const clientWinsActive = pathname.startsWith("/admin/client-wins");
   const caseStudiesActive = pathname.startsWith("/admin/case-studies");
+  const faqsActive = pathname.startsWith("/admin/faqs");
   const testimonialsActive = pathname.startsWith("/admin/testimonials");
 
   async function logout() {
@@ -48,6 +49,14 @@ export function AdminSidebar() {
           }`}
         >
           Case Studies
+        </Link>
+        <Link
+          href="/admin/faqs"
+          className={`px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors ${
+            faqsActive ? "bg-[#38B685] text-[#08120E]" : "text-white/60 hover:bg-white/5 hover:text-white"
+          }`}
+        >
+          FAQs
         </Link>
         <Link
           href="/admin/testimonials"
