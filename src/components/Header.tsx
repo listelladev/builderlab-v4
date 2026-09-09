@@ -48,17 +48,25 @@ function DesktopNavItem({ link }: { link: (typeof navLinks)[number] }) {
               className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-64"
             >
               <div className="rounded-2xl border border-white/10 bg-[#0B0F0D]/95 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(0,0,0,0.6)] p-2">
-                {link.children.map((c) => (
-                  <a
-                    key={c.label}
-                    href={c.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-colors"
-                  >
-                    {c.label}
-                  </a>
-                ))}
+                {link.children.map((c) => {
+                  const cls =
+                    "block px-3.5 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-colors";
+                  return c.href.startsWith("/") ? (
+                    <Link key={c.label} href={c.href} className={cls}>
+                      {c.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={c.label}
+                      href={c.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cls}
+                    >
+                      {c.label}
+                    </a>
+                  );
+                })}
               </div>
             </motion.div>
           )}
@@ -81,7 +89,7 @@ function DesktopNavItem({ link }: { link: (typeof navLinks)[number] }) {
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
+  const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const elevated = scrolled || menuOpen;
 
   useEffect(() => {
@@ -191,7 +199,9 @@ export function Header() {
                   <div key={l.label} className="py-3 border-b border-white/5">
                     <button
                       type="button"
-                      onClick={() => setMobileResourcesOpen((v) => !v)}
+                      onClick={() =>
+                        setMobileSubmenu((v) => (v === l.label ? null : l.label))
+                      }
                       className="w-full flex items-center justify-between text-4xl font-semibold text-white/90"
                     >
                       <span>
@@ -202,12 +212,12 @@ export function Header() {
                       </span>
                       <ChevronDown
                         className={`w-6 h-6 shrink-0 transition-transform duration-300 ${
-                          mobileResourcesOpen ? "rotate-180" : ""
+                          mobileSubmenu === l.label ? "rotate-180" : ""
                         }`}
                       />
                     </button>
                     <AnimatePresence initial={false}>
-                      {mobileResourcesOpen && (
+                      {mobileSubmenu === l.label && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
@@ -216,18 +226,31 @@ export function Header() {
                           className="overflow-hidden"
                         >
                           <div className="flex flex-col gap-1 pt-4 pl-[3.25rem]">
-                            {l.children.map((c) => (
-                              <a
-                                key={c.label}
-                                href={c.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => setMenuOpen(false)}
-                                className="text-lg font-medium text-white/60 hover:text-[#38B685] transition-colors py-2"
-                              >
-                                {c.label}
-                              </a>
-                            ))}
+                            {l.children.map((c) => {
+                              const cls =
+                                "text-lg font-medium text-white/60 hover:text-[#38B685] transition-colors py-2";
+                              return c.href.startsWith("/") ? (
+                                <Link
+                                  key={c.label}
+                                  href={c.href}
+                                  onClick={() => setMenuOpen(false)}
+                                  className={cls}
+                                >
+                                  {c.label}
+                                </Link>
+                              ) : (
+                                <a
+                                  key={c.label}
+                                  href={c.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => setMenuOpen(false)}
+                                  className={cls}
+                                >
+                                  {c.label}
+                                </a>
+                              );
+                            })}
                           </div>
                         </motion.div>
                       )}

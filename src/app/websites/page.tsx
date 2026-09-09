@@ -26,7 +26,7 @@ export default function WebsitesPage() {
           <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
             <Reveal>
               <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
-                Websites
+                Website Portfolio
               </span>
               <h1 className="text-[38px]/[1.1] sm:text-4xl lg:text-6xl font-medium text-white mb-6 text-balance">
                 Websites that convert.
