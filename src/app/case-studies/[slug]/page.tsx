@@ -28,9 +28,23 @@ export async function generateMetadata({
   const { slug } = await params;
   const study = await getCaseStudy(slug);
   if (!study) return {};
+  const title = `${study.name} | Case Studies | Builderlab`;
   return {
-    title: `${study.name} | Case Studies | Builderlab`,
+    title,
     description: study.tagline,
+    openGraph: {
+      title: `${study.name} | Builderlab Case Study`,
+      description: study.tagline,
+      url: `/case-studies/${study.slug}`,
+      type: "article",
+      images: study.heroImage ? [{ url: study.heroImage, width: 1200, height: 630 }] : undefined,
+    },
+    twitter: {
+      card: study.heroImage ? "summary_large_image" : "summary",
+      title: `${study.name} | Builderlab Case Study`,
+      description: study.tagline,
+      images: study.heroImage ? [study.heroImage] : undefined,
+    },
   };
 }
 

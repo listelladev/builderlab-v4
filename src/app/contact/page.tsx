@@ -7,9 +7,20 @@ import { SectionGlow } from "@/components/SectionGlow";
 import { RoasForm } from "@/components/RoasForm";
 
 export const metadata: Metadata = {
-  title: "Contact | Builderlab",
-  description:
-    "Speak directly with a Growth Strategist. No sales reps, no middlemen, just a clear plan to grow your business.",
+  title: 'Contact | Builderlab',
+  description: 'Speak directly with a Growth Strategist. No sales reps, no middlemen, just a clear plan to grow your business.',
+  openGraph: {
+    title: 'Contact | Builderlab',
+    description: 'Speak directly with a Growth Strategist. No sales reps, no middlemen, just a clear plan to grow your business.',
+    url: '/contact',
+    siteName: "Builderlab",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: 'Contact | Builderlab',
+    description: 'Speak directly with a Growth Strategist. No sales reps, no middlemen, just a clear plan to grow your business.',
+  },
 };
 
 const points = [

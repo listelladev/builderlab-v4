@@ -3,8 +3,20 @@ import { LegalContent } from "@/components/LegalContent";
 import { privacyPolicy } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Builderlab",
-  description: "How Builderlab Group Inc. collects, uses, and protects your personal information.",
+  title: 'Privacy Policy | Builderlab',
+  description: 'How Builderlab Group Inc. collects, uses, and protects your personal information.',
+  openGraph: {
+    title: 'Privacy Policy | Builderlab',
+    description: 'How Builderlab Group Inc. collects, uses, and protects your personal information.',
+    url: '/privacy-policy',
+    siteName: "Builderlab",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: 'Privacy Policy | Builderlab',
+    description: 'How Builderlab Group Inc. collects, uses, and protects your personal information.',
+  },
 };
 
 export default function PrivacyPolicyPage() {

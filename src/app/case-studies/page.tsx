@@ -9,9 +9,20 @@ import { getCaseStudies } from "@/lib/case-studies";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Case Studies | Builderlab",
-  description:
-    "Real results from the custom home builders we've helped grow. See how we've turned referral-only builders into predictable growth engines.",
+  title: 'Case Studies | Builderlab',
+  description: "Real results from the custom home builders we've helped grow. See how we've turned referral-only builders into predictable growth engines.",
+  openGraph: {
+    title: 'Case Studies | Builderlab',
+    description: "Real results from the custom home builders we've helped grow. See how we've turned referral-only builders into predictable growth engines.",
+    url: '/case-studies',
+    siteName: "Builderlab",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: 'Case Studies | Builderlab',
+    description: "Real results from the custom home builders we've helped grow. See how we've turned referral-only builders into predictable growth engines.",
+  },
 };
 
 export default async function CaseStudiesPage() {

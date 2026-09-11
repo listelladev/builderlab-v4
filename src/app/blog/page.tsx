@@ -7,9 +7,20 @@ import { getBlogPosts } from "@/lib/blog";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Blog | Builderlab",
-  description:
-    "Growth strategy, paid ads, creative, and sales insights for custom home builders.",
+  title: 'Blog | Builderlab',
+  description: 'Growth strategy, paid ads, creative, and sales insights for custom home builders.',
+  openGraph: {
+    title: 'Blog | Builderlab',
+    description: 'Growth strategy, paid ads, creative, and sales insights for custom home builders.',
+    url: '/blog',
+    siteName: "Builderlab",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: 'Blog | Builderlab',
+    description: 'Growth strategy, paid ads, creative, and sales insights for custom home builders.',
+  },
 };
 
 export default async function BlogPage() {

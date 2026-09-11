@@ -26,9 +26,25 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getBlogPost(slug);
   if (!post) return {};
+  const title = `${post.title} | Blog | Builderlab`;
+  const image = imageUrl(post.featuredImage, 1200);
   return {
-    title: `${post.title} | Blog | Builderlab`,
+    title,
     description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.publishedAt,
+      images: image ? [{ url: image, width: 1200, height: 630 }] : undefined,
+    },
+    twitter: {
+      card: image ? "summary_large_image" : "summary",
+      title: post.title,
+      description: post.excerpt,
+      images: image ? [image] : undefined,
+    },
   };
 }
 

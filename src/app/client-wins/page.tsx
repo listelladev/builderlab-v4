@@ -9,9 +9,20 @@ import { getClientWins } from "@/lib/client-wins";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Client Wins | Builderlab",
-  description:
-    "Real testimonials from the custom home builders we've helped grow.",
+  title: 'Client Wins | Builderlab',
+  description: "Real testimonials and 5-star reviews from the custom home builders we've helped grow.",
+  openGraph: {
+    title: 'Client Wins | Builderlab',
+    description: "Real testimonials and 5-star reviews from the custom home builders we've helped grow.",
+    url: '/client-wins',
+    siteName: "Builderlab",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: 'Client Wins | Builderlab',
+    description: "Real testimonials and 5-star reviews from the custom home builders we've helped grow.",
+  },
 };
 
 export default async function ClientWinsPage() {

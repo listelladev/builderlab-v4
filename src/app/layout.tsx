@@ -11,10 +11,27 @@ const signature = localFont({
   variable: "--font-signature",
 });
 
+const SITE_TITLE = "Builderlab | Growth Marketing Agency for Custom Home Builders";
+const SITE_DESCRIPTION =
+  "The growth partner for custom home builders. Scroll-stopping ads, Meta & Google Ads, and landing pages that convert.";
+
 export const metadata: Metadata = {
-  title: "Builderlab | Growth Marketing Agency for Custom Home Builders",
-  description:
-    "The growth partner for custom home builders. Scroll-stopping ads, Meta & Google Ads, and landing pages that convert.",
+  metadataBase: new URL("https://www.builderlab.com"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    siteName: "Builderlab",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
