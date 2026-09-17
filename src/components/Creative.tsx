@@ -10,11 +10,11 @@ import { SilentVideo } from "./SilentVideo";
 // un-transcoded masters served straight off a storage zone
 // (BuilderLab.b-cdn.net/1.mp4 .. 12.mp4) — 1.1GB total, fetched in full by
 // every visitor. They're now Stream-encoded HLS assets instead, ~180MB
-// combined across every generated rendition, delivered adaptively.
+// combined across every generated rendition, delivered adaptively. New
+// clips go into the same library (Ad 13 was uploaded through the dashboard).
 //
-// GUIDs are the video IDs Stream assigned on upload; order here just keeps
-// the numbering matching each video's "Ad N" title in the library, not
-// anything the player depends on. Posters are still frames pulled locally
+// GUIDs are the video IDs Stream assigned on upload; `ad` matches each
+// video's "Ad N" title in the library. Posters are still frames pulled locally
 // from each original clip (ffmpeg, ~2-5s in), kept separate from Stream's
 // own auto-generated thumbnails — see SilentVideo's `poster` prop.
 const STREAM_CDN = "https://vz-8f67defd-6ab.b-cdn.net";
@@ -43,29 +43,33 @@ const REEL_MP4_RENDITION = "360p";
 // how the clips themselves are cut, not a player setting. This is a
 // deliberate choice of our own; set it back to 1 to disable.
 const REEL_PLAYBACK_RATE = 1.25;
-const REEL_GUIDS = [
-  "fbe44624-8f14-4f20-9646-1d540e5110b6", // Ad 1
-  "aa82e2b5-6b94-4ddc-befb-09b8735439df", // Ad 2
-  "51dd2b32-40a9-4319-95ce-2ebc77c3810c", // Ad 3
-  "842f2212-5ee5-4798-9794-d480d88ed916", // Ad 4
-  "c7daaec1-7f8f-4271-a159-434e315db420", // Ad 5
-  "20712420-15e0-4d1d-97a1-1729372ec9fd", // Ad 6
-  "381cb534-83fc-405f-9eff-cac17eb1e7ff", // Ad 7
-  "62b53079-fdc1-47eb-b49c-14218ce8b2ed", // Ad 8
-  "f80ac889-5094-4e8d-b60e-efe831d834e5", // Ad 9
-  "e335e09b-49ac-4335-bcf9-b0c4d1cfdbac", // Ad 10
-  "ffd52111-f848-42a1-91cb-105d9a559758", // Ad 11
-  "32adff00-140a-4b81-945a-31cab60eda2d", // Ad 12
+// Listed in carousel order, which is not the same as "Ad N" order: the
+// owner introduction (Ad 13) sits fourth so it lands inside the first six
+// cards, the only ones phones render (see `mobileHidden` below).
+const REEL_SOURCES = [
+  { ad: 1, guid: "fbe44624-8f14-4f20-9646-1d540e5110b6" },
+  { ad: 2, guid: "aa82e2b5-6b94-4ddc-befb-09b8735439df" },
+  { ad: 3, guid: "51dd2b32-40a9-4319-95ce-2ebc77c3810c" },
+  { ad: 13, guid: "03be96b4-fff7-43b3-8181-c54730f37114" }, // Owner introduction
+  { ad: 4, guid: "842f2212-5ee5-4798-9794-d480d88ed916" },
+  { ad: 5, guid: "c7daaec1-7f8f-4271-a159-434e315db420" },
+  { ad: 6, guid: "20712420-15e0-4d1d-97a1-1729372ec9fd" },
+  { ad: 7, guid: "381cb534-83fc-405f-9eff-cac17eb1e7ff" },
+  { ad: 8, guid: "62b53079-fdc1-47eb-b49c-14218ce8b2ed" },
+  { ad: 9, guid: "f80ac889-5094-4e8d-b60e-efe831d834e5" },
+  { ad: 10, guid: "e335e09b-49ac-4335-bcf9-b0c4d1cfdbac" },
+  { ad: 11, guid: "ffd52111-f848-42a1-91cb-105d9a559758" },
+  { ad: 12, guid: "32adff00-140a-4b81-945a-31cab60eda2d" },
 ];
 
 // `mp4` is Bunny's progressive fallback of the same rendition, used by
 // SilentVideo on phones only — see its `mp4Src` prop for why.
 const reels: { src: string; mp4: string; label: string; poster: string }[] =
-  REEL_GUIDS.map((guid, i) => ({
+  REEL_SOURCES.map(({ ad, guid }) => ({
     src: `${STREAM_CDN}/${guid}/${REEL_RENDITION}/video.m3u8`,
     mp4: `${STREAM_CDN}/${guid}/play_${REEL_MP4_RENDITION}.mp4`,
-    label: `Ad ${i + 1}`,
-    poster: `/images/creative-posters/${i + 1}.jpg`,
+    label: `Ad ${ad}`,
+    poster: `/images/creative-posters/${ad}.jpg`,
   }));
 
 // `mobileHidden` drops the card from layout below `sm` entirely (not just
