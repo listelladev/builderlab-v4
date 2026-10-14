@@ -44,13 +44,16 @@ const REEL_MP4_RENDITION = "360p";
 // deliberate choice of our own; set it back to 1 to disable.
 const REEL_PLAYBACK_RATE = 1.25;
 // Listed in carousel order, which is not the same as "Ad N" order: the
-// owner introduction (Ad 13) sits fourth so it lands inside the first six
-// cards, the only ones phones render (see `mobileHidden` below).
+// owner introduction (Ad 13) and the two newest clips (Ads 14 and 15) are
+// spread through the first six cards — two clips apart, not side by side —
+// since those are the only ones phones render (see `mobileHidden` below).
 const REEL_SOURCES = [
   { ad: 1, guid: "fbe44624-8f14-4f20-9646-1d540e5110b6" },
   { ad: 2, guid: "aa82e2b5-6b94-4ddc-befb-09b8735439df" },
+  { ad: 14, guid: "cdb88738-5b11-4a4c-b88e-7f5d0e4f62ef" },
   { ad: 3, guid: "51dd2b32-40a9-4319-95ce-2ebc77c3810c" },
   { ad: 13, guid: "03be96b4-fff7-43b3-8181-c54730f37114" }, // Owner introduction
+  { ad: 15, guid: "a9170ccb-7751-4557-8569-603391959113" },
   { ad: 4, guid: "842f2212-5ee5-4798-9794-d480d88ed916" },
   { ad: 5, guid: "c7daaec1-7f8f-4271-a159-434e315db420" },
   { ad: 6, guid: "20712420-15e0-4d1d-97a1-1729372ec9fd" },

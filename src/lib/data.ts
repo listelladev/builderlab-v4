@@ -204,7 +204,17 @@ export const featuredWebsites: FeaturedWebsite[] = [
   { name: "Alogla Homes", url: "https://aloglahomes.com/", image: "/images/site-alogla.jpeg" },
   { name: "Imagine Development Ltd.", url: "https://imaginedevelopment.com/", image: "/images/site-imagine.jpeg" },
   { name: "Koze Design & Build", url: "https://kozedesignbuild.ca/", image: "/images/site-koze.jpeg" },
+  { name: "J. Kramer Corp.", url: "https://www.jkramercorp.com/", image: "/images/site-jkramer.jpeg" },
+];
+
+// Website portfolio page: the two newest builds lead (J. Kramer first),
+// the rest follow in carousel order, and Baja Roofing closes the list.
+export const portfolioWebsites: FeaturedWebsite[] = [
+  featuredWebsites[featuredWebsites.length - 1],
+  { name: "WD Thomas Homes", url: "https://wdthomascustomhomes.com/", image: "/images/site-wdthomas.jpeg" },
+  ...featuredWebsites.slice(0, -1),
   { name: "Stately Homes", url: "https://buildstately.com/", image: "/images/site-stately.jpeg" },
+  { name: "Baja Roofing", url: "https://bajaroofing.com/", image: "/images/site-baja.jpeg" },
 ];
 
 export const builderTypes = [

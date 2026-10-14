@@ -902,11 +902,11 @@ export function AiSearchModule() {
 // Valiant-style: a small title, three overlapping screenshots drifting
 // gently up and down with drop shadows, each at a slightly different
 // speed so they never sync into a single obvious loop. Birch Hill on the
-// left, Alogla centered, Stately on the right.
+// left, Alogla centered, J. Kramer on the right.
 const shippedPages = [
   featuredWebsites.find((s) => s.name === "Birch Hill Homes")!,
   featuredWebsites.find((s) => s.name === "Alogla Homes")!,
-  featuredWebsites.find((s) => s.name === "Stately Homes")!,
+  featuredWebsites.find((s) => s.name === "J. Kramer Corp.")!,
 ];
 
 export function LandingPagesFloat() {

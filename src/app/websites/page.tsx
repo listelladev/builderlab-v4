@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { WebsiteCard } from "@/components/WebsiteCard";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/Reveal";
 import { SectionGlow } from "@/components/SectionGlow";
-import { featuredWebsites } from "@/lib/data";
+import { portfolioWebsites } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Websites | Builderlab",
@@ -43,7 +43,7 @@ export default function WebsitesPage() {
           <div className="absolute inset-0 bg-[#08120E]" />
           <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
             <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {featuredWebsites.map((site) => (
+              {portfolioWebsites.map((site) => (
                 <StaggerItem key={site.url}>
                   <WebsiteCard site={site} />
                 </StaggerItem>
