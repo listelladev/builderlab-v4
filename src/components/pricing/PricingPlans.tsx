@@ -80,67 +80,73 @@ function AccelerateCard({
   return (
     <Spotlight className="grow shrink-0 rounded-2xl bg-gradient-to-br from-[#153F3A] to-[#0F1712] border border-[#38B685]/30">
       <div className="flex-1 flex flex-col p-6 sm:p-9 lg:p-10">
-        <span className="text-[#38B685] text-sm font-semibold uppercase tracking-wider">
-          {accelerate.tier}
-        </span>
-        <h3 className="mt-2 text-3xl sm:text-4xl font-medium text-white">
-          {accelerate.name}
-        </h3>
+        <div className="lg:grid lg:grid-cols-[1fr_1.1fr] lg:items-center">
+          <div className="flex flex-col lg:pr-14">
+            <span className="text-[#38B685] text-sm font-semibold uppercase tracking-wider">
+              {accelerate.tier}
+            </span>
+            <h3 className="mt-2 text-3xl sm:text-4xl font-medium text-white">
+              {accelerate.name}
+            </h3>
 
-        <div className="mt-8 flex items-end flex-wrap gap-x-3">
-          <AnimatedNumber
-            value={price}
-            className="text-5xl sm:text-6xl font-medium text-white tracking-tight tabular-nums leading-none"
-          />
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={term}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18, ease: EASE }}
-              className="text-base text-white/60 leading-none pb-1"
-            >
-              {label}
-            </motion.span>
-          </AnimatePresence>
+            <div className="mt-8 flex items-end flex-wrap gap-x-3">
+              <AnimatedNumber
+                value={price}
+                className="text-5xl sm:text-6xl font-medium text-white tracking-tight tabular-nums leading-none"
+              />
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={term}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.18, ease: EASE }}
+                  className="text-base text-white/60 leading-none pb-1"
+                >
+                  {label}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+
+            <div className="mt-3 min-h-[1.5rem] text-sm">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.p
+                  key={term}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="text-white/50"
+                >
+                  {term === "monthly" ? (
+                    "Pay month to month"
+                  ) : (
+                    <>
+                      About {money(Math.round(price / months))}/mo ·{" "}
+                      <span className="text-[#38B685] font-medium">
+                        Save {money(savings)} vs. paying monthly
+                      </span>
+                    </>
+                  )}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            <span className="mt-5 self-start inline-flex px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/70">
+              {accelerate.minAdSpend}
+            </span>
+          </div>
+
+          <div className="h-px bg-[#38B685]/20 my-7 lg:hidden" />
+
+          <div className="lg:border-l lg:border-[#38B685]/20 lg:pl-14">
+            <FeatureList
+              items={accelerate.features}
+              tone="solid"
+              className="gap-y-4"
+            />
+          </div>
         </div>
-
-        <div className="mt-3 min-h-[1.5rem] text-sm">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.p
-              key={term}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-              className="text-white/50"
-            >
-              {term === "monthly" ? (
-                "Pay month to month"
-              ) : (
-                <>
-                  About {money(Math.round(price / months))}/mo ·{" "}
-                  <span className="text-[#38B685] font-medium">
-                    Save {money(savings)} vs. paying monthly
-                  </span>
-                </>
-              )}
-            </motion.p>
-          </AnimatePresence>
-        </div>
-
-        <span className="mt-5 self-start inline-flex px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/70">
-          {accelerate.minAdSpend}
-        </span>
-
-        <div className="h-px bg-[#38B685]/20 my-7" />
-
-        <FeatureList
-          items={accelerate.features}
-          tone="solid"
-          className="gap-y-4"
-        />
 
         <div className="mt-auto pt-9">
           <InHouseDropdown
@@ -269,7 +275,7 @@ function Proposal({
   const lines = buildProposal(term, withElite, withWebsite);
 
   return (
-    <div className="max-w-[900px] mx-auto bg-white/[0.05] border border-white/10 rounded-3xl px-6 py-8 sm:px-12 sm:py-12">
+    <div className="bg-white/[0.05] border border-white/10 rounded-3xl px-6 py-8 sm:px-12 sm:py-12">
       <ul>
         <AnimatePresence initial={false}>
           {lines.map((line) => (
@@ -447,7 +453,7 @@ export function PricingPlans() {
         />
       </div>
 
-      <div className="grid lg:grid-cols-[1.15fr_1fr] gap-x-6 gap-y-10">
+      <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           <ColumnLabel>The core offer</ColumnLabel>
           <AccelerateCard term={term} openOffer={openOffer} onToggleOffer={toggleOffer} />
@@ -455,50 +461,52 @@ export function PricingPlans() {
 
         <div className="flex flex-col gap-4">
           <ColumnLabel>Add-ons</ColumnLabel>
-          <AddOnCard
-            selected={withElite}
-            onToggle={() => toggleAddOn(withElite, setWithElite, elite.name)}
-            offer="elite"
-            openOffer={openOffer}
-            onToggleOffer={toggleOffer}
-            eyebrow={elite.tier}
-            name={elite.name}
-            intro={elite.intro}
-            features={elite.features}
-            price={
-              <>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <AddOnCard
+              selected={withElite}
+              onToggle={() => toggleAddOn(withElite, setWithElite, elite.name)}
+              offer="elite"
+              openOffer={openOffer}
+              onToggleOffer={toggleOffer}
+              eyebrow={elite.tier}
+              name={elite.name}
+              intro={elite.intro}
+              features={elite.features}
+              price={
+                <>
+                  <p className="flex items-baseline gap-1.5">
+                    <span className="text-4xl font-medium text-white tracking-tight tabular-nums">
+                      {money(elite.addOnMonthly)}
+                    </span>
+                    <span className="text-base text-white/60">/mo add on</span>
+                  </p>
+                  <p className="mt-1.5 text-sm text-white/50">
+                    <span className="text-white/80 font-medium">
+                      {money(elite.monthly)}
+                    </span>{" "}
+                    - Monthly
+                  </p>
+                </>
+              }
+            />
+            <AddOnCard
+              selected={withWebsite}
+              onToggle={() => toggleAddOn(withWebsite, setWithWebsite, website.name)}
+              offer="website"
+              openOffer={openOffer}
+              onToggleOffer={toggleOffer}
+              name={website.name}
+              features={website.features}
+              price={
                 <p className="flex items-baseline gap-1.5">
                   <span className="text-4xl font-medium text-white tracking-tight tabular-nums">
-                    {money(elite.addOnMonthly)}
+                    {money(website.price)}
                   </span>
-                  <span className="text-base text-white/60">/mo add on</span>
+                  <span className="text-base text-white/60">One Time</span>
                 </p>
-                <p className="mt-1.5 text-sm text-white/50">
-                  <span className="text-white/80 font-medium">
-                    {money(elite.monthly)}
-                  </span>{" "}
-                  - Monthly
-                </p>
-              </>
-            }
-          />
-          <AddOnCard
-            selected={withWebsite}
-            onToggle={() => toggleAddOn(withWebsite, setWithWebsite, website.name)}
-            offer="website"
-            openOffer={openOffer}
-            onToggleOffer={toggleOffer}
-            name={website.name}
-            features={website.features}
-            price={
-              <p className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-medium text-white tracking-tight tabular-nums">
-                  {money(website.price)}
-                </span>
-                <span className="text-base text-white/60">One Time</span>
-              </p>
-            }
-          />
+              }
+            />
+          </div>
         </div>
       </div>
 
