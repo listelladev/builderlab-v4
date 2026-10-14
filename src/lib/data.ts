@@ -14,6 +14,8 @@ export const navLinks: NavLink[] = [
     ],
   },
   { label: "Client Wins", href: "/client-wins" },
+  // Pricing page is built but hidden from the nav for now (still live at /pricing).
+  // { label: "Pricing", href: "/pricing" },
   {
     label: "Resources",
     children: [

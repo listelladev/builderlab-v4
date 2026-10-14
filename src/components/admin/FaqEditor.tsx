@@ -6,8 +6,16 @@ import { useRouter } from "next/navigation";
 import { adminApi } from "@/lib/admin/api";
 import { useToast } from "@/components/admin/Toast";
 import { useConfirm } from "@/components/admin/ConfirmDialog";
+import { FAQ_ADMIN } from "@/components/admin/FaqList";
 
-export function FaqEditor({ faqId }: { faqId?: string }) {
+export function FaqEditor({
+  faqId,
+  page = "home",
+}: {
+  faqId?: string;
+  page?: "home" | "pricing";
+}) {
+  const cfg = FAQ_ADMIN[page];
   const router = useRouter();
   const toast = useToast();
   const confirm = useConfirm();
@@ -51,7 +59,7 @@ export function FaqEditor({ faqId }: { faqId?: string }) {
     }
     setSaving(true);
     try {
-      const payload = { question, answer };
+      const payload = { question, answer, page };
       if (faqId) {
         await adminApi(`/api/admin/faqs/${faqId}`, { method: "PATCH", body: payload });
         toast("FAQ updated.");
@@ -59,7 +67,7 @@ export function FaqEditor({ faqId }: { faqId?: string }) {
         await adminApi("/api/admin/faqs", { method: "POST", body: payload });
         toast("FAQ published.");
       }
-      router.push("/admin/faqs");
+      router.push(cfg.base);
     } catch (err) {
       toast(err instanceof Error ? err.message : "Something went wrong.", "error");
     } finally {
@@ -76,7 +84,7 @@ export function FaqEditor({ faqId }: { faqId?: string }) {
     if (!ok) return;
     try {
       await adminApi(`/api/admin/faqs/${faqId}`, { method: "DELETE" });
-      router.push("/admin/faqs");
+      router.push(cfg.base);
     } catch (err) {
       toast(err instanceof Error ? err.message : "Something went wrong.", "error");
     }
@@ -92,14 +100,14 @@ export function FaqEditor({ faqId }: { faqId?: string }) {
         <div>
           <h1 className="text-2xl font-bold text-white">{faqId ? "Edit FAQ" : "Add FAQ"}</h1>
           <p className="text-sm text-white/40 mt-1">
-            Shown in the Frequently Asked Questions section on the homepage.
+            {cfg.blurb}
           </p>
         </div>
         <Link
-          href="/admin/faqs"
+          href={cfg.base}
           className="px-4 py-2.5 rounded-full text-sm font-semibold bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
         >
-          ← Back to FAQs
+          ← Back to {cfg.title}
         </Link>
       </div>
 

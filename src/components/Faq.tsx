@@ -54,11 +54,21 @@ function FaqItem({
   );
 }
 
-export function Faq({ items }: { items: FaqType[] }) {
+export function Faq({
+  items,
+  id = "faqs",
+  eyebrow = "FAQs",
+  heading = "Before You Apply.",
+}: {
+  items: FaqType[];
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+}) {
   const [open, setOpen] = useState(-1);
 
   return (
-    <section id="faqs" className="relative py-24 lg:py-32 overflow-hidden scroll-mt-20">
+    <section id={id} className="relative py-24 lg:py-32 overflow-hidden scroll-mt-20">
       {/* A hint of green in the base itself (not neutral near-black) plus a
           third, off-center glow — the original two glows both sit dead
           center top/bottom, so most of the section's width reads as flat
@@ -79,10 +89,10 @@ export function Faq({ items }: { items: FaqType[] }) {
       <div className="relative z-10 max-w-[900px] mx-auto px-6 lg:px-10">
         <Reveal className="text-center mb-14">
           <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
-            FAQs
+            {eyebrow}
           </span>
           <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white text-balance">
-            Before You Apply.
+            {heading}
           </h2>
         </Reveal>
 
