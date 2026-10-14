@@ -7,15 +7,13 @@ export type NavLink = {
 export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   {
-    label: "Case Studies",
+    label: "Results",
     children: [
       { label: "Case Studies", href: "/case-studies" },
+      { label: "Client Wins", href: "/client-wins" },
       { label: "Website Portfolio", href: "/websites" },
     ],
   },
-  { label: "Client Wins", href: "/client-wins" },
-  // Pricing page is built but hidden from the nav for now (still live at /pricing).
-  // { label: "Pricing", href: "/pricing" },
   {
     label: "Resources",
     children: [
@@ -30,6 +28,7 @@ export const navLinks: NavLink[] = [
       { label: "YouTube Channel", href: "https://www.youtube.com/@thebuilderlab" },
     ],
   },
+  { label: "Pricing", href: "/pricing" },
   { label: "FAQs", href: "/#faqs" },
 ];
 
