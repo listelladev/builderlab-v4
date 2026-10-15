@@ -10,7 +10,7 @@ import { getPricingFaqs } from "@/lib/faqs";
 
 const TITLE = "Pricing | Builderlab";
 const DESCRIPTION =
-  "Accelerate is our core growth system for custom home builders. Add Elite for SEO and AEO, or a custom Website Build. See exactly what's included and what it costs.";
+  "Accelerate is our core growth system for custom home builders. Add SEO & AI Search Ranking, or a custom Website Build. See exactly what's included and what it costs.";
 
 export const metadata: Metadata = {
   title: TITLE,

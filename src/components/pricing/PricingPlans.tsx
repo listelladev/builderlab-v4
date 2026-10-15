@@ -468,9 +468,7 @@ export function PricingPlans() {
               offer="elite"
               openOffer={openOffer}
               onToggleOffer={toggleOffer}
-              eyebrow={elite.tier}
               name={elite.name}
-              intro={elite.intro}
               features={elite.features}
               price={
                 <>

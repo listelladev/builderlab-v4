@@ -28,14 +28,13 @@ export const accelerate = {
   minAdSpend: "Min Ad Spend - $2,500/mo",
 };
 
+// Ongoing monthly add-on (internally still `elite`; it is no longer a "tier").
 export const elite = {
-  tier: "Tier 2",
-  name: "Elite",
-  // "$2,000/mo add on" — what Elite costs on top of a committed Accelerate.
+  name: "SEO & AI Search Ranking",
+  // "$2,000/mo add on" — what this costs on top of a committed Accelerate.
   addOnMonthly: 2000,
-  // "$4,500 - Monthly" — Elite when paid month to month.
+  // "$4,500 - Monthly" — Accelerate + this add-on when paid month to month.
   monthly: 4500,
-  intro: "Everything in Accelerate, plus:",
   features: [
     "SEO (Search Engine Optimization)",
     "AEO (AI Engine Optimization)",
@@ -45,7 +44,7 @@ export const elite = {
 
 export const website = {
   name: "Website Build",
-  price: 3500,
+  price: 4500,
   features: [
     "Custom Built Website",
     "Strategy Deep Dive",
@@ -73,9 +72,9 @@ export type ProposalLine = {
 /**
  * The line items for the "Your Proposal" receipt.
  *
- * Elite on a month-to-month term is the one place two sheet prices meet:
- * Accelerate ($2,800) + the Elite add-on ($2,000) does not equal the
- * "$4,500 - Monthly" Elite price, so on that term it is quoted as a single
+ * The SEO & AI Search add-on on a month-to-month term is the one place two sheet prices meet:
+ * Accelerate ($2,800) + the add-on ($2,000) does not equal the
+ * "$4,500 - Monthly" combined price, so on that term it is quoted as a single
  * $4,500/mo line rather than summing the two. On 6/12 months the add-on is
  * quoted as its own +$2,000/mo line.
  */
@@ -91,7 +90,7 @@ export function buildProposal(
       withElite
         ? {
             key: "core",
-            label: `${accelerate.tier} - ${accelerate.name} + ${elite.tier} - ${elite.name}`,
+            label: `${accelerate.tier} - ${accelerate.name} + ${elite.name}`,
             note: "Monthly",
             amount: elite.monthly,
             suffix: "/mo",
@@ -115,7 +114,7 @@ export function buildProposal(
     if (withElite) {
       lines.push({
         key: "elite",
-        label: `${elite.tier} - ${elite.name}`,
+        label: elite.name,
         note: "Add on",
         amount: elite.addOnMonthly,
         suffix: "/mo",
@@ -197,7 +196,7 @@ export const inHouse: Record<
     ours: { label: "Our Accelerate package", amount: accelerate.prices.monthly },
   },
   elite: {
-    tabLabel: "Elite",
+    tabLabel: "SEO & AI Search Ranking",
     cadence: "mo",
     roles: [
       {
@@ -216,7 +215,7 @@ export const inHouse: Record<
         cost: 1200,
       },
     ],
-    ours: { label: "Our Elite add-on", amount: elite.addOnMonthly },
+    ours: { label: "Our SEO & AI Search add-on", amount: elite.addOnMonthly },
   },
   website: {
     tabLabel: "Website Build",
@@ -264,10 +263,10 @@ export const pricingFaqs: { q: string; a: string | string[] }[] = [
     a: "Accelerate has a minimum ad spend of $2,500/mo. Your ideal budget depends on your market, goals, and how fast you want to grow, and we'll walk through the numbers with you before you commit.",
   },
   {
-    q: "What do Elite and the Website Build add?",
+    q: "What do the SEO & AI Search Ranking and Website Build add-ons include?",
     a: [
-      "Elite is everything in Accelerate, plus SEO (Search Engine Optimization), AEO (AI Engine Optimization), and GMB (Google Business Profile) Management.",
-      "The Website Build is a one-time $3,500: a custom built website with a strategy deep dive, custom design, copy and content writing, and premium hosting, security, and support.",
+      "SEO & AI Search Ranking is an ongoing monthly add-on to Accelerate: SEO (Search Engine Optimization), AEO (AI Engine Optimization), and GMB (Google Business Profile) Management.",
+      "The Website Build is a one-time $4,500: a custom built website with a strategy deep dive, custom design, copy and content writing, and premium hosting, security, and support.",
       "Accelerate is the core offer, and both of these are optional add-ons.",
     ],
   },
