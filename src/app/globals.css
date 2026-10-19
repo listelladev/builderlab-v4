@@ -89,15 +89,6 @@ button:not(:disabled) {
     animation-duration: 70s;
   }
 }
-/* `(hover: hover)` rather than a width breakpoint: on iOS a tap leaves a
-   sticky :hover on whatever element it landed on, which would freeze the
-   marquee with no obvious way to start it moving again. Touch input gets
-   the explicit tap-to-toggle in Creative.tsx instead. */
-@media (hover: hover) {
-  .marquee-pause:hover .animate-marquee-slow {
-    animation-play-state: paused;
-  }
-}
 
 @keyframes gradient-flow {
   0% {

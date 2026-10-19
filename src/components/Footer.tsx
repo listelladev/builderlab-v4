@@ -162,8 +162,8 @@ export function Footer() {
             </p>
 
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 text-center text-sm text-white/50">
-              <a href="tel:+18882440728" className="no-underline hover:text-white/70 transition-colors">
-                +1 888-244-0728
+              <a href="tel:+19547068820" className="no-underline hover:text-white/70 transition-colors">
+                +1 954-706-8820
               </a>
               <span className="hidden sm:inline">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
               <a href="mailto:info@builderlab.com" className="no-underline hover:text-white/70 transition-colors">

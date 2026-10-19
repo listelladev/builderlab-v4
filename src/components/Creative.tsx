@@ -114,11 +114,8 @@ function ReelCard({ c, mobileHidden }: { c: (typeof reels)[number]; mobileHidden
 // the visible one — double the network, double the video decode, for a set
 // of frames that could never appear on screen.
 //
-// Pause behaviour is keyed to input type, not viewport width: pointers get
-// :hover (pure CSS, in globals.css, behind `@media (hover: hover)`), touch
-// gets tap-to-toggle. The `(hover: hover)` guard matters — on iOS a tap
-// leaves a sticky :hover on whatever it landed on, which would otherwise
-// freeze the marquee with no obvious way to start it again.
+// Pointers keep scrolling on hover; only touch input (keyed to input type,
+// not viewport width) gets tap-to-toggle.
 const HOVERLESS = "(hover: none)";
 
 // matchMedia is an external store, so it's read through
@@ -151,15 +148,13 @@ function Reels() {
 
   return (
     <div
-      className="relative z-10 mb-12 sm:mb-0 marquee-pause"
+      className="relative z-10 mb-12 sm:mb-0"
       onClick={tapToPause ? () => setPaused((p) => !p) : undefined}
     >
       <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 z-10 bg-gradient-to-r from-[#08120E] to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 z-10 bg-gradient-to-l from-[#08120E] to-transparent pointer-events-none" />
       <div
         className="flex animate-marquee-slow gap-4 sm:gap-5 w-max"
-        // Set only when actually paused: an inline `running` would outrank
-        // the :hover rule in globals.css and kill hover-to-pause outright.
         style={paused ? { animationPlayState: "paused" } : undefined}
       >
         {Array.from({ length: copies }, () => reels)
