@@ -2,30 +2,34 @@
 // feature wording are taken verbatim from the pricing sheet — edit here, not
 // in the components.
 
-export type TermId = "monthly" | "6mo" | "12mo";
+export type TermId = "monthly" | "6mo";
 
 export const terms: { id: TermId; label: string }[] = [
   { id: "monthly", label: "Monthly" },
   { id: "6mo", label: "6 Months" },
-  { id: "12mo", label: "12 Months" },
 ];
 
+/** Shown under both packages: what happens once the program ends. */
+export const afterProgram =
+  "After the initial 6 months, it goes month-to-month at the current monthly rate.";
+
 export const accelerate = {
-  tier: "Tier 1",
-  name: "Accelerate",
-  prices: { monthly: 2800, "6mo": 14000, "12mo": 28000 } as Record<TermId, number>,
+  tier: "Program",
+  name: "6 Month Growth Program",
+  // monthly: per month over the 6-month program. 6mo: the program paid in full.
+  prices: { monthly: 2750, "6mo": 13500 } as Record<TermId, number>,
   features: [
-    "Meta Ads System",
-    "Retargeting Campaign",
-    "On-Site Video Shoot (2x/Yr)",
+    "Meta Ads Strategy & Management",
+    "Professional On-Site Video Shoot",
     "Video Scripting & Editing",
-    "New Monthly Video Ads",
+    "Monthly Creative Refresh",
     "BuilderLab CRM",
     "Lead Follow-Up Automations",
-    "Dedicated Growth Advisor",
-    "Monthly Analytics + Reporting",
+    "AI Sales Coach & Feedback",
+    "Direct Access To BL Team",
+    "Monthly Analytics & Reporting",
   ],
-  minAdSpend: "Min Ad Spend - $2,500/mo",
+  minAdSpend: "Min Ad Spend - $2,000/mo",
 };
 
 // Ongoing monthly add-on (internally still `elite`; it is no longer a "tier").
@@ -54,11 +58,27 @@ export const website = {
   ],
 };
 
-/** Savings of a 6/12-month commitment against paying Accelerate monthly. */
+// "Not ready for the full investment?": the downsell, tucked under the
+// Accelerate card behind a discreet link for use on sales calls. Same system
+// 6 Month Growth Program without the on-site video shoot and the monthly
+// creative refresh. Shown on its own; it is not part of the proposal builder.
+const LITE_EXCLUDED = ["Professional On-Site Video Shoot", "Monthly Creative Refresh"];
+
+export const accelerateLite = {
+  name: "6 Month Growth Program",
+  badge: "Available upon request",
+  intro:
+    "For builders who want to start with BuilderLab before stepping up to the full program.",
+  monthly: 1500,
+  payInFull: 7500,
+  features: accelerate.features.filter((f) => !LITE_EXCLUDED.includes(f)),
+  notIncluded: LITE_EXCLUDED,
+};
+
+/** Savings of a 6-month commitment against paying Accelerate monthly. */
 export function commitmentSavings(term: TermId): number {
   if (term === "monthly") return 0;
-  const months = term === "6mo" ? 6 : 12;
-  return accelerate.prices.monthly * months - accelerate.prices[term];
+  return accelerate.prices.monthly * 6 - accelerate.prices[term];
 }
 
 export type ProposalLine = {
@@ -75,7 +95,7 @@ export type ProposalLine = {
  * The SEO & AI Search add-on on a month-to-month term is the one place two sheet prices meet:
  * Accelerate ($2,800) + the add-on ($2,000) does not equal the
  * "$4,500 - Monthly" combined price, so on that term it is quoted as a single
- * $4,500/mo line rather than summing the two. On 6/12 months the add-on is
+ * $4,500/mo line rather than summing the two. On 6 months the add-on is
  * quoted as its own +$2,000/mo line.
  */
 export function buildProposal(
@@ -90,15 +110,15 @@ export function buildProposal(
       withElite
         ? {
             key: "core",
-            label: `${accelerate.tier} - ${accelerate.name} + ${elite.name}`,
-            note: "Monthly",
+            label: `${accelerate.name} + ${elite.name}`,
+            note: "Monthly · 6-month program",
             amount: elite.monthly,
             suffix: "/mo",
           }
         : {
             key: "core",
-            label: `${accelerate.tier} - ${accelerate.name}`,
-            note: "Monthly",
+            label: accelerate.name,
+            note: "Monthly · 6-month program",
             amount: accelerate.prices.monthly,
             suffix: "/mo",
           },
@@ -106,8 +126,8 @@ export function buildProposal(
   } else {
     lines.push({
       key: "core",
-      label: `${accelerate.tier} - ${accelerate.name}`,
-      note: term === "6mo" ? "6 Months" : "12 Months",
+      label: accelerate.name,
+      note: "Paid in full · 6 months",
       amount: accelerate.prices[term],
       suffix: "",
     });
@@ -146,6 +166,9 @@ export function buildProposal(
 
 export type InHouseTab = "accelerate" | "elite" | "website";
 
+/** Every dropdown on the page: the in-house breakdowns plus the downsell. */
+export type PricingDropdown = InHouseTab | "lite";
+
 export type InHouseRole = { role: string; covers: string; cost: number };
 
 export const inHouse: Record<
@@ -159,22 +182,22 @@ export const inHouse: Record<
   }
 > = {
   accelerate: {
-    tabLabel: "Accelerate",
+    tabLabel: "6 Month Growth Program",
     cadence: "mo",
     roles: [
       {
         role: "Paid Social Media Buyer",
-        covers: "Meta Ads System · Retargeting Campaign",
+        covers: "Meta Ads Strategy & Management",
         cost: 5500,
       },
       {
         role: "Video Producer & Editor",
-        covers: "Video Scripting & Editing · New Monthly Video Ads",
+        covers: "Video Scripting & Editing · Monthly Creative Refresh",
         cost: 5000,
       },
       {
         role: "Videographer",
-        covers: "On-Site Video Shoot (2x/Yr)",
+        covers: "Professional On-Site Video Shoot",
         cost: 1000,
       },
       {
@@ -184,16 +207,16 @@ export const inHouse: Record<
       },
       {
         role: "Marketing Strategist",
-        covers: "Dedicated Growth Advisor",
+        covers: "Direct Access To BL Team · AI Sales Coach & Feedback",
         cost: 7000,
       },
       {
         role: "Data Analyst",
-        covers: "Monthly Analytics + Reporting",
+        covers: "Monthly Analytics & Reporting",
         cost: 2500,
       },
     ],
-    ours: { label: "Our Accelerate package", amount: accelerate.prices.monthly },
+    ours: { label: "Our 6 Month Growth Program", amount: accelerate.prices.monthly },
   },
   elite: {
     tabLabel: "SEO & AI Search Ranking",
@@ -247,12 +270,12 @@ export const inHouse: Record<
 
 export const pricingFaqs: { q: string; a: string | string[] }[] = [
   {
-    q: "What's included in Accelerate?",
-    a: "Accelerate is the core offer: a Meta Ads System, a Retargeting Campaign, an On-Site Video Shoot (2x/Yr), Video Scripting & Editing, New Monthly Video Ads, the BuilderLab CRM, Lead Follow-Up Automations, a Dedicated Growth Advisor, and Monthly Analytics + Reporting.",
+    q: "What's included in the 6 Month Growth Program?",
+    a: "The 6 Month Growth Program is the core offer: Meta Ads Strategy & Management, Professional On-Site Video Shoot, Video Scripting & Editing, Monthly Creative Refresh, BuilderLab CRM, Lead Follow-Up Automations, AI Sales Coach & Feedback, Direct Access To BL Team, and Monthly Analytics & Reporting.",
   },
   {
-    q: "What's the difference between monthly, 6 months and 12 months?",
-    a: "It's the same system either way. Monthly is $2,800. Committing to 6 months is $14,000 and 12 months is $28,000, which saves you $2,800 and $5,600 compared with paying month to month.",
+    q: "What's the difference between monthly and 6 months?",
+    a: "It's the same system either way. Monthly is $2,750/mo. Paying the 6 months in full is $13,500, which saves you $3,000. After the initial 6 months, it goes month-to-month at the current monthly rate.",
   },
   {
     q: "Does ad spend come out of my package fee?",
@@ -260,14 +283,14 @@ export const pricingFaqs: { q: string; a: string | string[] }[] = [
   },
   {
     q: "How much should I budget for ad spend on top of the package?",
-    a: "Accelerate has a minimum ad spend of $2,500/mo. Your ideal budget depends on your market, goals, and how fast you want to grow, and we'll walk through the numbers with you before you commit.",
+    a: "The 6 Month Growth Program has a minimum ad spend of $2,000/mo. Your ideal budget depends on your market, goals, and how fast you want to grow, and we'll walk through the numbers with you before you commit.",
   },
   {
     q: "What do the SEO & AI Search Ranking and Website Build add-ons include?",
     a: [
-      "SEO & AI Search Ranking is an ongoing monthly add-on to Accelerate: SEO (Search Engine Optimization), AEO (AI Engine Optimization), and GMB (Google Business Profile) Management.",
+      "SEO & AI Search Ranking is an ongoing monthly add-on to the 6 Month Growth Program: SEO (Search Engine Optimization), AEO (AI Engine Optimization), and GMB (Google Business Profile) Management.",
       "The Website Build is a one-time $4,500: a custom built website with a strategy deep dive, custom design, copy and content writing, and premium hosting, security, and support.",
-      "Accelerate is the core offer, and both of these are optional add-ons.",
+      "The 6 Month Growth Program is the core offer, and both of these are optional add-ons.",
     ],
   },
   {

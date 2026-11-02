@@ -6,15 +6,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check, ChevronDown, Minus, Plus } from "lucide-react";
 import {
   accelerate,
+  afterProgram,
   buildProposal,
   commitmentSavings,
   elite,
   terms,
   website,
   type InHouseTab,
+  type PricingDropdown,
   type TermId,
 } from "@/lib/pricing";
 import { AnimatedNumber } from "./AnimatedNumber";
+import { DownsellDropdown } from "./DownsellDropdown";
 import { InHouseDropdown } from "./InHouseDropdown";
 import { Segmented } from "./Segmented";
 import { Spotlight } from "./Spotlight";
@@ -63,8 +66,8 @@ function FeatureList({
 }
 
 type DropdownControl = {
-  openOffer: InHouseTab | null;
-  onToggleOffer: (offer: InHouseTab) => void;
+  openOffer: PricingDropdown | null;
+  onToggleOffer: (offer: PricingDropdown) => void;
 };
 
 function AccelerateCard({
@@ -73,9 +76,8 @@ function AccelerateCard({
   onToggleOffer,
 }: { term: TermId } & DropdownControl) {
   const price = accelerate.prices[term];
-  const months = term === "6mo" ? 6 : term === "12mo" ? 12 : 1;
   const savings = commitmentSavings(term);
-  const label = terms.find((t) => t.id === term)!.label;
+  const label = term === "monthly" ? "/mo" : "Paid in full";
 
   return (
     <Spotlight className="grow shrink-0 rounded-2xl bg-gradient-to-br from-[#153F3A] to-[#0F1712] border border-[#38B685]/30">
@@ -83,7 +85,7 @@ function AccelerateCard({
         <div className="lg:grid lg:grid-cols-[1fr_1.1fr] lg:items-center">
           <div className="flex flex-col lg:pr-14">
             <span className="text-[#38B685] text-sm font-semibold uppercase tracking-wider">
-              {accelerate.tier}
+              {term === "monthly" ? "Paid monthly" : "Paid in full"}
             </span>
             <h3 className="mt-2 text-3xl sm:text-4xl font-medium text-white">
               {accelerate.name}
@@ -119,10 +121,10 @@ function AccelerateCard({
                   className="text-white/50"
                 >
                   {term === "monthly" ? (
-                    "Pay month to month"
+                    "6-month program, paid monthly"
                   ) : (
                     <>
-                      About {money(Math.round(price / months))}/mo ·{" "}
+                      About {money(Math.round(price / 6))}/mo ·{" "}
                       <span className="text-[#38B685] font-medium">
                         Save {money(savings)} vs. paying monthly
                       </span>
@@ -131,6 +133,7 @@ function AccelerateCard({
                 </motion.p>
               </AnimatePresence>
             </div>
+            <p className="mt-1 text-xs text-white/40 leading-relaxed">{afterProgram}</p>
 
             <span className="mt-5 self-start inline-flex px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/70">
               {accelerate.minAdSpend}
@@ -148,11 +151,15 @@ function AccelerateCard({
           </div>
         </div>
 
-        <div className="mt-auto pt-9">
+        <div className="mt-auto pt-9 space-y-5">
           <InHouseDropdown
             open={openOffer === "accelerate"}
             onToggle={() => onToggleOffer("accelerate")}
             offer="accelerate"
+          />
+          <DownsellDropdown
+            open={openOffer === "lite"}
+            onToggle={() => onToggleOffer("lite")}
           />
         </div>
       </div>
@@ -403,10 +410,10 @@ export function PricingPlans() {
   const [withElite, setWithElite] = useState(false);
   const [withWebsite, setWithWebsite] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
-  // Only one "what this costs to build in-house" box open at a time, so the
-  // cards never all stack tall; opening one closes the others.
-  const [openOffer, setOpenOffer] = useState<InHouseTab | null>(null);
-  const toggleOffer = (offer: InHouseTab) =>
+  // Only one dropdown open at a time (the in-house boxes and the downsell),
+  // so the cards never all stack tall; opening one closes the others.
+  const [openOffer, setOpenOffer] = useState<PricingDropdown | null>(null);
+  const toggleOffer = (offer: PricingDropdown) =>
     setOpenOffer((cur) => (cur === offer ? null : offer));
   const [proposalVisible, setProposalVisible] = useState(false);
   const proposalRef = useRef<HTMLDivElement>(null);

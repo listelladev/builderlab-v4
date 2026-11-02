@@ -423,7 +423,7 @@ export const faqs = [
   },
   {
     q: "How much should I expect to invest?",
-    a: "Our engagements start at $2,500/month, plus your Meta ad spend. Your exact investment depends on your market, goals, and the scope of what we're building. We'll walk through the numbers with you before you commit so you know exactly what you're investing in and what success needs to look like.",
+    a: "Our engagements start at $2,750/month, plus your Meta ad spend. Your exact investment depends on your market, goals, and the scope of what we're building. We'll walk through the numbers with you before you commit so you know exactly what you're investing in and what success needs to look like.",
   },
   {
     q: "Do I need to be good on camera?",

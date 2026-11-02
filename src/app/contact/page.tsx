@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { SectionGlow } from "@/components/SectionGlow";
-import { RoasForm } from "@/components/RoasForm";
+import { BookingEmbed } from "@/components/BookingEmbed";
 
 export const metadata: Metadata = {
   title: 'Contact | Builderlab',
@@ -95,14 +95,8 @@ export default function ContactPage() {
               </div>
 
               <Reveal delay={0.15}>
-                {/* #232326 is the embed's own background, sampled from the
-                    rendered iframe (it is cross-origin, so it cannot be read
-                    via getComputedStyle). Matching it means the card reads as
-                    one surface instead of a lighter form floating on a darker
-                    panel. Padding stays tight for the same reason — the embed
-                    draws its own field chrome. */}
-                <div className="bg-[#232326] border border-white/5 rounded-2xl p-4 sm:p-6">
-                  <RoasForm />
+                <div className="rounded-2xl overflow-hidden">
+                  <BookingEmbed />
                 </div>
               </Reveal>
             </div>
