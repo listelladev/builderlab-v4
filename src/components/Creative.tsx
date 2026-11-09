@@ -57,12 +57,15 @@ const REEL_SOURCES = [
   { ad: 4, guid: "842f2212-5ee5-4798-9794-d480d88ed916" },
   { ad: 5, guid: "c7daaec1-7f8f-4271-a159-434e315db420" },
   { ad: 6, guid: "20712420-15e0-4d1d-97a1-1729372ec9fd" },
+  { ad: 17, guid: "aa5e7235-6060-4124-9aab-f74595bb5991" },
   { ad: 7, guid: "381cb534-83fc-405f-9eff-cac17eb1e7ff" },
   { ad: 8, guid: "62b53079-fdc1-47eb-b49c-14218ce8b2ed" },
   { ad: 9, guid: "f80ac889-5094-4e8d-b60e-efe831d834e5" },
   { ad: 10, guid: "e335e09b-49ac-4335-bcf9-b0c4d1cfdbac" },
   { ad: 11, guid: "ffd52111-f848-42a1-91cb-105d9a559758" },
   { ad: 12, guid: "32adff00-140a-4b81-945a-31cab60eda2d" },
+  // Last in the list so the loop wraps it between Ad 12 and Ad 1.
+  { ad: 16, guid: "b16b574c-ebbe-4099-9d79-aa74c989346f" },
 ];
 
 // `mp4` is Bunny's progressive fallback of the same rendition, used by
