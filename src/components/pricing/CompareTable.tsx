@@ -1,5 +1,6 @@
 import { Check, Minus } from "lucide-react";
 import { compare, plans, type CompareCell } from "@/lib/pricing";
+import { StickyBar } from "./StickyBar";
 
 const money = (n: number) => `$${n.toLocaleString("en-US")}`;
 
@@ -41,7 +42,7 @@ function MobileCompare() {
 
   return (
     <div className="md:hidden rounded-3xl border border-white/10 bg-white/[0.03]">
-      <div className={`${cols} sticky top-16 z-10 rounded-t-3xl border-b border-white/10 bg-[#0C1612]/95 backdrop-blur`}>
+      <StickyBar className={`${cols} z-10 border-b border-white/10 bg-[#0C1612]/95 backdrop-blur`}>
         {plans.map((p, i) => (
           <div key={p.id} className={`px-1 py-4 text-center ${hi(i)}`}>
             <span className="block text-base font-semibold text-white">{p.name}</span>
@@ -50,7 +51,7 @@ function MobileCompare() {
             </span>
           </div>
         ))}
-      </div>
+      </StickyBar>
 
       <div className="px-4 py-4 border-b border-white/5">
         <p className="text-sm text-white/60">Best for</p>
