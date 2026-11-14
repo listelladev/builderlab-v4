@@ -1,46 +1,50 @@
 [
   {
-    "question": "What's included in the 6 Month Growth Program?",
+    "question": "Which program should I start with?",
     "answer": [
-      "The 6 Month Growth Program is the core offer: Meta Ads Strategy & Management, Professional On-Site Video Shoot, Video Scripting & Editing, Monthly Creative Refresh, BuilderLab CRM, Lead Follow-Up Automations, AI Sales Coach & Feedback, Direct Access To BL Team, and Monthly Analytics & Reporting."
+      "If you need more leads now and already have a website you're happy with, start with Core. If your website is outdated or you want to show up on Google, go with Scale. If you want to be the most recognized builder in your area, Elite covers everything. We'll help you decide on your strategy call."
     ]
   },
   {
-    "question": "What's the difference between monthly and 6 months?",
+    "question": "I build ultra high-end homes. Is Core still a good fit?",
     "answer": [
-      "It's the same system either way. Monthly is $2,750/mo. Paying the 6 months in full is $13,500, which saves you $3,000. After the initial 6 months, it goes month-to-month at the current monthly rate."
+      "Yes. For ultra high-end builders, we may recommend Google Ads instead of Meta Ads at the Core level. Your market is smaller, so reaching homeowners who are actively searching for a builder works better. Everything else in Core stays the same."
     ]
   },
   {
-    "question": "Does ad spend come out of my package fee?",
+    "question": "Does ad spend come out of my program fee?",
     "answer": [
-      "No. Your package covers our work: the strategy, creative, video, CRM, automations, and reporting. Ad spend is what goes into running the ads themselves, and it's separate from your BuilderLab investment."
+      "No. Ad spend is paid directly to Meta and Google and is separate from your BuilderLab program fee. Each program lists a recommended monthly budget."
     ]
   },
   {
-    "question": "How much should I budget for ad spend on top of the package?",
+    "question": "How is my ad spend used across Meta and Google?",
     "answer": [
-      "The 6 Month Growth Program has a minimum ad spend of $2,000/mo. Your ideal budget depends on your market, goals, and how fast you want to grow, and we'll walk through the numbers with you before you commit."
+      "Each platform has a different job. Meta Ads (Facebook and Instagram) build trust: they introduce you, show off your finished projects and teach homeowners about the homes you build, like lake homes or energy-efficient homes. Google Ads capture demand: they put you at the top of search results when homeowners are looking for a builder right now. Together, Meta builds the trust and Google catches the homeowner when they're ready to build."
     ]
   },
   {
-    "question": "What do the SEO & AI Search Ranking and Website Build add-ons include?",
+    "question": "What's the difference between the commitment options?",
     "answer": [
-      "SEO & AI Search Ranking is an ongoing monthly add-on to the 6 Month Growth Program: SEO (Search Engine Optimization), AEO (AI Engine Optimization), and GMB (Google Business Profile) Management.",
-      "The Website Build is a one-time $4,500: a custom built website with a strategy deep dive, custom design, copy and content writing, and premium hosting, security, and support.",
-      "The 6 Month Growth Program is the core offer, and both of these are optional add-ons."
+      "The monthly price is the same. A 12-month program has no setup fee. A 6-month program has a $2,000 one-time setup fee, and month-to-month has a $5,000 one-time setup fee."
     ]
   },
   {
-    "question": "Do you work with remodelers or just new home builders?",
+    "question": "Is a website included?",
     "answer": [
-      "Both. We partner with established home builders, large-scale remodelers, and residential construction companies that do great work but want a more predictable way to generate demand and land projects."
+      "Website design, build and hosting are included in Scale and Elite. On Core, you can add a Premium Website ($3,995) or Boosted Website ($5,995) as a one-time project."
     ]
   },
   {
-    "question": "What happens once I sign up?",
+    "question": "Can I upgrade later?",
     "answer": [
-      "We build and install your acquisition system during the first 21 days. That includes dialing in your positioning and messaging, developing your creative strategy, scripting your ads, coordinating your on-site video shoot, editing the creative, setting up tracking and the CRM automations, and preparing your Meta campaigns for launch."
+      "Yes. Many builders start on Core and move up once their pipeline is full. Just tell your Growth Strategist and we'll plan the switch."
+    ]
+  },
+  {
+    "question": "What guarantees do you offer?",
+    "answer": [
+      "Two. Our 7-Day Alignment Guarantee: if we're not the right fit, get your money back within your first 7 days, no questions asked. And our 12-Month ROI Guarantee: if you don't see a return on your investment, we keep working for free until you do."
     ]
   }
 ]

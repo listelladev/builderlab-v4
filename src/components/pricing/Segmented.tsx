@@ -12,7 +12,7 @@ export function Segmented<T extends string>({
   layoutId,
   label,
 }: {
-  options: { id: T; label: string }[];
+  options: { id: T; label: string; badge?: string }[];
   value: T;
   onChange: (id: T) => void;
   layoutId: string;
@@ -33,7 +33,7 @@ export function Segmented<T extends string>({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.id)}
-            className={`relative rounded-full px-4 sm:px-6 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors ${
+            className={`relative rounded-full px-3 sm:px-6 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors ${
               active ? "text-[#08120E]" : "text-white/60 hover:text-white"
             }`}
           >
@@ -44,7 +44,18 @@ export function Segmented<T extends string>({
                 transition={{ type: "spring", stiffness: 420, damping: 36 }}
               />
             )}
-            <span className="relative">{o.label}</span>
+            <span className="relative inline-flex items-center gap-2">
+              {o.label}
+              {o.badge && (
+                <span
+                  className={`hidden sm:inline rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
+                    active ? "bg-[#08120E]/20 text-[#08120E]" : "bg-[#38B685]/15 text-[#38B685]"
+                  }`}
+                >
+                  {o.badge}
+                </span>
+              )}
+            </span>
           </button>
         );
       })}

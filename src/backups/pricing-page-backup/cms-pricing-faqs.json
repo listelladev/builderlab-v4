@@ -1,0 +1,95 @@
+[
+  {
+    "_createdAt": "2026-10-14T20:34:25Z",
+    "_id": "BFP2HcjKC7s9CDR1mYMMLY",
+    "_rev": "NGMdwr25fsvev9SuXDZP7m",
+    "_type": "faq",
+    "_updatedAt": "2026-11-02T21:50:26Z",
+    "answer": [
+      "The 6 Month Growth Program has a minimum ad spend of $2,000/mo. Your ideal budget depends on your market, goals, and how fast you want to grow, and we'll walk through the numbers with you before you commit."
+    ],
+    "order": 4,
+    "page": "pricing",
+    "question": "How much should I budget for ad spend on top of the package?"
+  },
+  {
+    "_createdAt": "2026-10-14T20:34:26Z",
+    "_id": "BFP2HcjKC7s9CDR1mYMMiD",
+    "_rev": "NGMdwr25fsvev9SuXDZP7m",
+    "_type": "faq",
+    "_updatedAt": "2026-11-02T21:50:26Z",
+    "answer": [
+      "SEO & AI Search Ranking is an ongoing monthly add-on to the 6 Month Growth Program: SEO (Search Engine Optimization), AEO (AI Engine Optimization), and GMB (Google Business Profile) Management.",
+      "The Website Build is a one-time $4,500: a custom built website with a strategy deep dive, custom design, copy and content writing, and premium hosting, security, and support.",
+      "The 6 Month Growth Program is the core offer, and both of these are optional add-ons."
+    ],
+    "order": 5,
+    "page": "pricing",
+    "question": "What do the SEO & AI Search Ranking and Website Build add-ons include?"
+  },
+  {
+    "_createdAt": "2026-10-14T20:34:28Z",
+    "_id": "BFP2HcjKC7s9CDR1mYMNDw",
+    "_rev": "BFP2HcjKC7s9CDR1mYMN9P",
+    "_type": "faq",
+    "_updatedAt": "2026-10-14T20:34:28Z",
+    "answer": [
+      "We build and install your acquisition system during the first 21 days. That includes dialing in your positioning and messaging, developing your creative strategy, scripting your ads, coordinating your on-site video shoot, editing the creative, setting up tracking and the CRM automations, and preparing your Meta campaigns for launch."
+    ],
+    "order": 7,
+    "page": "pricing",
+    "question": "What happens once I sign up?"
+  },
+  {
+    "_createdAt": "2026-10-14T20:34:21Z",
+    "_id": "K1GCpmi0k6s43rvGCTqy84",
+    "_rev": "NGMdwr25fsvev9SuXDZP7m",
+    "_type": "faq",
+    "_updatedAt": "2026-11-02T21:50:26Z",
+    "answer": [
+      "The 6 Month Growth Program is the core offer: Meta Ads Strategy & Management, Professional On-Site Video Shoot, Video Scripting & Editing, Monthly Creative Refresh, BuilderLab CRM, Lead Follow-Up Automations, AI Sales Coach & Feedback, Direct Access To BL Team, and Monthly Analytics & Reporting."
+    ],
+    "order": 1,
+    "page": "pricing",
+    "question": "What's included in the 6 Month Growth Program?"
+  },
+  {
+    "_createdAt": "2026-10-14T20:34:23Z",
+    "_id": "K1GCpmi0k6s43rvGCTqyJq",
+    "_rev": "NGMdwr25fsvev9SuXDZP7m",
+    "_type": "faq",
+    "_updatedAt": "2026-11-02T21:50:26Z",
+    "answer": [
+      "It's the same system either way. Monthly is $2,750/mo. Paying the 6 months in full is $13,500, which saves you $3,000. After the initial 6 months, it goes month-to-month at the current monthly rate."
+    ],
+    "order": 2,
+    "page": "pricing",
+    "question": "What's the difference between monthly and 6 months?"
+  },
+  {
+    "_createdAt": "2026-10-14T20:34:24Z",
+    "_id": "K1GCpmi0k6s43rvGCTqyXy",
+    "_rev": "K1GCpmi0k6s43rvGCTqyVc",
+    "_type": "faq",
+    "_updatedAt": "2026-10-14T20:34:24Z",
+    "answer": [
+      "No. Your package covers our work: the strategy, creative, video, CRM, automations, and reporting. Ad spend is what goes into running the ads themselves, and it's separate from your BuilderLab investment."
+    ],
+    "order": 3,
+    "page": "pricing",
+    "question": "Does ad spend come out of my package fee?"
+  },
+  {
+    "_createdAt": "2026-10-14T20:34:27Z",
+    "_id": "c6Sse61KJkRG6VevuiEHBx",
+    "_rev": "c6Sse61KJkRG6VevuiEH7W",
+    "_type": "faq",
+    "_updatedAt": "2026-10-14T20:34:27Z",
+    "answer": [
+      "Both. We partner with established home builders, large-scale remodelers, and residential construction companies that do great work but want a more predictable way to generate demand and land projects."
+    ],
+    "order": 6,
+    "page": "pricing",
+    "question": "Do you work with remodelers or just new home builders?"
+  }
+]

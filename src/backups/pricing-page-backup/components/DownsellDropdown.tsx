@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown, X } from "lucide-react";
-import { accelerateLite, afterProgram } from "@/lib/pricing";
+import { accelerateLite, afterProgram } from "../lib/pricing";
 
 const EASE = [0.21, 0.5, 0.28, 1] as const;
 

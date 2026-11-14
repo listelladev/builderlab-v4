@@ -9,9 +9,12 @@ import { useRef, type ReactNode } from "react";
 export function Spotlight({
   children,
   className = "",
+  innerClassName = "flex-1 flex flex-col",
 }: {
   children: ReactNode;
   className?: string;
+  /** Layout of the content wrapper (e.g. a subgrid). */
+  innerClassName?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -27,17 +30,17 @@ export function Spotlight({
     <div
       ref={ref}
       onMouseMove={onMove}
-      className={`group/spot relative flex flex-col overflow-hidden ${className}`}
+      className={`group/spot relative flex flex-col ${className}`}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover/spot:opacity-100 transition-opacity duration-300"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 group-hover/spot:opacity-100 transition-opacity duration-300"
         style={{
           background:
             "radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(56,182,133,0.14), transparent 60%)",
         }}
       />
-      <div className="relative flex-1 flex flex-col">{children}</div>
+      <div className={`relative ${innerClassName}`}>{children}</div>
     </div>
   );
 }

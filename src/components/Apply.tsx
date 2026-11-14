@@ -20,7 +20,7 @@ const points = [
   },
 ];
 
-export function Apply() {
+export function Apply({ eyebrow, subtext }: { eyebrow?: string; subtext?: string } = {}) {
   return (
     <section id="apply" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-[#08120E]" />
@@ -59,9 +59,23 @@ export function Apply() {
               </span>
             </div>
 
-            <h2 className="text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white mb-10 text-balance">
+            {eyebrow && (
+              <span className="inline-block text-[#38B685] text-sm font-semibold uppercase tracking-wider mb-4">
+                {eyebrow}
+              </span>
+            )}
+            <h2
+              className={`text-[32px]/[1.15] sm:text-4xl lg:text-5xl font-medium text-white text-balance ${
+                subtext ? "mb-4" : "mb-10"
+              }`}
+            >
               Ready To Get More Builds?
             </h2>
+            {subtext && (
+              <p className="text-base sm:text-lg text-white/60 leading-relaxed text-balance mb-10">
+                {subtext}
+              </p>
+            )}
 
             <div className="space-y-4 mb-10">
               {points.map((p) => (

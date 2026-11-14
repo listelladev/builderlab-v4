@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Lightbulb, Minus, Plus } from "lucide-react";
-import { inHouse, type InHouseTab } from "@/lib/pricing";
+import { inHouse, planById, type PlanId } from "@/lib/pricing";
 
 const EASE = [0.21, 0.5, 0.28, 1] as const;
 
@@ -17,16 +17,16 @@ export function InHouseDropdown({
   open,
   onToggle,
 }: {
-  offer: InHouseTab;
+  offer: PlanId;
   open: boolean;
   onToggle: () => void;
 }) {
   const data = inHouse[offer];
   const total = data.roles.reduce((sum, r) => sum + r.cost, 0);
-  const ours = data.ours.amount;
+  const ours = planById(offer).monthly;
   const saved = total - ours;
   const pct = Math.round((saved / total) * 100);
-  const suffix = data.cadence === "mo" ? "/mo" : "";
+  const suffix = "/mo";
 
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.04] overflow-hidden">
@@ -34,10 +34,10 @@ export function InHouseDropdown({
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className="w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3.5 text-left"
+        className="w-full flex items-center gap-2 px-3.5 py-3.5 text-left"
       >
         <Lightbulb className="w-4 h-4 shrink-0 text-white/60" />
-        <span className="flex-1 text-center text-[12px] sm:text-sm font-semibold text-white min-[360px]:whitespace-nowrap">
+        <span className="flex-1 min-w-0 text-center text-[13px] sm:text-sm lg:text-[13px] xl:text-[13.5px] font-semibold text-white leading-snug text-balance">
           What this costs to build in‑house
         </span>
         <span className="shrink-0 text-[#38B685]">
@@ -87,7 +87,7 @@ export function InHouseDropdown({
 
               <div className="mt-3.5 border-t border-dashed border-[#38B685]/60 pt-3.5 space-y-3">
                 <div className="flex items-center justify-between gap-4 text-sm">
-                  <span className="text-white/70">{data.ours.label}</span>
+                  <span className="text-white/70">{data.oursLabel}</span>
                   <span className="text-white tabular-nums">
                     {money(ours)}
                     {suffix}
@@ -97,7 +97,7 @@ export function InHouseDropdown({
                   <span className="font-semibold text-[#38B685]">You save</span>
                   <span className="font-semibold text-white tabular-nums text-right">
                     {money(saved)}
-                    {suffix} - {pct}% less
+                    {suffix} · {pct}% less
                   </span>
                 </div>
               </div>
