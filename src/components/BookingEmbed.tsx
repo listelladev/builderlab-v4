@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 // fades out with it, since the widget leaves a transparent margin under its
 // card. The fallback timer covers the case where the load event fires
 // before hydration and React never sees it.
-const CALENDAR_ID = "8Ft7wtCJn6cnlLlSWj9M";
+const CALENDAR_ID = "mDIP0DTSqJ4Xd79TshaP";
 // Give the widget's app a moment to render after its document loads.
 const RENDER_DELAY_MS = 350;
 const FALLBACK_MS = 4000;
@@ -57,7 +57,7 @@ export function BookingEmbed() {
           transition: "opacity 600ms cubic-bezier(0.21, 0.5, 0.28, 1)",
         }}
         scrolling="no"
-        id={`${CALENDAR_ID}_1793647157514`}
+        id={`${CALENDAR_ID}_1795026984019`}
         title="Book a strategy call"
       />
       <Script src="https://link.msgsndr.com/js/form_embed.js" strategy="afterInteractive" />
